@@ -853,7 +853,7 @@
         releaseAllPads();
         var def = STAGES[stats.stage - 1];
         var isBoss = !!(def && def.boss);
-        $("clear-title").textContent = isBoss ? "ボス撃破！" : "ゴール！";
+        $("clear-title").textContent = "ステージ" + stats.stage + (def ? "「" + def.name + "」" : "") + (isBoss ? " ボス撃破！" : " クリア！");
         $("clear-stars").innerHTML = starsSvg(stats.stars, 38);
         $("clear-star-note").textContent = "★クリア" +
           (isBoss
