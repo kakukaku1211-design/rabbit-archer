@@ -294,7 +294,8 @@
            32px pause button on the right; the stats row and the
            in-panel progress bar leave the HUD (records live on the
            pause / clear screens), progress becomes the 3px top line,
-           and the boss block shrinks to a thin bar + status chips */
+           and the boss block becomes one slim row: name, thin bar,
+           the HP number beside the bar, and status chips */
         .hud-panel { border-radius: 12px; padding: 0.25rem 0.6rem; }
         .hud-row { align-items: center; gap: 0.5rem; }
         .heart-wrap, .heart-wrap img { width: 20px; height: 20px; }
@@ -303,10 +304,21 @@
         .progress-track { display: none; }
         .hud-topline { display: block; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: rgba(38, 35, 28, 0.35); }
         .hud-coins-ls { display: inline; }
-        .boss-block { margin-top: 0.25rem; max-width: 210px; }
-        .boss-track { margin-top: 0.125rem; height: 6px; }
-        #hud-boss-hp { display: none; }
+        /* landscape boss status: one slim row — boss name, the thin
+           HP bar, then the HP as a number ("26/26") beside the bar,
+           so the exact remaining HP stays readable without giving
+           the HUD any extra height */
+        .boss-block { margin-top: 0.25rem; max-width: 360px; display: flex; align-items: center; gap: 0.45rem; }
+        .boss-head { display: contents; }
+        .boss-head > span:first-child { order: 1; flex-shrink: 0; font-size: 11px; font-weight: 900; color: #fbf8ef; white-space: nowrap; }
+        .boss-track { order: 2; flex: 1 1 auto; min-width: 50px; margin-top: 0; height: 6px; }
+        #hud-boss-hp {
+          order: 3; display: inline-block; flex-shrink: 0; white-space: nowrap;
+          border-radius: 4px; background: rgba(251, 248, 239, 0.18); padding: 0.05rem 0.4rem;
+          font-size: 11px; font-weight: 900; color: #fbf8ef; font-variant-numeric: tabular-nums;
+        }
         .boss-note { display: none; }
+        .boss-chips { order: 4; margin: 0; flex-shrink: 0; }
         .boss-chips.on { display: flex; }
         .hud-time { padding-top: 0; }
         .hud-time .t { font-size: 0.875rem; font-weight: 700; }
