@@ -277,6 +277,20 @@
         margin-top: 0.75rem; display: flex; min-height: 48px; width: 100%; align-items: center; justify-content: center;
         border-radius: 12px; border: none; background: var(--accent-ink); color: #2b2413; font-size: 0.875rem; font-weight: 900;
       }
+      .final-btn {
+        margin-top: 0.75rem; display: flex; min-height: 52px; width: 100%; align-items: center; justify-content: center;
+        border-radius: 12px; border: none; background: var(--danger); color: #fbf8ef; font-size: 1rem; font-weight: 900;
+      }
+      .shard-row .note.missing { color: var(--danger); }
+      .ending-reveal {
+        margin-top: 1rem; border-radius: 12px; background: #2c2838; color: #f0ead8; padding: 1rem;
+        display: flex; flex-direction: column; gap: 0.75rem; text-align: left;
+      }
+      .ending-reveal p { margin: 0; font-size: 0.875rem; line-height: 1.75; }
+      .btn-final-battle {
+        display: flex; min-height: 54px; width: 100%; align-items: center; justify-content: center;
+        border-radius: 12px; border: none; background: var(--danger); color: #fbf8ef; font-size: 1rem; font-weight: 900;
+      }
       .world-panel {
         margin-top: 1rem; border-radius: var(--radius); border: 1px solid var(--border);
         background: var(--surface); padding: 0.75rem 1rem;
@@ -752,6 +766,7 @@
             <span id="story-shard-count" class="count">かけら 0/10</span>
             <span id="story-shard-note" class="note">ボスを倒して集めよう</span>
           </div>
+          <button type="button" id="btn-final" class="final-btn hidden">真・最終決戦 —— ダークKが待っている！</button>
           <button type="button" id="btn-ending" class="ending-btn hidden">エンディングを見る</button>
           <p id="story-extra-note" class="hidden" style="margin-top:0.5rem;font-size:0.75rem;font-weight:700;line-height:1.6;color:var(--accent)">エクストラワールド（ステージ101〜120）も解放されているよ——ステージ選択からどうぞ。</p>
         </section>
@@ -1034,14 +1049,16 @@
     <!-- ============ ENDING ============ -->
     <div id="ov-ending" class="ending-overlay hidden" role="dialog" aria-modal="true" aria-label="エンディング">
       <div class="dialog">
-        <p class="ov-kicker">ENDING</p>
+        <p class="ov-kicker" id="ending-kicker">TRUE ENDING</p>
         <h2 id="ending-title">にんじんクリスタル、復活！</h2>
         <div id="ending-shards" style="margin-top:0.75rem;display:flex;justify-content:center"></div>
-        <p style="margin-top:0.25rem;font-size:0.75rem;font-weight:900;color:var(--dim);font-variant-numeric:tabular-nums">かけら 10/10 コンプリート！</p>
+        <p id="ending-shard-note" style="margin-top:0.25rem;font-size:0.75rem;font-weight:900;color:var(--dim);font-variant-numeric:tabular-nums">かけら 10/10 コンプリート！</p>
         <div id="ending-lines" class="ending-lines"></div>
+        <div id="ending-reveal" class="ending-reveal hidden"></div>
         <p id="ending-thanks" class="finish-banner" style="text-align:center"></p>
         <p id="ending-totals" class="sub"></p>
         <div class="stack">
+          <button type="button" id="btn-ending-final" class="btn-final-battle hidden">真・最終決戦へ —— ダークKに挑む</button>
           <button type="button" id="btn-ending-select" class="btn primary">ステージ選択へ</button>
           <button type="button" id="btn-ending-title" class="btn">タイトルへ</button>
           <button type="button" id="btn-ending-close" class="btn">とじる</button>
@@ -1268,16 +1285,35 @@
         $("story-shards").innerHTML = shardSlotsHtml(cleared, 16);
         $("story-shard-count").textContent = "かけら " + n + "/10";
         var note = $("story-shard-note");
-        note.textContent = n === 10 ? "にんじんクリスタルは元通り！" : "ボスを倒して集めよう";
-        note.classList.toggle("done", n === 10);
+        var trueCleared = isCleared(121);
+        note.textContent = n === 10
+          ? (trueCleared ? "にんじんクリスタルは元通り！" : "かけらは揃った。でも、まだ光らない…「心」が足りない！")
+          : "ボスを倒して集めよう";
+        note.classList.toggle("done", n === 10 && trueCleared);
+        note.classList.toggle("missing", n === 10 && !trueCleared);
+        $("btn-final").classList.toggle("hidden", !(isCleared(100) && !trueCleared));
         $("btn-ending").classList.toggle("hidden", !isCleared(100));
         $("story-extra-note").classList.toggle("hidden", !isCleared(100));
       }
-      function openEnding() {
-        $("ending-title").textContent = RA.ENDING_TITLE;
+      /* The ending, in two variants (mirrors the main build): the
+         FAKE ending right after the stage-100 clear — the celebration
+         Dark K interrupts, with the road to stage 121 — and the TRUE
+         ending after the stage-121 clear. Re-viewing from the title
+         shows the true one once stage 121 is on record, else fake. */
+      function openEnding(variant) {
+        var fake = variant === "fake";
+        $("ending-kicker").textContent = fake ? "ENDING…?" : "TRUE ENDING";
+        $("ending-title").textContent = fake ? RA.FAKE_ENDING_TITLE : RA.ENDING_TITLE;
         $("ending-shards").innerHTML = shardSlotsHtml(new Set(STAGES.map(function (s) { return s.id; })), 19);
-        $("ending-lines").innerHTML = RA.ENDING_LINES.map(function (l) { return "<p>" + l + "</p>"; }).join("");
-        $("ending-thanks").textContent = RA.ENDING_THANKS;
+        $("ending-shard-note").textContent = fake ? "かけら 10/10…でも、クリスタルは光らない" : "かけら 10/10 コンプリート！";
+        $("ending-lines").innerHTML = (fake ? RA.FAKE_ENDING_LINES : RA.ENDING_LINES).map(function (l) { return "<p>" + l + "</p>"; }).join("");
+        var reveal = $("ending-reveal");
+        reveal.innerHTML = fake ? RA.DARKK_REVEAL_LINES.map(function (l) { return "<p>" + l + "</p>"; }).join("") : "";
+        reveal.classList.toggle("hidden", !fake);
+        var thanks = $("ending-thanks");
+        thanks.textContent = fake ? "" : RA.ENDING_THANKS;
+        thanks.classList.toggle("hidden", fake);
+        $("btn-ending-final").classList.toggle("hidden", !fake);
         var stars = STAGES.reduce(function (sum, s) { var r = recOf(s.id); return sum + (r ? r.bestStars : 0); }, 0);
         $("ending-totals").textContent = "通算 " + progress.totalClears + " 回クリア ／ 星 " + stars + "/" + (STAGES.length * 3);
         $("ov-ending").classList.remove("hidden");
@@ -2096,7 +2132,9 @@
 
       $("btn-select").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openSelect(); });
       $("btn-back-title").addEventListener("click", function () { renderTitle(); showScreen("title"); });
-      $("btn-ending").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openEnding(); });
+      $("btn-ending").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openEnding(isCleared(121) ? "true" : "fake"); });
+      $("btn-final").addEventListener("click", function () { startGame(121); });
+      $("btn-ending-final").addEventListener("click", function () { closeEnding(); startGame(121); });
       $("btn-ending-close").addEventListener("click", function () { closeEnding(); });
       $("btn-ending-select").addEventListener("click", function () { closeEnding(); if (game) exitAfterClear(); else openSelect(); });
       $("btn-ending-title").addEventListener("click", function () { closeEnding(); if (game) { game.destroy(); game = null; } renderTitle(); showScreen("title"); });
@@ -2280,7 +2318,10 @@
               shardSnap = after;
             }
             showClear(s, res);
-            if (s.stage === 100 && res.saved) openEnding();
+            /* the journey's two ends: stage 100 opens the FAKE
+               ending (Dark K's reveal), stage 121 the TRUE one */
+            if (s.stage === 100 && res.saved) openEnding("fake");
+            if (s.stage === 121 && res.saved) openEnding("true");
           },
           onGameOver: function (s) { showOver(s); },
           onPauseRequest: function () {
@@ -2320,9 +2361,19 @@
         showScreen("select");
         scheduleUnlockReveal();
       }
+      /* stage 121 (the true final battle) has no world map to
+         return to — world 13 exists only as that one arena — so
+         leaving it lands on the title screen instead */
+      function exitToTitle() {
+        releaseAllPads();
+        if (game) { game.destroy(); game = null; }
+        renderTitle();
+        showScreen("title");
+      }
       /* pause / game over: back to the map of the world just
          played, K standing on the stage just played */
       function exitToMap() {
+        if (curStage === 121) { exitToTitle(); return; }
         var def = STAGES[curStage - 1];
         applyReturn({ view: "map", world: def ? def.world : currentWorld, standingStage: curStage });
       }
@@ -2331,11 +2382,12 @@
          world-final clear climbs to the ワールド screen so the
          next world's opening can play there */
       function exitAfterClear() {
+        if (curStage === 121) { exitToTitle(); return; }
         var def = STAGES[curStage - 1];
         var w = def ? def.world : 1;
         var ws = worldStages(w);
         var isFinal = ws.length > 0 && ws[ws.length - 1].id === curStage;
-        if (isFinal && curStage < STAGES.length) {
+        if (isFinal && w < 12) {
           applyReturn({ view: "world", world: w, standingWorld: w, unlockWorld: lastClearFirst ? w + 1 : null });
         } else if (isFinal) {
           applyReturn({ view: "world", world: w, standingWorld: w });
