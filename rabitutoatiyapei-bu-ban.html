@@ -382,7 +382,7 @@
       .slot-erase p { margin: 0; font-size: 0.875rem; font-weight: 900; line-height: 1.6; }
       .slot-erase .btn.danger { background: var(--danger); border-color: var(--danger); color: #fbf8ef; font-weight: 900; }
 
-      /* ---------- stage select: hierarchy nav / slim strip ---------- */
+      /* ---------- stage select: hierarchy nav ---------- */
       .hier-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
       .hier-btn {
         display: flex; min-height: 38px; align-items: center; gap: 0.35rem; border-radius: 999px;
@@ -390,20 +390,6 @@
         padding: 0 0.9rem; font-size: 0.875rem; font-weight: 900; box-shadow: 0 1px 2px rgba(60, 50, 20, 0.08);
       }
       .hier-btn.small { min-height: 34px; font-size: 0.75rem; color: var(--dim); padding: 0 0.75rem; }
-      .world-strip {
-        margin-top: 1rem; display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.25rem;
-        scrollbar-width: none; -webkit-overflow-scrolling: touch;
-      }
-      .world-strip::-webkit-scrollbar { display: none; }
-      .world-chip {
-        display: flex; min-height: 40px; flex-shrink: 0; align-items: center; gap: 0.4rem; white-space: nowrap;
-        border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 0 0.9rem;
-      }
-      .world-chip .wc-name { font-size: 0.875rem; font-weight: 900; }
-      .world-chip .wc-count { font-size: 11px; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; }
-      .world-chip.active { border-color: var(--accent); background: var(--accent); color: #fbf8ef; }
-      .world-chip.active .wc-count { color: rgba(251, 248, 239, 0.85); }
-
       /* ---------- stage select: maps (ワールド / マップ) ---------- */
       .map-frame {
         position: relative; width: 100%; overflow: hidden; border-radius: var(--radius);
@@ -658,7 +644,6 @@
         #screen-select .screen-title { font-size: 1.25rem; }
         #screen-select .icon-btn { width: 36px; height: 36px; }
         .head-text { display: flex; align-items: baseline; gap: 0.75rem; }
-        .world-strip { margin-top: 0.5rem; }
         #world-panel { margin-top: 0.5rem; }
         /* on the landscape map screen the normal-flow world card
            hides; its twin rides in the side column instead */
@@ -844,7 +829,6 @@
           </div>
           <button type="button" class="icon-btn sound-toggle" aria-label="サウンドをオフにする"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.4 5.6a9 9 0 0 1 0 12.8"/></svg></button>
         </div>
-        <div id="world-strip" class="world-strip hidden" role="tablist" aria-label="ワールド選択"></div>
         <div id="world-panel" class="world-panel hidden"></div>
         <div id="view-world"></div>
         <div id="view-map" class="hidden">
@@ -1349,9 +1333,9 @@
          world and a second tap (the はい/いいえ confirmation)
          ENTERS that world's マップ screen; ワールドへもどる
          climbs back up. The いちらん card list is a small utility
-         button in the map screen's corner. The slim world strip
-         lives inside the map/list screens as a sideways shortcut
-         between worlds. Worlds 11/12 (EXTRA) stay hidden until
+         button in the map screen's corner. Worlds change only via
+         the ワールド map (there is no world shortcut strip on the
+         map/list screens). Worlds 11/12 (EXTRA) stay hidden until
          stage 100 is cleared in the current save slot. */
       var WORLDS = RA.WORLD_DEFS.map(function (w) {
         return { id: w.world, name: w.world > 10 ? "エクストラ" + (w.world - 10) : "ワールド" + w.world, sub: w.name };
@@ -1902,27 +1886,6 @@
         var hasSnow = STAGES.some(function (s) { return s.world === currentWorld && s.theme === 3; });
         $("select-bg-img").classList.toggle("hidden", !hasSnow);
         $("select-bg-veil").classList.toggle("hidden", !hasSnow);
-        var strip = $("world-strip");
-        strip.classList.toggle("hidden", selectView === "world");
-        if (selectView !== "world") {
-          strip.innerHTML = "";
-          shownWorlds().forEach(function (w) {
-            var b = document.createElement("button");
-            b.type = "button";
-            b.className = "world-chip" + (currentWorld === w.id ? " active" : "");
-            b.setAttribute("role", "tab");
-            b.setAttribute("aria-selected", currentWorld === w.id ? "true" : "false");
-            b.setAttribute("data-world", String(w.id));
-            b.setAttribute("aria-label", w.name + " " + w.sub + "（クリア " + worldClearedCount(w.id) + "/10）");
-            b.innerHTML = '<span class="wc-name">' + (w.id > 10 ? "EX" + (w.id - 10) : "W" + w.id) + '</span><span class="wc-count">' + worldClearedCount(w.id) + "/10</span>";
-            b.addEventListener("click", function () { goWorld(w.id); renderSelect(); });
-            strip.appendChild(b);
-          });
-          var activeChip = strip.querySelector('[data-world="' + currentWorld + '"]');
-          if (activeChip) {
-            strip.scrollLeft = activeChip.offsetLeft - strip.clientWidth / 2 + activeChip.clientWidth / 2;
-          }
-        }
         var panel = $("world-panel");
         if (selectView !== "world") {
           var wd = RA.WORLD_DEFS[currentWorld - 1];
