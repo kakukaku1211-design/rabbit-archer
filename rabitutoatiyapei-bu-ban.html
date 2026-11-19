@@ -441,7 +441,19 @@
       .k-hop { animation: k-hop 0.23s ease-in-out infinite; }
       @keyframes map-node-pulse { 0% { box-shadow: 0 0 0 0 rgba(193, 154, 91, 0.55); } 100% { box-shadow: 0 0 0 11px rgba(193, 154, 91, 0); } }
       .map-node-pulse { animation: map-node-pulse 1.4s ease-out infinite; }
-      @media (prefers-reduced-motion: reduce) { .k-hop, .map-node-pulse { animation: none; } }
+      /* unlock reveal (Mario clear flow): the node a first clear
+         opened pops open and its gold path fades in, with a banner */
+      @keyframes unlock-pop { 0% { transform: scale(0.2); } 55% { transform: scale(1.28); } 78% { transform: scale(0.94); } 100% { transform: scale(1); } }
+      .unlock-pop { animation: unlock-pop 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
+      @keyframes unlock-path { 0% { opacity: 0; } 100% { opacity: 1; } }
+      .unlock-path { animation: unlock-path 0.7s ease-out both; }
+      @keyframes unlock-banner { 0% { opacity: 0; transform: translateY(6px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+      .unlock-banner {
+        margin-top: 0.6rem; border-radius: 12px; background: var(--accent-ink);
+        padding: 0.5rem 0.75rem; text-align: center; font-size: 0.875rem; font-weight: 900; color: #2b2413;
+        animation: unlock-banner 0.45s ease-out both;
+      }
+      @media (prefers-reduced-motion: reduce) { .k-hop, .map-node-pulse, .unlock-pop, .unlock-path, .unlock-banner { animation: none; } }
       .info-bar {
         margin-top: 0.75rem; display: flex; align-items: center; gap: 0.75rem; border-radius: var(--radius);
         border: 1px solid var(--border); background: var(--surface); padding: 0.75rem 1rem;
@@ -458,6 +470,13 @@
       .shard-line .count { font-size: 0.75rem; font-weight: 900; font-variant-numeric: tabular-nums; }
       .map-note { margin: 0.5rem 0 0; font-size: 11px; line-height: 1.6; color: var(--dim); }
       .map-hint { margin: 0.25rem 0 0; font-size: 0.75rem; font-weight: 700; line-height: 1.6; color: var(--danger); }
+
+      /* ---------- select layout helpers (landscape side columns) ---------- */
+      .screen-title { margin: 0; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.04em; }
+      .slot-list { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+      /* the landscape-only copy of the world info card that rides in
+         the map screen's side column; CSS alone decides visibility */
+      #world-panel-ls { display: none; }
 
       /* ---------- entry confirmation dialogs ---------- */
       .confirm-overlay {
@@ -486,8 +505,8 @@
       @media (orientation: landscape) {
         .wrap { max-width: 42rem; }
         #screen-select .wrap-wide { max-width: 48rem; }
-        .cover-inner { max-width: 42rem; min-height: 430px; }
-        .rabbit-stand img { height: 128px; }
+        .cover-inner { max-width: 42rem; min-height: 348px; padding-top: 1rem; }
+        .rabbit-stand img { height: 104px; }
         /* landscape HUD: one slim row (~40px) instead of the portrait
            stack — hearts + coin count on the left, small TIME and a
            32px pause button on the right; the stats row and the
@@ -562,6 +581,43 @@
         #ov-over .stack .btn, #ov-pause .stack .btn { min-height: 46px; flex: 1 1 0; font-size: 0.875rem; padding: 0 0.3rem; }
         #ov-pause .sound-row { margin-top: 0.5rem; }
         #ov-clear .save-fail { margin-top: 0.5rem; }
+        /* landscape selection screens (the game is landscape-first,
+           so choosing gets the same treatment as playing): panels
+           are sized by HEIGHT so every node fits on one screen with
+           no scrolling, and the information cards move into a slim
+           side column instead of stacking under the panel. Portrait
+           keeps the original stacked layout untouched. */
+        #screen-select .wrap { padding-top: 0.75rem; padding-bottom: 1rem; }
+        #screen-select .screen-title { font-size: 1.25rem; }
+        #screen-select .icon-btn { width: 36px; height: 36px; }
+        .head-text { display: flex; align-items: baseline; gap: 0.75rem; }
+        .world-strip { margin-top: 0.5rem; }
+        #world-panel { margin-top: 0.5rem; }
+        /* on the landscape map screen the normal-flow world card
+           hides; its twin rides in the side column instead */
+        .sv-map #world-panel { display: none; }
+        .sv-map #world-panel-ls { display: block; margin-top: 0; }
+        .world-layout { display: flex; align-items: flex-start; gap: 1rem; }
+        .world-layout .map-frame.world { flex: 1 1 auto; min-width: 0; aspect-ratio: 10 / 6.6; }
+        .world-side { width: 248px; flex-shrink: 0; max-height: calc(100dvh - 76px); overflow-y: auto; }
+        .world-side .info-bar { margin-top: 0; }
+        #view-world .map-node.world-node { width: 46px; height: 46px; }
+        #view-world .map-k img { height: 34px !important; }
+        .map-layout { display: flex; align-items: flex-start; gap: 1rem; }
+        .map-col-main { flex: 1 1 auto; min-width: 0; }
+        .map-col-side { width: 248px; flex-shrink: 0; max-height: calc(100dvh - 150px); overflow-y: auto; }
+        #stage-map .map-frame.stage { aspect-ratio: 10 / 5.1; }
+        #stage-map .map-k img { height: 40px !important; }
+        .hier-row { margin-bottom: 0.5rem; }
+        .stage-grid { grid-template-columns: repeat(4, 1fr); }
+        /* save slots: three cards in one row */
+        #screen-slots .wrap { max-width: 64rem; padding-top: 0.75rem; padding-bottom: 1rem; }
+        #screen-slots .screen-title { font-size: 1.25rem; }
+        #screen-slots .icon-btn { width: 36px; height: 36px; }
+        .slot-list { margin-top: 0.75rem; display: grid; grid-template-columns: repeat(3, 1fr); align-items: start; }
+        /* entry confirmations: wider card, shorter banner image */
+        #ov-confirm-world .dialog, #ov-confirm-stage .dialog { max-width: 32rem; padding: 1rem; }
+        #ov-confirm-world .cw-img { height: 64px; }
       }
       .hud { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
       .controls { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
@@ -666,13 +722,13 @@
           <button type="button" id="btn-slots-back" class="icon-btn hidden" aria-label="タイトルへ戻る">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
           </button>
-          <div style="flex:1;min-width:0">
-            <h1 style="margin:0;font-size:1.5rem;font-weight:900;letter-spacing:0.04em">セーブデータ</h1>
+          <div class="head-text" style="flex:1;min-width:0">
+            <h1 class="screen-title">セーブデータ</h1>
             <p style="margin:0;font-size:0.75rem;font-weight:700;color:var(--dim)">あそぶデータを えらんでね（3つまで それぞれ独立）</p>
           </div>
           <button type="button" class="icon-btn sound-toggle" aria-label="サウンドをオフにする"></button>
         </div>
-        <div id="slot-list" style="margin-top:1.25rem;display:flex;flex-direction:column;gap:1rem"></div>
+        <div id="slot-list" class="slot-list"></div>
         <p style="margin-top:1.25rem;font-size:0.75rem;line-height:1.7;color:var(--dim)">データごとに、クリアしたステージ・星・かけらの進み具合が別々に残ります。スロットを切り替えても、ほかのデータの記録は消えません。</p>
       </main>
     </div>
@@ -686,8 +742,8 @@
           <button type="button" id="btn-back-title" class="icon-btn" aria-label="タイトルへ戻る">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
           </button>
-          <div style="flex:1;min-width:0">
-            <h1 style="margin:0;font-size:1.5rem;font-weight:900;letter-spacing:0.04em">ステージ選択</h1>
+          <div class="head-text" style="flex:1;min-width:0">
+            <h1 class="screen-title">ステージ選択</h1>
             <p id="select-totals" style="margin:0;font-size:0.75rem;color:var(--dim);font-variant-numeric:tabular-nums"></p>
           </div>
           <button type="button" class="icon-btn sound-toggle" aria-label="サウンドをオフにする"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.4 5.6a9 9 0 0 1 0 12.8"/></svg></button>
@@ -696,6 +752,8 @@
         <div id="world-panel" class="world-panel hidden"></div>
         <div id="view-world"></div>
         <div id="view-map" class="hidden">
+          <div class="map-layout">
+          <div class="map-col-main">
           <div class="hier-row">
             <button type="button" id="btn-to-worlds" class="hier-btn" aria-label="ワールド選択へもどる">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
@@ -707,9 +765,15 @@
             </button>
           </div>
           <div id="stage-map"></div>
+          </div>
+          <div class="map-col-side">
+          <div id="world-panel-ls" class="world-panel"></div>
           <div id="map-infobar"></div>
+          <div id="map-unlock-slot"></div>
           <p class="map-note">拠点をタップすると、Kが道を歩いて移動します。Kのいる拠点をタップすると「はいる？」の確認が出ます。カードで選びたいときは、右上の「いちらん」ボタンから。</p>
           <p id="map-hint" class="map-hint hidden" role="status"></p>
+          </div>
+          </div>
         </div>
         <div id="view-list" class="hidden">
           <div class="hier-row">
@@ -800,7 +864,7 @@
           <div class="stack">
             <button type="button" id="btn-resume" class="btn primary">つづける</button>
             <button type="button" id="btn-restart-p" class="btn">はじめから</button>
-            <button type="button" id="btn-exit-p" class="btn">ステージ選択へ戻る</button>
+            <button type="button" id="btn-exit-p" class="btn">マップへもどる</button>
           </div>
         </div>
       </div>
@@ -808,8 +872,9 @@
       <!-- clear -->
       <div id="ov-clear" class="overlay hidden">
         <div class="dialog">
-          <p class="ov-kicker">STAGE CLEAR</p>
+          <p class="ov-kicker" id="clear-kicker">STAGE CLEAR</p>
           <h2 id="clear-title">ゴール！</h2>
+          <p id="clear-sub" style="margin-top:0.25rem;font-size:0.875rem;font-weight:900"></p>
           <div id="clear-stars" style="margin-top:0.75rem;display:flex;justify-content:center"></div>
           <p id="clear-star-note" style="margin-top:0.4rem;font-size:0.75rem;font-weight:700;color:var(--dim)"></p>
           <div id="clear-badges" class="badge-row"></div>
@@ -826,9 +891,7 @@
           <div class="stat-grid" id="clear-stats"></div>
           <p id="clear-finish" class="finish-banner hidden">全ステージ制覇！ おつかれさま！</p>
           <div class="stack">
-            <button type="button" id="btn-next" class="btn primary">次のステージへ</button>
-            <button type="button" id="btn-retry-c" class="btn">もう一度あそぶ</button>
-            <button type="button" id="btn-exit-c" class="btn">ステージ選択へ</button>
+            <button type="button" id="btn-exit-c" class="btn primary">マップへもどる</button>
           </div>
         </div>
       </div>
@@ -842,7 +905,7 @@
           <div class="stat-grid" id="over-stats"></div>
           <div class="stack">
             <button type="button" id="btn-retry-o" class="btn primary">リトライ</button>
-            <button type="button" id="btn-exit-o" class="btn">ステージ選択へ</button>
+            <button type="button" id="btn-exit-o" class="btn">マップへもどる</button>
           </div>
         </div>
       </div>
@@ -1053,7 +1116,7 @@
       /* ---------- how-to (same manual as the main game) ---------- */
       var HOWTO = [
         ["セーブデータ", "記録はセーブデータ1・2・3の3つまで、それぞれ独立して残せるよ（マリオのデータ選択と同じ）。家族や友達と分けたり、最初から遊び直したりできる。タイトルの「セーブデータを かえる」から切り替えられて、スロット画面では各データの進み具合（クリア数・星・かけら）が見られる。いらなくなったデータはスロット画面から消せる（消す前に確認が出る）。今までの記録はそのままデータ1に入っているよ。"],
-        ["ステージ選択", "ステージ選択は、まず「ワールド」の画面で旅全体を見渡してワールドを選ぶと、そのワールドの「マップ」に入るよ（マップでは細い帯がワールド間の近道、「ワールドへもどる」で上の画面に戻れる）。ワールド画面もマップと同じ操作：拠点をタップすると、ちっちゃいKが道を歩いて移動する——Kのいる拠点をタップすると「はいる？ はい／いいえ」の確認が出る（ワールド画面ではワールド、マップではステージ）。クリアした道は金色、星の記録は拠点の下に表示。急ぐときはマップ右上の「いちらん」ボタンからカード一覧でも選べるよ。エクストラワールドはワールド10をクリアするまで、帯にもワールド画面にも姿を見せないよ。"],
+        ["ステージ選択", "ステージ選択は、まず「ワールド」の画面で旅全体を見渡してワールドを選ぶと、そのワールドの「マップ」に入るよ（マップでは細い帯がワールド間の近道、「ワールドへもどる」で上の画面に戻れる）。ワールド画面もマップと同じ操作：拠点をタップすると、ちっちゃいKが道を歩いて移動する——Kのいる拠点をタップすると「はいる？ はい／いいえ」の確認が出る（ワールド画面ではワールド、マップではステージ）。クリアした道は金色、星の記録は拠点の下に表示。急ぐときはマップ右上の「いちらん」ボタンからカード一覧でも選べるよ。エクストラワールドはワールド10をクリアするまで、帯にもワールド画面にも姿を見せないよ。ステージをクリアすると、結果（スコア・星・タイム・コイン）だけの画面が出て、「マップへもどる」でそのワールドのマップに戻るよ——初めてのクリアなら、戻った瞬間に次のステージへの道が金色に伸びて、新しい拠点が開くのが見える。ワールド最後のステージをクリアしたときだけワールド画面に戻って、次のワールドが開くよ。"],
         ["進む", "画面左下の ◀ ▶ ボタンで左右に移動（PCは ←→ / AD）。右端の赤い旗がゴール。"],
         ["ジャンプ", "右下の大きなボタンでジャンプ。長押しで高く、離すと低く。足場や動く床に乗って穴を越えよう。敵は上から踏んでも倒せる（踏んだ瞬間にジャンプ長押しで高く跳ねる）。"],
         ["弓", "弓ボタンは離した瞬間に矢を放つ（PCは J / X）。通常の矢は山なりで、地面に落ちるまで飛ぶ——平地では届く距離は短めなので敵に近づいて撃とう（高い所から撃つと遠くまで届く）。イノシシは2発、ほかは1発。長押しすると2段階チャージ：0.55秒で「ため1」——地面に落ちるまで飛ぶ山なりの矢で、通常の約2倍先に落ちる。1.1秒で「ため2」——光の矢がまっすぐ飛んで敵を貫通する（3ダメージ、飛距離は画面の横幅の半分ほど）。ためている間は通常の矢は出ない。"],
@@ -1195,6 +1258,45 @@
       var worldTouched = false;
       var confirmStageId = null;
       var confirmWorldId = null;
+      /* --- unlock reveal state (Mario clear flow) ---
+         Set only by applyReturn after a clear: the node this
+         clear opened for the first time. The maps draw it shut
+         for a beat, then the gold path fades in and the node
+         pops open (see scheduleUnlockReveal). */
+      var unlockStageId = null;
+      var unlockWorldId = null;
+      var unlockRevealed = false;
+      var unlockTimer = null;
+      var returnSeq = 0;
+      var lastClearFirst = false;
+      function clearUnlock() {
+        unlockStageId = null;
+        unlockWorldId = null;
+        unlockRevealed = false;
+        if (unlockTimer) { clearTimeout(unlockTimer); unlockTimer = null; }
+      }
+      function scheduleUnlockReveal() {
+        if (unlockStageId === null && unlockWorldId === null) return;
+        var seq = returnSeq;
+        unlockTimer = setTimeout(function () {
+          unlockTimer = null;
+          if (seq !== returnSeq) return;
+          unlockRevealed = true;
+          RA.sfx.checkpoint();
+          renderSelect();
+        }, 800);
+      }
+      function unlockStageBannerHtml() {
+        var s = STAGES[unlockStageId - 1];
+        if (!s) return "";
+        return '<p class="unlock-banner" role="status">あたらしい道が開いた！ ステージ' + s.id + "「" + s.name + "」が開いたよ</p>";
+      }
+      function unlockWorldBannerHtml() {
+        var w = null;
+        WORLDS.forEach(function (x) { if (x.id === unlockWorldId) w = x; });
+        if (!w) return "";
+        return '<p class="unlock-banner" role="status">あたらしい道が開いた！ ' + w.name + "「" + w.sub + "」が開いたよ</p>";
+      }
 
       function extrasOpen() { return isCleared(100); }
       function shownWorlds() {
@@ -1388,25 +1490,33 @@
         var sw = shownWorlds();
         var cleared = clearedSet();
         var frontier = frontierWorld();
-        var html = '<div class="map-frame world">';
+        var html = '<div class="world-layout"><div class="map-frame world">';
         html += '<svg class="map-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">';
         for (var i = 0; i < sw.length - 1; i++) {
           var p = OVERALL_POS[sw[i].id - 1];
           var q = OVERALL_POS[sw[i + 1].id - 1];
-          var done = worldStages(sw[i].id).every(function (s) { return isCleared(s.id); });
+          /* the segment INTO the just-unlocked world stays dotted
+             until the reveal moment, then turns gold */
+          var isUnlockSeg = unlockWorldId !== null && sw[i].id + 1 === unlockWorldId;
+          var done = isUnlockSeg ? unlockRevealed : worldStages(sw[i].id).every(function (s) { return isCleared(s.id); });
           html += '<line x1="' + p.x + '" y1="' + p.y + '" x2="' + q.x + '" y2="' + q.y +
             '" stroke="' + (done ? "#f2c14e" : "rgba(251,248,239,0.9)") + '" stroke-width="3" stroke-linecap="round"' +
-            (done ? "" : ' stroke-dasharray="0.1 4.5"') + ' vector-effect="non-scaling-stroke"/>';
+            (done ? "" : ' stroke-dasharray="0.1 4.5"') + ' vector-effect="non-scaling-stroke"' +
+            (isUnlockSeg && unlockRevealed ? ' class="unlock-path"' : "") + "/>";
         }
         html += "</svg>";
         sw.forEach(function (w) {
           var pos = OVERALL_POS[w.id - 1];
-          var open = worldOpen(w.id);
+          /* the just-unlocked world wears its locked look until
+             the reveal moment, then pops open */
+          var isUnlockNode = unlockWorldId === w.id;
+          var open = worldOpen(w.id) && !(isUnlockNode && !unlockRevealed);
           var done = worldClearedCount(w.id) === 10;
           var isStanding = w.id === standingWorld;
           var isFrontier = w.id === frontier;
           var cls = "map-node world-node" + (open ? "" : " locked") + (isStanding ? " standing" : "") +
-            (done && !isStanding ? " done" : "") + (isFrontier && !done && !isStanding ? " map-node-pulse" : "");
+            (done && !isStanding ? " done" : "") + (isFrontier && !done && !isStanding ? " map-node-pulse" : "") +
+            (isUnlockNode && unlockRevealed ? " unlock-pop" : "");
           var labelStyle = pos.x <= 15 ? "left:-6px" : pos.x >= 85 ? "right:-6px" : "left:50%;transform:translateX(-50%)";
           html += '<div class="map-node-wrap" style="left:' + pos.x + "%;top:" + pos.y + '%">' +
             '<button type="button" class="' + cls + '" data-world="' + w.id + '" aria-label="' +
@@ -1425,15 +1535,20 @@
         html += '<div class="map-k" id="world-k" style="left:' + standPos.x + "%;top:" + standPos.y + '%" aria-hidden="true">' +
           '<img src="' + RABBIT_IMG + '" alt="" style="height:46px" /></div>';
         html += "</div>";
+        html += '<div class="world-side">';
         html += '<div class="info-bar" id="world-infobar"></div>';
         html += '<div class="shard-line">' + shardSlotsHtml(cleared, 13) +
           '<span class="count">かけら ' + RA.shardCount(cleared) + "/10</span></div>";
+        html += '<div id="world-unlock-slot"></div>';
         html += '<p class="map-note">ワールドをタップすると、Kが道を歩いて移動します。Kのいるワールドをタップすると「はいる？」の確認が出ます。</p>';
         if (!extrasOpen()) {
           html += '<p class="map-note">ワールド10をクリアすると、まだ見ぬ世界がこのマップに現れるらしい…。</p>';
         }
         html += '<p id="world-hint" class="map-hint hidden" role="status"></p>';
+        html += "</div></div>";
         view.innerHTML = html;
+        var wslot = $("world-unlock-slot");
+        if (wslot) wslot.innerHTML = unlockWorldId !== null && unlockRevealed ? unlockWorldBannerHtml() : "";
         view.querySelectorAll(".map-node").forEach(function (b) {
           b.addEventListener("click", function () {
             var id = Number(b.getAttribute("data-world"));
@@ -1533,31 +1648,40 @@
           var p = MAP_POS[i];
           var q = MAP_POS[i + 1];
           var seg = stages[i];
-          var done = seg ? isCleared(seg.id) : false;
+          /* the segment INTO the just-unlocked stage stays dotted
+             until the reveal moment, then turns gold */
+          var isUnlockSeg = unlockStageId !== null && stages[i + 1] && stages[i + 1].id === unlockStageId;
+          var done = isUnlockSeg ? unlockRevealed : (seg ? isCleared(seg.id) : false);
           html += '<line x1="' + p.x + '" y1="' + p.y + '" x2="' + q.x + '" y2="' + q.y +
             '" stroke="' + (done ? "#f2c14e" : "rgba(251,248,239,0.85)") + '" stroke-width="3" stroke-linecap="round"' +
-            (done ? "" : ' stroke-dasharray="0.1 4.5"') + ' vector-effect="non-scaling-stroke"/>';
+            (done ? "" : ' stroke-dasharray="0.1 4.5"') + ' vector-effect="non-scaling-stroke"' +
+            (isUnlockSeg && unlockRevealed ? ' class="unlock-path"' : "") + "/>";
         }
         html += "</svg>";
         stages.forEach(function (s, i) {
           var pos = MAP_POS[i];
           var rec = recOf(s.id);
           var unlocked = isUnlocked(s.id);
+          /* the just-unlocked stage wears its locked look until
+             the reveal moment, then pops open */
+          var isUnlockNode = unlockStageId === s.id;
+          var nodeOpen = unlocked && !(isUnlockNode && !unlockRevealed);
           var clearedStage = !!rec && rec.clears > 0;
           var isBoss = !!s.boss;
           var isStanding = s.id === standingId;
           var isNext = nextInWorld !== null && nextInWorld.id === s.id;
           var size = isBoss ? 54 : 42;
-          var bg = clearedStage ? "#f2c14e" : isBoss && unlocked ? "var(--danger)" : unlocked ? "var(--accent)" : "rgba(90,84,70,0.85)";
+          var bg = clearedStage ? "#f2c14e" : isBoss && nodeOpen ? "var(--danger)" : nodeOpen ? "var(--accent)" : "rgba(90,84,70,0.85)";
           var fg = clearedStage ? "#2b2413" : "#fbf8ef";
           html += '<div class="map-node-wrap" style="left:' + pos.x + "%;top:" + pos.y + '%">' +
             '<button type="button" class="map-node' + (isStanding ? " standing" : "") + (isNext && !isStanding ? " map-node-pulse" : "") +
+            (isUnlockNode && unlockRevealed ? " unlock-pop" : "") +
             '" data-stage="' + s.id + '" style="width:' + size + "px;height:" + size + "px;background:" + bg + ";color:" + fg + '" aria-label="' +
-            (unlocked
+            (nodeOpen
               ? "ステージ" + s.id + " " + s.name + (isStanding ? "。Kがいます。タップすると入るか確認します" : "。タップするとKが移動します")
               : "ステージ" + s.id + " " + s.name + " は未解放。前のステージをクリアすると開きます") + '">' +
-            (unlocked ? String(i + 1) : LOCK_SVG) +
-            (isBoss && unlocked && s.world <= 10 && !RA.shardHeld(cleared, s.world) ? '<span class="boss-shard" aria-hidden="true">◆</span>' : "") +
+            (nodeOpen ? String(i + 1) : LOCK_SVG) +
+            (isBoss && nodeOpen && s.world <= 10 && !RA.shardHeld(cleared, s.world) ? '<span class="boss-shard" aria-hidden="true">◆</span>' : "") +
             "</button>" +
             (clearedStage && rec ? '<span class="map-star-badge">★' + rec.bestStars + "</span>" : "") +
             "</div>";
@@ -1576,6 +1700,8 @@
           });
         });
         renderMapInfobar();
+        var mslot = $("map-unlock-slot");
+        if (mslot) mslot.innerHTML = unlockStageId !== null && unlockRevealed ? unlockStageBannerHtml() : "";
       }
 
       /* ----- いちらん (card list) ----- */
@@ -1619,6 +1745,11 @@
 
       /* ----- select screen assembly ----- */
       function renderSelect() {
+        /* the view class lets landscape CSS move the world info
+           card into the map screen's side column (see .sv-map) */
+        var selRoot = $("screen-select");
+        selRoot.classList.remove("sv-world", "sv-map", "sv-list");
+        selRoot.classList.add("sv-" + selectView);
         $("select-totals").textContent = "セーブデータ" + currentSlot + " ／ " + totalsText();
         var hasSnow = STAGES.some(function (s) { return s.world === currentWorld && s.theme === 3; });
         $("select-bg-img").classList.toggle("hidden", !hasSnow);
@@ -1663,11 +1794,16 @@
               '<p class="wp-story">' + RA.WORLD_STORY[wd.world] + "</p>" +
               '<p class="wp-faces">とうじょう：' + wd.faces + "</p>" + shardHtml;
             panel.classList.remove("hidden");
+            /* the landscape map screen shows this same card in
+               its side column instead of above the panel */
+            $("world-panel-ls").innerHTML = selectView === "map" ? panel.innerHTML : "";
           } else {
             panel.classList.add("hidden");
+            $("world-panel-ls").innerHTML = "";
           }
         } else {
           panel.classList.add("hidden");
+          $("world-panel-ls").innerHTML = "";
         }
         $("view-world").classList.toggle("hidden", selectView !== "world");
         $("view-map").classList.toggle("hidden", selectView !== "map");
@@ -1677,6 +1813,8 @@
         else renderStageList();
       }
       function openSelect() {
+        returnSeq++;
+        clearUnlock();
         resetSelectState();
         renderSelect();
         showScreen("select");
@@ -1845,7 +1983,7 @@
       $("btn-back-title").addEventListener("click", function () { renderTitle(); showScreen("title"); });
       $("btn-ending").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openEnding(); });
       $("btn-ending-close").addEventListener("click", function () { closeEnding(); });
-      $("btn-ending-select").addEventListener("click", function () { closeEnding(); if (game) exitToSelect(); else openSelect(); });
+      $("btn-ending-select").addEventListener("click", function () { closeEnding(); if (game) exitAfterClear(); else openSelect(); });
       $("btn-ending-title").addEventListener("click", function () { closeEnding(); if (game) { game.destroy(); game = null; } renderTitle(); showScreen("title"); });
 
       /* Render the title before wiring the game screen, so a failure in
@@ -1944,7 +2082,14 @@
           }
         }
         $("clear-shard").innerHTML = shardHtml;
-        $("clear-title").textContent = "ステージ" + stats.stage + (def ? "「" + def.name + "」" : "") + (isBoss ? " ボス撃破！" : " クリア！");
+        /* results only (Mario flow): kicker + big result word +
+           one sub line naming the stage; the score breakdown and
+           stat tiles below are the whole screen, and the single
+           way out is マップへもどる */
+        $("clear-kicker").textContent = "STAGE " + stats.stage + " CLEAR";
+        $("clear-title").textContent = isBoss ? "ボス撃破！" : "ゴール！";
+        $("clear-sub").innerHTML = "ステージ" + stats.stage + (def ? "「" + def.name + "」" : "") +
+          (isBoss && def ? '<span style="color:var(--dim)"> ／ ' + def.boss.tierLabel + " " + def.boss.name + "</span>" : "");
         $("clear-stars").innerHTML = starsSvg(stats.stars, 38);
         $("clear-star-note").textContent = "★クリア" +
           (isBoss
@@ -1968,9 +2113,7 @@
           ["コイン", stats.coins + "/" + stats.coinsTotal],
           ["討伐", String(stats.kills)]
         ]);
-        var hasNext = stats.stage < STAGES.length;
-        $("clear-finish").classList.toggle("hidden", hasNext);
-        $("btn-next").classList.toggle("hidden", !hasNext);
+        $("clear-finish").classList.toggle("hidden", stats.stage < STAGES.length);
         $("controls").classList.add("hidden");
         $("ov-clear").classList.remove("hidden");
       }
@@ -2009,6 +2152,10 @@
           onHud: updateHud,
           onClear: function (s) {
             var res = recordClear(s);
+            /* the clear screen's way out needs to know whether
+               this was the stage's first clear (and safely saved):
+               only a first clear plays the unlock reveal */
+            lastClearFirst = !!(res && res.saved && res.isFirst);
             var def2 = STAGES[s.stage - 1];
             if (def2 && def2.boss && def2.world <= 10 && res.saved && shardSnap) {
               var after = new Set(shardSnap);
@@ -2028,12 +2175,58 @@
         });
         game.start(stage);
       }
-      function exitToSelect() {
+      /* Leaving a run lands on the select screen the way the
+         Mario flow prescribes (see applyReturn's callers): never
+         all the way back to the ワールド screen by default. */
+      function applyReturn(ret) {
         releaseAllPads();
         if (game) { game.destroy(); game = null; }
-        resetSelectState();
+        returnSeq++;
+        clearUnlock();
+        currentWorld = ret.world;
+        selectView = ret.view;
+        hideConfirmStage();
+        hideConfirmWorld();
+        if (ret.standingWorld !== undefined) {
+          standingWorld = ret.standingWorld;
+          worldTouched = true;
+          walkToWorld = null;
+        }
+        if (ret.standingStage !== undefined) {
+          standingId = ret.standingStage;
+          mapTouched = true;
+          walkTo = null;
+          var sd = STAGES[ret.standingStage - 1];
+          if (sd) currentWorld = sd.world;
+        }
+        unlockStageId = ret.unlockStage !== undefined && ret.unlockStage !== null ? ret.unlockStage : null;
+        unlockWorldId = ret.unlockWorld !== undefined && ret.unlockWorld !== null ? ret.unlockWorld : null;
         renderSelect();
         showScreen("select");
+        scheduleUnlockReveal();
+      }
+      /* pause / game over: back to the map of the world just
+         played, K standing on the stage just played */
+      function exitToMap() {
+        var def = STAGES[curStage - 1];
+        applyReturn({ view: "map", world: def ? def.world : currentWorld, standingStage: curStage });
+      }
+      /* clear: results → the cleared stage's own world map,
+         where a first clear's next-stage unlock plays; only a
+         world-final clear climbs to the ワールド screen so the
+         next world's opening can play there */
+      function exitAfterClear() {
+        var def = STAGES[curStage - 1];
+        var w = def ? def.world : 1;
+        var ws = worldStages(w);
+        var isFinal = ws.length > 0 && ws[ws.length - 1].id === curStage;
+        if (isFinal && curStage < STAGES.length) {
+          applyReturn({ view: "world", world: w, standingWorld: w, unlockWorld: lastClearFirst ? w + 1 : null });
+        } else if (isFinal) {
+          applyReturn({ view: "world", world: w, standingWorld: w });
+        } else {
+          applyReturn({ view: "map", world: w, standingStage: curStage, unlockStage: lastClearFirst ? curStage + 1 : null });
+        }
       }
       function restartStage() {
         releaseAllPads();
@@ -2094,15 +2287,13 @@
       });
       $("btn-resume").addEventListener("click", function () { setPaused(false); });
       $("btn-restart-p").addEventListener("click", restartStage);
-      $("btn-exit-p").addEventListener("click", exitToSelect);
-      $("btn-next").addEventListener("click", function () { startGame(curStage + 1); });
-      $("btn-retry-c").addEventListener("click", restartStage);
-      $("btn-exit-c").addEventListener("click", exitToSelect);
+      $("btn-exit-p").addEventListener("click", exitToMap);
+      $("btn-exit-c").addEventListener("click", exitAfterClear);
       $("btn-save-retry").addEventListener("click", function () {
         if (saveProgress()) $("clear-savefail").classList.add("hidden");
       });
       $("btn-retry-o").addEventListener("click", restartStage);
-      $("btn-exit-o").addEventListener("click", exitToSelect);
+      $("btn-exit-o").addEventListener("click", exitToMap);
       document.addEventListener("visibilitychange", function () {
         if (document.hidden) {
           releaseAllPads();
