@@ -1394,7 +1394,26 @@
           unlockRevealed = true;
           RA.sfx.checkpoint();
           renderSelect();
+          startUnlockWalk();
         }, 800);
+      }
+      /* once the unlock reveal has played, K walks the fresh
+         path on his own to the stage (or world) this clear just
+         opened — the trip is the same hop-walk a tap starts, so
+         a tap mid-walk simply retargets it */
+      function startUnlockWalk() {
+        if (selectView === "map" && unlockStageId !== null) {
+          var s = STAGES[unlockStageId - 1];
+          if (s && s.world === currentWorld && isUnlocked(s.id) && standingId !== s.id && walkTo === null) {
+            walkTo = s.id;
+            stepWalk();
+          }
+        } else if (selectView === "world" && unlockWorldId !== null) {
+          if (worldOpen(unlockWorldId) && standingWorld !== unlockWorldId && walkToWorld === null) {
+            walkToWorld = unlockWorldId;
+            stepWorldWalk();
+          }
+        }
       }
       /* sparkles that burst around a node at the unlock reveal
          (ピカーン✨): positions are percentages of the node's
