@@ -604,12 +604,25 @@
       }
       .map-node.standing { border-color: #ffffff; box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px var(--accent-ink), 0 6px 14px rgba(10, 14, 6, 0.45); }
       .map-node.done { border-color: #f2c14e; }
+      /* world-node chips: a single horizontal line, sized to its
+         text (max-content) — never the node's own width. The old
+         chip inherited the 46–54px node width as its containing
+         block, so a Japanese world name wrapped one glyph per line
+         into a tall vertical pill that covered the neighbouring
+         nodes and ran off the bottom of the map frame. Only the
+         world K stands on carries its full name (see
+         worldLabelHtml); every other node gets the compact
+         number + clear-count chip, so chips can never meet. */
       .map-label {
-        pointer-events: none; position: absolute; top: 100%; margin-top: 4px; max-width: 9.5rem;
-        border-radius: 999px; background: rgba(22, 36, 15, 0.75); padding: 0.1rem 0.5rem;
-        font-size: 10px; font-weight: 900; line-height: 1.4; text-align: center; color: #fbf8ef;
+        pointer-events: none; position: absolute; top: 100%; margin-top: 4px;
+        width: max-content; max-width: 12rem; white-space: nowrap;
+        border-radius: 999px; background: rgba(22, 36, 15, 0.75); padding: 0.12rem 0.5rem;
+        font-size: 10px; font-weight: 900; line-height: 1.35; text-align: center; color: #fbf8ef;
       }
       .map-label .ml-count { margin-left: 0.25rem; color: #f2c14e; font-variant-numeric: tabular-nums; }
+      .map-label.standing-label { background: #f2c14e; color: #2b2413; box-shadow: 0 4px 10px rgba(10, 14, 6, 0.35); }
+      .map-label.standing-label .ml-count { color: #7a4a12; }
+      .map-node-wrap.standing-wrap { z-index: 8; }
       .map-star-badge {
         pointer-events: none; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -6px); white-space: nowrap;
         border-radius: 999px; background: rgba(22, 36, 15, 0.75); padding: 0 0.4rem;
@@ -672,6 +685,14 @@
         color: #fbf8ef; padding: 0 1rem; font-size: 0.875rem; font-weight: 900;
       }
       .info-bar .info-play:disabled { background: var(--border); color: var(--dim); cursor: not-allowed; }
+      /* the world infobar's title and each status phrase stay in
+         one piece: phrases wrap as whole units to the next line
+         instead of breaking mid-word (the old layout orphaned a
+         single 「る」 from 「ボスが持っている」) */
+      #world-infobar .info-title { white-space: nowrap; }
+      #world-infobar .info-sub > span { white-space: nowrap; }
+      .world-panel .wp-shard { flex-wrap: wrap; }
+      .world-panel .wp-shard .got, .world-panel .wp-shard .notyet { white-space: nowrap; }
       .shard-line { margin-top: 0.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.75rem; padding: 0 0.25rem; }
       .shard-line .count { font-size: 0.75rem; font-weight: 900; font-variant-numeric: tabular-nums; }
       .map-note { margin: 0.5rem 0 0; font-size: 11px; line-height: 1.6; color: var(--dim); }
@@ -905,6 +926,15 @@
         .world-layout { height: 100%; }
         .world-layout .map-frame.world { max-height: 100%; }
         .world-side { max-height: none; overflow: visible; display: flex; flex-direction: column; gap: 0.5rem; }
+        /* the world infobar stacks in the landscape side column:
+           squeezed beside the はいる button its text column was
+           only ~130px wide, so the title broke mid-name and the
+           shard line orphaned a character. Full-width text lines
+           on top and a full-width button below keep every phrase
+           on one line, and the column still ends well above the
+           map's bottom edge */
+        .world-side .info-bar { flex-direction: column; align-items: stretch; gap: 0.45rem; }
+        .world-side .info-bar .info-play { width: 100%; min-height: 40px; }
         .world-side .shard-line { margin-top: 0; }
         .world-side .unlock-banner { margin-top: 0; }
         .world-side .map-note { margin: 0; font-size: 10px; line-height: 1.55; }
@@ -2624,6 +2654,7 @@
         nodes.forEach(function (b) {
           b.classList.toggle("standing", Number(b.getAttribute("data-world")) === standingWorld);
         });
+        refreshWorldLabels();
         renderWorldInfobar();
       }
       function renderWorldInfobar() {
@@ -2646,6 +2677,29 @@
           '<button type="button" class="info-play" id="world-enter-btn">はいる</button>';
         $("world-enter-btn").addEventListener("click", function () {
           RA.unlockAudio(); RA.sfx.click(); showConfirmWorld(standingWorld);
+        });
+      }
+      /* node chips on the world map: only the world K stands on
+         shows its full name; the rest stay compact (number +
+         clear count) so no two chips can ever overlap, however
+         long a world name is. refreshWorldLabels re-derives the
+         chips when K walks, since the walk only toggles classes
+         and never re-renders the map. */
+      function worldLabelHtml(w, standing) {
+        var head = w.id > 10 ? "EX" + (w.id - 10) : "W" + w.id;
+        return head + (standing ? " " + w.sub : "") +
+          '<span class="ml-count">' + worldClearedCount(w.id) + "/10</span>";
+      }
+      function refreshWorldLabels() {
+        document.querySelectorAll("#view-world .map-label").forEach(function (lab) {
+          var wid = Number(lab.getAttribute("data-world"));
+          var w = null;
+          WORLDS.forEach(function (x) { if (x.id === wid) w = x; });
+          if (!w) return;
+          var standing = wid === standingWorld;
+          lab.classList.toggle("standing-label", standing);
+          lab.innerHTML = worldLabelHtml(w, standing);
+          if (lab.parentElement) lab.parentElement.classList.toggle("standing-wrap", standing);
         });
       }
       function renderWorldView() {
@@ -2681,7 +2735,7 @@
             (done && !isStanding ? " done" : "") + (isFrontier && !done && !isStanding ? " map-node-pulse" : "") +
             (isUnlockNode && unlockRevealed ? " unlock-pop unlock-glow" : "");
           var labelStyle = pos.x <= 15 ? "left:-6px" : pos.x >= 85 ? "right:-6px" : "left:50%;transform:translateX(-50%)";
-          html += '<div class="map-node-wrap" style="left:' + pos.x + "%;top:" + pos.y + '%">' +
+          html += '<div class="map-node-wrap' + (isStanding ? " standing-wrap" : "") + '" style="left:' + pos.x + "%;top:" + pos.y + '%">' +
             '<button type="button" class="' + cls + '" data-world="' + w.id + '" aria-label="' +
             (open
               ? (isStanding ? w.name + " " + w.sub + "。Kがいます。タップすると入るか確認します" : w.name + " " + w.sub + "。タップするとKが移動します") +
@@ -2691,8 +2745,8 @@
             (open ? "" : '<span class="lock-veil">' + LOCK_SVG17 + "</span>") +
             (w.id <= 10 ? '<span class="shard-badge' + (RA.shardHeld(cleared, w.id) ? " held" : "") + '" aria-hidden="true">◆</span>' : "") +
             "</button>" +
-            '<span class="map-label" style="' + labelStyle + '">' + (w.id > 10 ? "EX" + (w.id - 10) : "W" + w.id) + " " + w.sub +
-            '<span class="ml-count">' + worldClearedCount(w.id) + "/10</span></span>" +
+            '<span class="map-label' + (isStanding ? " standing-label" : "") + '" data-world="' + w.id + '" style="' + labelStyle + '">' +
+            worldLabelHtml(w, isStanding) + "</span>" +
             (isUnlockNode && unlockRevealed ? unlockSparklesHtml() : "") + "</div>";
         });
         var standPos = OVERALL_POS[standingWorld - 1] || OVERALL_POS[0];
@@ -2944,7 +2998,7 @@
             if (wd.world <= 10) {
               var got = RA.shardHeld(clearedNow, wd.world);
               shardHtml = '<p class="wp-shard">' + shardSlotsHtml(clearedNow, 13) +
-                (got ? '<span class="got">このワールドのかけら：入手済み</span>' : '<span class="notyet">かけら：このワールドのボスが持っている</span>') + "</p>";
+                (got ? '<span class="got">かけら：入手済み</span>' : '<span class="notyet">かけら：ボスが持っている</span>') + "</p>";
             } else {
               shardHtml = '<p class="wp-shard"><span class="notyet">エクストラワールド：かけらなしのおまけエリア（本編クリアで解放）</span></p>';
             }
