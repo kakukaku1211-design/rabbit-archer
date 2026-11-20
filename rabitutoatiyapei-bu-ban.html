@@ -494,6 +494,41 @@
       .slot-erase p { margin: 0; font-size: 0.875rem; font-weight: 900; line-height: 1.6; }
       .slot-erase .btn.danger { background: var(--danger); border-color: var(--danger); color: #fbf8ef; font-weight: 900; }
 
+      /* ---------- save transfer (引き継ぎコード) ---------- */
+      .transfer-panel {
+        margin-top: 1.25rem; border-radius: var(--radius); border: 1px solid var(--border);
+        background: var(--surface); padding: 1rem; box-shadow: 0 1px 2px rgba(60, 50, 20, 0.08);
+      }
+      .transfer-panel h2 { margin: 0; font-size: 1rem; font-weight: 900; }
+      .transfer-panel .t-lead { margin: 0.5rem 0 0; font-size: 0.8rem; line-height: 1.7; color: var(--dim); }
+      .transfer-panel .t-lead strong { color: var(--text); }
+      .transfer-steps { margin: 0.75rem 0 0; padding: 0 0 0 1.25rem; font-size: 0.8rem; line-height: 1.7; }
+      .transfer-steps li { margin-top: 0.25rem; }
+      .transfer-sec { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+      .transfer-sec h3 { margin: 0; font-size: 0.875rem; font-weight: 900; }
+      .transfer-sec p { margin: 0.35rem 0 0; font-size: 0.75rem; line-height: 1.65; color: var(--dim); }
+      .transfer-btn {
+        margin-top: 0.6rem; display: flex; min-height: 50px; width: 100%; align-items: center; justify-content: center;
+        border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+        font-size: 0.9rem; font-weight: 900; padding: 0 1rem;
+      }
+      .transfer-btn.primary { background: var(--accent); border-color: var(--accent); color: #fbf8ef; }
+      .transfer-btn.sub { min-height: 44px; font-size: 0.8rem; }
+      .transfer-btn-row { display: flex; gap: 0.6rem; }
+      .transfer-btn-row .transfer-btn { flex: 1; }
+      .transfer-code {
+        margin-top: 0.6rem; display: block; width: 100%; min-height: 96px; border-radius: 12px;
+        border: 1px solid var(--border); background: var(--bg); color: var(--text);
+        padding: 0.6rem 0.75rem; font-family: ui-monospace, Menlo, monospace; font-size: 11px; line-height: 1.5;
+        word-break: break-all; resize: vertical;
+      }
+      .transfer-status { margin: 0.6rem 0 0; font-size: 0.8rem; font-weight: 900; line-height: 1.6; }
+      .transfer-status.ok { color: var(--accent); }
+      .transfer-status.err { color: var(--danger); }
+      .transfer-confirm { margin-top: 0.75rem; border-radius: 12px; border: 1px solid var(--accent-ink); background: var(--bg); padding: 0.75rem; }
+      .transfer-confirm p { margin: 0; font-size: 0.8rem; font-weight: 700; line-height: 1.65; color: var(--text); }
+      .transfer-confirm .sum { margin-top: 0.35rem; font-size: 0.8rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+
       /* ---------- stage select: hierarchy nav ---------- */
       .hier-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
       .hier-btn {
@@ -845,9 +880,10 @@
               <button type="button" id="btn-continue" class="big-btn primary">つづきから —— ステージ1 もりのはじまり</button>
               <button type="button" id="btn-select" class="big-btn">ステージ選択（全120ステージ）</button>
               <button type="button" id="btn-slots" class="big-btn" style="min-height:44px;font-size:0.875rem;background:rgba(22,36,15,0.35);color:#fbf8ef;border-color:rgba(251,248,239,0.5);backdrop-filter:blur(2px)">セーブデータ1 で あそんでいます（かえる）</button>
+              <button type="button" id="btn-transfer" class="big-btn" style="min-height:44px;font-size:0.875rem;background:rgba(22,36,15,0.35);color:#fbf8ef;border-color:rgba(251,248,239,0.5);backdrop-filter:blur(2px)">データの引き継ぎ（ホーム画面・機種変更）</button>
             </div>
             <p id="title-totals" class="totals light">クリア 0/120 ／ 星 0/360 ／ 通算 0 回クリア</p>
-            <p id="tab-hint" class="totals light tab-hint hidden">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。</p>
+            <p id="tab-hint" class="totals light tab-hint hidden">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。※iPhoneではブラウザとホーム画面アプリで記録の保存場所が別になることがあります。追加する前に「データの引き継ぎ」でコードを作っておくと、ホーム画面版へそのまま移せます。</p>
           </section>
         </div>
       </header>
@@ -910,7 +946,7 @@
           </details>
         </section>
 
-        <p class="share-note">このページは友達に配るための配布版です。記録（クリア状況・ベストスコア）はこの端末のブラウザに、セーブデータ1・2・3として保存されます。</p>
+        <p class="share-note">このページは友達に配るための配布版です。記録（クリア状況・ベストスコア）はこの端末のブラウザに、セーブデータ1・2・3として保存されます。iPhoneでは開き方（Safari／ホーム画面）ごとに保存場所が分かれることがあるため、ホーム画面へ移すときや機種変更のときは「セーブデータ」画面の「データの引き継ぎ」でコードを作って移してください。</p>
       </main>
     </div>
 
@@ -929,6 +965,51 @@
         </div>
         <div id="slot-list" class="slot-list"></div>
         <p style="margin-top:1.25rem;font-size:0.75rem;line-height:1.7;color:var(--dim)">データごとに、クリアしたステージ・星・かけらの進み具合が別々に残ります。スロットを切り替えても、ほかのデータの記録は消えません。</p>
+
+        <section id="transfer-panel" class="transfer-panel" aria-label="データの引き継ぎ">
+          <h2>データの引き継ぎ</h2>
+          <p class="t-lead">iPhoneでは、<strong>Safariで開いたときと、ホーム画面のアイコンから開いたときで、記録の保存場所が別</strong>になることがあります。そのためホーム画面に追加しただけでは記録は自動で移りません。下の「引き継ぎコード」を使うと、セーブデータ1・2・3をまとめて移せます。機種変更のときも同じ手順です。</p>
+          <ol class="transfer-steps">
+            <li>記録が残っている方（例：Safari）で、この画面の「コードを作る」を押してコピーする（LINEやメモに送っておいてもOK）</li>
+            <li>移したい方（例：ホーム画面のアイコン）でこの画面を開き、コードを貼り付ける</li>
+            <li>「このコードで引き継ぐ」を押して確認すると、そのまま続きから遊べる</li>
+          </ol>
+          <p class="t-lead" style="margin-top:0.6rem">※コードを作る前に、移したい方のアイコンやブラウザのデータを消さないでください。元の記録は元の開き方で開けば残っています。</p>
+
+          <div class="transfer-sec">
+            <h3>1. コードを作る（記録がある方で）</h3>
+            <button type="button" id="btn-transfer-export" class="transfer-btn primary">引き継ぎコードを作る</button>
+            <div id="transfer-export-area" class="hidden">
+              <textarea id="transfer-export-text" class="transfer-code" readonly aria-label="引き継ぎコード"></textarea>
+              <div class="transfer-btn-row">
+                <button type="button" id="btn-transfer-copy" class="transfer-btn sub">コードをコピー</button>
+                <button type="button" id="btn-transfer-download" class="transfer-btn sub">ファイルに保存</button>
+              </div>
+              <p style="margin-top:0.5rem">コードは長めです。全部をコピーしてください。自分宛てのLINEやメモに貼って送ると、ホーム画面版で貼り付けやすくなります。</p>
+            </div>
+            <p id="transfer-export-status" class="transfer-status" role="status"></p>
+          </div>
+
+          <div class="transfer-sec">
+            <h3>2. コードで引き継ぐ（移したい方で）</h3>
+            <p>作ったコードを下に貼り付けてください。ファイルに保存した場合は「ファイルから読み込む」でもOKです。</p>
+            <textarea id="transfer-import-text" class="transfer-code" placeholder="ここに引き継ぎコードを貼り付け（RA1. ではじまる長い文字列）" aria-label="貼り付ける引き継ぎコード"></textarea>
+            <div class="transfer-btn-row">
+              <button type="button" id="btn-transfer-import" class="transfer-btn primary">このコードで引き継ぐ</button>
+              <label class="transfer-btn sub" for="transfer-file" style="cursor:pointer">ファイルから読み込む</label>
+            </div>
+            <input type="file" id="transfer-file" accept=".txt,text/plain" class="hidden" />
+            <div id="transfer-confirm" class="transfer-confirm hidden">
+              <p>読み込んだ記録で、<strong>今この開き方に残っている記録を上書き</strong>します。よろしいですか？</p>
+              <p id="transfer-confirm-sum" class="sum"></p>
+              <div class="confirm-btns" style="margin-top:0.75rem">
+                <button type="button" id="btn-transfer-yes" class="btn primary" style="display:flex;min-height:52px;align-items:center;justify-content:center;border-radius:12px;font-size:1rem;border:1px solid var(--accent);background:var(--accent);color:#fbf8ef;font-weight:900">上書きして引き継ぐ</button>
+                <button type="button" id="btn-transfer-no" class="btn" style="display:flex;min-height:52px;align-items:center;justify-content:center;border-radius:12px;font-size:1rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:700">やめる</button>
+              </div>
+            </div>
+            <p id="transfer-status" class="transfer-status" role="status"></p>
+          </div>
+        </section>
       </main>
     </div>
 
@@ -1393,7 +1474,8 @@
         ["評価", "クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。"],
         ["横持ち", "スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。"],
         ["音", "BGMと効果音つき。BGMはワールドごとに専用のメロディがあり、キーとテンポ、音色も少しずつ違うアレンジになっている。水晶洞窟（ワールド6）と火山（ワールド10）はコード進行から専用の曲だよ（ボス戦の曲は共通）。右上のボタンでいつでもオン/オフできる。"],
-        ["全画面", "ブラウザで開くと、上下にアドレスバーやツールバーが出て画面が狭くなります。共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開くと、バーなしの全画面で遊べます。すでに追加したのにバーが出る場合は、アイコンをいったん消して、もう一度追加し直してください（追加した時期や方法によって、昔のアイコンがブラウザで開くショートカットのままになっていることがあります）。"]
+        ["全画面", "ブラウザで開くと、上下にアドレスバーやツールバーが出て画面が狭くなります。共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開くと、バーなしの全画面で遊べます。すでに追加したのにバーが出る場合は、アイコンをいったん消して、もう一度追加し直してください（追加した時期や方法によって、昔のアイコンがブラウザで開くショートカットのままになっていることがあります）。"],
+        ["引き継ぎ", "iPhoneでは、Safariで開いたときとホーム画面のアイコンから開いたときで、記録の保存場所が別になることがあります。ホーム画面に追加しても記録が自動では移らないので、移すときは引き継ぎコードを使ってください。手順は3つ：①記録が残っている方で「セーブデータ」画面の「データの引き継ぎ」からコードを作ってコピー（LINEやメモに送っておくと楽）、②移したい方で同じ画面を開いてコードを貼り付け、③「このコードで引き継ぐ」を押して上書きを確認。これでセーブデータ1・2・3がまとめて移ります。コードを作る前に、元のアイコンやブラウザのデータを消さないでください——元の記録は元の開き方で開けば残っています。機種変更のときも同じ手順で移せます。"]
       ];
       $("howto-list").innerHTML = HOWTO.map(function (r) {
         return '<li><span class="tag">' + r[0] + '</span><p>' + r[1] + "</p></li>";
@@ -2787,6 +2869,241 @@
         renderSlots();
         showScreen("slots");
       }
+
+      /* ---------- save transfer (引き継ぎコード) ----------
+         iOS keeps separate storage for a page opened in Safari and
+         the same page launched from a home-screen icon, so progress
+         cannot move between them automatically from a static page.
+         The bridge is a manual code: the side that holds the records
+         exports them as one compact string (all 3 slots), the user
+         carries it across (copy / LINE / memo / file), and the other
+         side imports it. Format: "RA1." + base64url(UTF-8 JSON)
+         with per-slot stage records packed as arrays
+         [id, bestTimeSec, bestCoins, bestCoinsTotal, bestScore,
+          bestStars, clears] to keep the code short. */
+      var TRANSFER_PREFIX = "RA1.";
+      var pendingTransfer = null;
+      function transferCountCleared(p) {
+        var c = 0;
+        if (p && p.stages) Object.keys(p.stages).forEach(function (k) { var r = p.stages[k]; if (r && r.clears > 0) c++; });
+        return c;
+      }
+      function transferSummaryText(slotsObj) {
+        var parts = [];
+        [1, 2, 3].forEach(function (n) {
+          var p = slotsObj[n];
+          var c = transferCountCleared(p);
+          parts.push("データ" + n + "：" + (c === 0 && !(p && p.totalClears) ? "記録なし" : "クリア " + c + "/" + STAGES.length + "・通算 " + (p ? (p.totalClears || 0) : 0) + "回"));
+        });
+        return parts.join(" ／ ");
+      }
+      function transferHasData(slotsObj) {
+        return [1, 2, 3].some(function (n) { var p = slotsObj[n]; return p && (transferCountCleared(p) > 0 || (p.totalClears || 0) > 0); });
+      }
+      function makeTransferCode() {
+        var payload = { v: 1, cur: currentSlot || 1, slots: {} };
+        [1, 2, 3].forEach(function (n) {
+          var p = allSlots.slots[n] || emptyProgress();
+          var arr = [];
+          Object.keys(p.stages || {}).forEach(function (k) {
+            var r = p.stages[k];
+            if (r) arr.push([Number(k), r.bestTimeSec, r.bestCoins, r.bestCoinsTotal, r.bestScore, r.bestStars, r.clears]);
+          });
+          arr.sort(function (a, b) { return a[0] - b[0]; });
+          payload.slots[n] = { t: p.totalClears || 0, s: arr };
+        });
+        var json = JSON.stringify(payload);
+        var b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        return TRANSFER_PREFIX + b64;
+      }
+      function sanitizeTransferSlot(raw) {
+        var out = emptyProgress();
+        if (!raw) return out;
+        var validIds = {};
+        STAGES.forEach(function (s) { validIds[s.id] = true; });
+        function num(v, min, max) {
+          var x = Number(v);
+          if (!isFinite(x)) return min;
+          x = Math.floor(x);
+          return x < min ? min : (x > max ? max : x);
+        }
+        if (Array.isArray(raw.s)) {
+          out.totalClears = num(raw.t, 0, 1000000);
+          raw.s.forEach(function (e) {
+            if (!Array.isArray(e)) return;
+            var id = Number(e[0]);
+            if (!validIds[id]) return;
+            out.stages[id] = {
+              bestTimeSec: e[1] === null || e[1] === undefined ? null : num(e[1], 0, 86400),
+              bestCoins: num(e[2], 0, 100000),
+              bestCoinsTotal: num(e[3], 0, 100000),
+              bestScore: num(e[4], 0, 100000000),
+              bestStars: num(e[5], 0, 3),
+              clears: Math.max(1, num(e[6], 0, 100000))
+            };
+          });
+        } else if (raw.stages && typeof raw.stages === "object") {
+          out.totalClears = num(raw.totalClears, 0, 1000000);
+          Object.keys(raw.stages).forEach(function (k) {
+            var id = Number(k);
+            var r = raw.stages[k];
+            if (!validIds[id] || !r) return;
+            out.stages[id] = {
+              bestTimeSec: r.bestTimeSec === null || r.bestTimeSec === undefined ? null : num(r.bestTimeSec, 0, 86400),
+              bestCoins: num(r.bestCoins, 0, 100000),
+              bestCoinsTotal: num(r.bestCoinsTotal, 0, 100000),
+              bestScore: num(r.bestScore, 0, 100000000),
+              bestStars: num(r.bestStars, 0, 3),
+              clears: Math.max(1, num(r.clears, 0, 100000))
+            };
+          });
+        }
+        return out;
+      }
+      function parseTransferCode(text) {
+        var raw = String(text || "").trim();
+        if (!raw) throw new Error("empty");
+        var payload = null;
+        if (raw.charAt(0) === "{") {
+          var j = JSON.parse(raw);
+          payload = j && j.slots ? { v: 1, cur: j.cur || j.currentSlot, slots: j.slots } : j;
+        } else {
+          var compact = raw.replace(/\s+/g, "");
+          var m = compact.match(/RA1[.:]([A-Za-z0-9\-_=]+)/);
+          var b64 = m ? m[1] : compact;
+          b64 = b64.replace(/-/g, "+").replace(/_/g, "/");
+          while (b64.length % 4) b64 += "=";
+          payload = JSON.parse(decodeURIComponent(escape(atob(b64))));
+        }
+        if (!payload || payload.v !== 1 || !payload.slots) throw new Error("bad format");
+        var slots = {};
+        [1, 2, 3].forEach(function (n) { slots[n] = sanitizeTransferSlot(payload.slots[n] || payload.slots[String(n)]); });
+        if (!transferHasData(slots)) throw new Error("no records");
+        var cur = Number(payload.cur);
+        return { slots: slots, cur: (cur === 1 || cur === 2 || cur === 3) ? cur : (currentSlot || 1) };
+      }
+      function setTransferStatus(el, msg, kind) {
+        if (!el) return;
+        el.textContent = msg || "";
+        el.className = "transfer-status" + (kind ? " " + kind : "");
+      }
+      function openTransfer() {
+        openSlots();
+        setTimeout(function () {
+          var panel = $("transfer-panel");
+          if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 60);
+      }
+      $("btn-transfer").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openTransfer(); });
+      $("btn-transfer-export").addEventListener("click", function () {
+        RA.unlockAudio(); RA.sfx.click();
+        var status = $("transfer-export-status");
+        if (!transferHasData(allSlots.slots)) {
+          $("transfer-export-area").classList.add("hidden");
+          setTransferStatus(status, "この開き方には、まだ引き継げる記録がありません。記録が残っている方（Safariなど）で開いて、そこでコードを作ってください。", "err");
+          return;
+        }
+        $("transfer-export-text").value = makeTransferCode();
+        $("transfer-export-area").classList.remove("hidden");
+        setTransferStatus(status, "コードを作りました（" + transferSummaryText(allSlots.slots) + "）。「コードをコピー」して、移したい方で貼り付けてください。", "ok");
+        var ta = $("transfer-export-text");
+        ta.focus(); ta.select();
+      });
+      $("btn-transfer-copy").addEventListener("click", function () {
+        var status = $("transfer-export-status");
+        var ta = $("transfer-export-text");
+        var code = ta.value;
+        function done(ok) {
+          setTransferStatus(status, ok ? "コピーしました。移したい方（ホーム画面のアイコンなど）でこの画面を開き、貼り付けてください。" : "自動コピーできませんでした。コードの文字を長押しして全て選択し、コピーしてください。", ok ? "ok" : "err");
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(function () { done(true); }, function () {
+            ta.focus(); ta.select();
+            var ok = false;
+            try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+            done(ok);
+          });
+        } else {
+          ta.focus(); ta.select();
+          var ok2 = false;
+          try { ok2 = document.execCommand("copy"); } catch (e) { ok2 = false; }
+          done(ok2);
+        }
+      });
+      $("btn-transfer-download").addEventListener("click", function () {
+        RA.sfx.click();
+        var code = $("transfer-export-text").value;
+        if (!code) return;
+        try {
+          var blob = new Blob([code], { type: "text/plain" });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = "rabbit-archer-save.txt";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+          setTransferStatus($("transfer-export-status"), "ファイルを保存しました。移したい端末・開き方で「ファイルから読み込む」から選べます。", "ok");
+        } catch (e) {
+          setTransferStatus($("transfer-export-status"), "ファイル保存はこの開き方では使えませんでした。コードのコピーを使ってください。", "err");
+        }
+      });
+      function attemptTransferParse() {
+        var status = $("transfer-status");
+        var parsed = null;
+        try {
+          parsed = parseTransferCode($("transfer-import-text").value);
+        } catch (e) {
+          pendingTransfer = null;
+          $("transfer-confirm").classList.add("hidden");
+          setTransferStatus(status, "コードを読み取れませんでした。コードの全部（RA1. から最後まで）が貼れているか確認してください。途中で切れていると読み込めません。", "err");
+          return;
+        }
+        pendingTransfer = parsed;
+        $("transfer-confirm-sum").textContent = "読み込んだ記録：" + transferSummaryText(parsed.slots);
+        $("transfer-confirm").classList.remove("hidden");
+        setTransferStatus(status, "", "");
+        var box = $("transfer-confirm");
+        if (box && box.scrollIntoView) box.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      $("btn-transfer-import").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); attemptTransferParse(); });
+      $("btn-transfer-no").addEventListener("click", function () {
+        RA.unlockAudio(); RA.sfx.click();
+        pendingTransfer = null;
+        $("transfer-confirm").classList.add("hidden");
+        setTransferStatus($("transfer-status"), "引き継ぎをやめました。今の記録はそのままです。", "");
+      });
+      $("btn-transfer-yes").addEventListener("click", function () {
+        RA.unlockAudio(); RA.sfx.click();
+        if (!pendingTransfer) return;
+        allSlots = { slots: pendingTransfer.slots };
+        currentSlot = pendingTransfer.cur;
+        progress = allSlots.slots[currentSlot];
+        var saved = saveProgress();
+        try { localStorage.setItem(SLOTKEY, String(currentSlot)); } catch (e) { /* storage unavailable */ }
+        var sum = transferSummaryText(allSlots.slots);
+        pendingTransfer = null;
+        $("transfer-confirm").classList.add("hidden");
+        $("transfer-import-text").value = "";
+        eraseConfirmSlot = null;
+        renderSlots();
+        renderTitle();
+        setTransferStatus($("transfer-status"), saved ? "引き継ぎが完了しました！" + sum + "。セーブデータ" + currentSlot + " で、そのまま続きから遊べます。" : "記録は読み込みましたが、この開き方への保存に失敗しました。ブラウザのサイトデータが許可されているか確認してください。", saved ? "ok" : "err");
+      });
+      $("transfer-file").addEventListener("change", function () {
+        var f = this.files && this.files[0];
+        this.value = "";
+        if (!f) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          $("transfer-import-text").value = String(reader.result || "");
+          setTransferStatus($("transfer-status"), "ファイルを読み込みました。内容を確認したら「このコードで引き継ぐ」を押してください。", "");
+        };
+        reader.onerror = function () { setTransferStatus($("transfer-status"), "ファイルを読めませんでした。コードの貼り付けで試してください。", "err"); };
+        reader.readAsText(f);
+      });
+
       $("btn-slots").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openSlots(); });
       $("btn-slots-back").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); renderTitle(); showScreen("title"); });
 
