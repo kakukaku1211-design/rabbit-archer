@@ -4,7 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="data:," />
+    <!-- Home-screen launch: with the capable tags below, adding this
+         page to the home screen creates a real web-app icon that
+         opens full-screen — no Safari address bar or bottom toolbar.
+         Without them iOS makes a plain Safari shortcut instead,
+         which is why some devices showed the browser bars at the top
+         and bottom even when opened from the home screen. Icons that
+         were added before these tags existed keep opening the old
+         way on some iOS versions; deleting the icon and adding it
+         once more fixes those. Existing icons and saved progress
+         are not affected by adding these tags. -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="ラビットアーチャー" />
+    <meta name="theme-color" content="#79bfe0" />
+    <link rel="icon" href="assets/0407c4cf37817259.png" />
+    <link rel="apple-touch-icon" href="assets/0407c4cf37817259.png" />
+    <link rel="manifest" href="data:application/octet-stream;base64,eyJiYWNrZ3JvdW5kX2NvbG9yIjoiIzc5YmZlMCIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiaWNvbnMiOlt7InB1cnBvc2UiOiJhbnkiLCJzaXplcyI6IjUxMng1MTIiLCJzcmMiOiJhcHAtaWNvbi5wbmciLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dLCJuYW1lIjoi44Op44OT44OD44OI44Ki44O844OB44Oj44O86YWN5biD54mIIiwic2NvcGUiOiIuLi8iLCJzaG9ydF9uYW1lIjoi44Op44OT44OD44OI44Ki44O844OB44Oj44O8Iiwic3RhcnRfdXJsIjoiLi4vaW5kZXguaHRtbCIsInRoZW1lX2NvbG9yIjoiIzc5YmZlMCJ9" />
     <!-- Distribution build: every game sprite is embedded inside
          assets/game.js itself (data URIs), and the cover art / title
          rabbit / heart icon are embedded in this file as data URIs, so
@@ -429,6 +446,7 @@
       .rabbit-stand img { position: relative; display: block; height: 204px; width: auto; filter: drop-shadow(0 8px 12px rgba(18, 30, 12, 0.35)); }
       .sharp-pill { margin: 0 0 1rem; flex-shrink: 0; border-radius: 999px; background: rgba(22, 36, 15, 0.45); padding: 0.4rem 0.75rem; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: #fbf8ef; backdrop-filter: blur(2px); }
       .totals.light { color: rgba(251, 248, 239, 0.95); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.65); font-weight: 700; }
+      .tab-hint { margin-left: auto; margin-right: auto; max-width: 22rem; line-height: 1.65; }
       .cover-below { padding-top: 1.25rem; }
 
       /* ---------- stage select snow backdrop ---------- */
@@ -829,6 +847,7 @@
               <button type="button" id="btn-slots" class="big-btn" style="min-height:44px;font-size:0.875rem;background:rgba(22,36,15,0.35);color:#fbf8ef;border-color:rgba(251,248,239,0.5);backdrop-filter:blur(2px)">セーブデータ1 で あそんでいます（かえる）</button>
             </div>
             <p id="title-totals" class="totals light">クリア 0/120 ／ 星 0/360 ／ 通算 0 回クリア</p>
+            <p id="tab-hint" class="totals light tab-hint hidden">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。</p>
           </section>
         </div>
       </header>
@@ -1373,7 +1392,8 @@
         ["アイテム", "コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」とパズルステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。"],
         ["評価", "クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。"],
         ["横持ち", "スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。"],
-        ["音", "BGMと効果音つき。BGMはワールドごとに専用のメロディがあり、キーとテンポ、音色も少しずつ違うアレンジになっている。水晶洞窟（ワールド6）と火山（ワールド10）はコード進行から専用の曲だよ（ボス戦の曲は共通）。右上のボタンでいつでもオン/オフできる。"]
+        ["音", "BGMと効果音つき。BGMはワールドごとに専用のメロディがあり、キーとテンポ、音色も少しずつ違うアレンジになっている。水晶洞窟（ワールド6）と火山（ワールド10）はコード進行から専用の曲だよ（ボス戦の曲は共通）。右上のボタンでいつでもオン/オフできる。"],
+        ["全画面", "ブラウザで開くと、上下にアドレスバーやツールバーが出て画面が狭くなります。共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開くと、バーなしの全画面で遊べます。すでに追加したのにバーが出る場合は、アイコンをいったん消して、もう一度追加し直してください（追加した時期や方法によって、昔のアイコンがブラウザで開くショートカットのままになっていることがあります）。"]
       ];
       $("howto-list").innerHTML = HOWTO.map(function (r) {
         return '<li><span class="tag">' + r[0] + '</span><p>' + r[1] + "</p></li>";
@@ -1386,6 +1406,34 @@
         $("screen-select").classList.toggle("hidden", name !== "select");
         $("screen-game").classList.toggle("hidden", name !== "game");
         window.scrollTo(0, 0);
+      }
+
+      /* ---------- home-screen / fullscreen ----------
+         A home-screen icon opens this page standalone (no browser
+         bars) when the capable meta tags in <head> were in place —
+         isStandalone detects that mode, plus iOS's legacy flag.
+         In a browser tab the title shows the add-to-home-screen
+         hint instead. On browsers that support the Fullscreen API
+         (Android Chrome, iPad, desktop), starting a stage also
+         requests fullscreen from that tap, so the bars disappear
+         even in a tab; iPhone Safari has no element fullscreen, so
+         the home-screen icon is the route there. Standalone
+         launches (the mode that already works) skip both. */
+      var isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+      if (!isStandalone) {
+        var tabHint = $("tab-hint");
+        if (tabHint) tabHint.classList.remove("hidden");
+      }
+      function enterImmersive() {
+        if (isStandalone || document.fullscreenElement) return;
+        if (window.matchMedia && !window.matchMedia("(pointer: coarse)").matches) return;
+        var el = document.documentElement;
+        var req = el.requestFullscreen || el.webkitRequestFullscreen;
+        if (!req) return;
+        try {
+          var p = req.call(el);
+          if (p && p.catch) p.catch(function () { /* not allowed here — the game still starts */ });
+        } catch (e) { /* fullscreen unavailable: play in the tab as-is */ }
       }
       function nextUncleared() {
         for (var i = 0; i < STAGES.length; i++) if (!isCleared(STAGES[i].id)) return STAGES[i].id;
@@ -2933,6 +2981,7 @@
         $("ov-over").classList.add("hidden");
         $("controls").classList.remove("hidden");
         showScreen("game");
+        enterImmersive();
         if (game) { game.destroy(); game = null; }
         shardSnap = clearedSet();
         game = new RA.Game($("game-canvas"), {
