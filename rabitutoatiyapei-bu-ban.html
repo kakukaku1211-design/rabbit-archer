@@ -1955,7 +1955,17 @@
           unlockRevealed = true;
           RA.sfx.checkpoint();
           renderSelect();
-          startUnlockWalk();
+          /* K sets off a beat AFTER the reveal (see
+             startUnlockWalk): starting the walk in this same
+             frame would move the just-rebuilt marker before it
+             has ever been painted at the old node, so neither
+             the hop nor the slide would be seen — he would
+             simply appear at the new node */
+          unlockTimer = setTimeout(function () {
+            unlockTimer = null;
+            if (seq !== returnSeq) return;
+            startUnlockWalk();
+          }, 900);
         }, 800);
       }
       /* once the unlock reveal has played, K walks the fresh
@@ -1963,6 +1973,9 @@
          opened — the trip is the same hop-walk a tap starts, so
          a tap mid-walk simply retargets it */
       function startUnlockWalk() {
+        /* an entry confirmation is up (the player tapped the
+           node K stands on during the beat): leave him be */
+        if (confirmStageId !== null || confirmWorldId !== null) return;
         if (selectView === "map" && unlockStageId !== null) {
           var s = STAGES[unlockStageId - 1];
           if (s && s.world === currentWorld && isUnlocked(s.id) && standingId !== s.id && walkTo === null) {
@@ -2156,7 +2169,20 @@
         standingWorld += Math.sign(walkToWorld - standingWorld);
         refreshWorldChrome(true);
         if (standingWorld !== walkToWorld) setTimeout(stepWorldWalk, 230);
-        else { walkToWorld = null; refreshWorldChrome(false); }
+        else {
+          /* arrival: let the last hop play out for a step
+             before settling — clearing the walk in this same
+             frame would strip the hop before it ever paints.
+             A tap during the beat retargets the walk instead
+             of being swallowed: the timer then resumes it. */
+          var arrivedWorld = walkToWorld;
+          setTimeout(function () {
+            if (walkToWorld === null) return;
+            if (walkToWorld !== arrivedWorld) { stepWorldWalk(); return; }
+            walkToWorld = null;
+            refreshWorldChrome(false);
+          }, 230);
+        }
       }
       function refreshWorldChrome(walking) {
         var k = $("world-k");
@@ -2294,7 +2320,18 @@
         standingId += Math.sign(walkTo - standingId);
         refreshMapChrome(true);
         if (standingId !== walkTo) setTimeout(stepWalk, 230);
-        else { walkTo = null; refreshMapChrome(false); }
+        else {
+          /* arrival: same settle beat as the world walk — the
+             last hop gets its step before the walk clears, and
+             a tap during the beat retargets instead of dying */
+          var arrivedStage = walkTo;
+          setTimeout(function () {
+            if (walkTo === null) return;
+            if (walkTo !== arrivedStage) { stepWalk(); return; }
+            walkTo = null;
+            refreshMapChrome(false);
+          }, 230);
+        }
       }
       function refreshMapChrome(walking) {
         var stages = worldStages(currentWorld);
