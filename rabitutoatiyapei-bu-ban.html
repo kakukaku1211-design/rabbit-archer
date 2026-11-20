@@ -536,6 +536,7 @@
         padding: 0 0.9rem; font-size: 0.875rem; font-weight: 900; box-shadow: 0 1px 2px rgba(60, 50, 20, 0.08);
       }
       .hier-btn.small { min-height: 34px; font-size: 0.75rem; color: var(--dim); padding: 0 0.75rem; }
+      .hier-world-name { font-size: 0.875rem; font-weight: 900; text-align: right; }
       /* ---------- stage select: maps (ワールド / マップ) ---------- */
       .map-frame {
         position: relative; width: 100%; overflow: hidden; border-radius: var(--radius);
@@ -569,9 +570,9 @@
       .map-node.standing { border-color: #ffffff; box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px var(--accent-ink), 0 6px 14px rgba(10, 14, 6, 0.45); }
       .map-node.done { border-color: #f2c14e; }
       .map-label {
-        pointer-events: none; position: absolute; top: 100%; margin-top: 4px; white-space: nowrap;
+        pointer-events: none; position: absolute; top: 100%; margin-top: 4px; max-width: 9.5rem;
         border-radius: 999px; background: rgba(22, 36, 15, 0.75); padding: 0.1rem 0.5rem;
-        font-size: 10px; font-weight: 900; line-height: 1.5; color: #fbf8ef;
+        font-size: 10px; font-weight: 900; line-height: 1.4; text-align: center; color: #fbf8ef;
       }
       .map-label .ml-count { margin-left: 0.25rem; color: #f2c14e; font-variant-numeric: tabular-nums; }
       .map-star-badge {
@@ -847,6 +848,66 @@
         #ov-confirm-stage .confirm-stats { margin-top: 0.5rem; }
         #ov-confirm-stage .confirm-q { margin-top: 0.75rem; }
         #ov-confirm-stage .confirm-btns { margin-top: 0.5rem; }
+        /* stage select, final pass: the screen owns the full
+           landscape height — a compact header, then the active view
+           filling whatever height remains — so there is no page
+           scroll and no inner scrollbar anywhere on this screen,
+           and the map frames shrink to fit instead of pushing
+           content off the right or bottom edge. Information is
+           triaged per view: each screen keeps only what the player
+           needs to decide the next tap (position, progress,
+           records, the play action); story and flavor text live on
+           the entry confirmation dialogs. */
+        #screen-select { height: 100dvh; overflow: hidden; }
+        #screen-select .wrap { height: 100%; display: flex; flex-direction: column; }
+        #screen-select #view-world, #screen-select #view-map, #screen-select #view-list { flex: 1 1 auto; min-height: 0; }
+        /* the list view drops the full-width world card; the world
+           name rides in its hierarchy row instead */
+        .sv-list #world-panel { display: none; }
+        #screen-select #select-totals { white-space: nowrap; }
+        .world-layout { height: 100%; }
+        .world-layout .map-frame.world { max-height: 100%; }
+        .world-side { max-height: none; overflow: visible; display: flex; flex-direction: column; gap: 0.5rem; }
+        .world-side .shard-line { margin-top: 0; }
+        .world-side .unlock-banner { margin-top: 0; }
+        .world-side .map-note { margin: 0; font-size: 10px; line-height: 1.55; }
+        .map-layout { height: 100%; }
+        .map-col-main { display: flex; flex-direction: column; }
+        .map-col-main #stage-map { flex: 1 1 auto; min-height: 0; }
+        #stage-map .map-frame.stage { max-height: 100%; }
+        .map-col-side { max-height: none; overflow: visible; display: flex; flex-direction: column; gap: 0.5rem; }
+        /* the map screen's side column keeps the world name and its
+           shard status only — the description, story and cast list
+           are hidden here (they stay on the portrait flow and in
+           the entry confirmation) */
+        .map-col-side .world-panel { margin-top: 0; padding: 0.6rem 0.75rem; }
+        .map-col-side .world-panel p:not(.wp-name):not(.wp-shard) { display: none; }
+        .map-col-side .world-panel .wp-shard { margin-top: 0.3rem; }
+        .map-col-side .info-bar { margin-top: 0; padding: 0.6rem 0.75rem; }
+        .map-col-side .unlock-banner { margin-top: 0; }
+        .map-col-side .map-note { margin: 0; font-size: 10px; line-height: 1.55; }
+        /* list view: the ten stages become a fixed 5x2 grid of
+           compact cards filling the screen — number, name, key
+           tags and the best record stay; the description, boss
+           line and climb hints move to the confirmation */
+        #view-list { display: flex; flex-direction: column; }
+        #view-list .stage-grid {
+          flex: 1 1 auto; min-height: 0; margin-top: 0;
+          grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr));
+        }
+        #view-list .stage-card { padding: 0.5rem 0.6rem; overflow: hidden; }
+        #view-list .stage-num { width: 28px; height: 28px; font-size: 0.75rem; }
+        #view-list .stage-name { margin-top: 0.3rem; font-size: 0.8rem; line-height: 1.3; }
+        #view-list .stage-sub { font-size: 9px; }
+        #view-list .stage-desc, #view-list .boss-name, #view-list .climb-chip { display: none; }
+        #view-list .stage-rec { margin-top: 0.3rem; font-size: 10px; line-height: 1.45; }
+      }
+      /* very short landscape screens (small phones, browser chrome
+         showing): drop the hint lines and card subtitles so the
+         no-scroll layout above still holds */
+      @media (orientation: landscape) and (max-height: 340px) {
+        .world-side .map-note, .map-col-side .map-note { display: none; }
+        #view-list .stage-sub { display: none; }
       }
       .hud { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
       .controls { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
@@ -1039,7 +1100,7 @@
           <div id="world-panel-ls" class="world-panel"></div>
           <div id="map-infobar"></div>
           <div id="map-unlock-slot"></div>
-          <p class="map-note">拠点をタップすると、Kが道を歩いて移動します。Kのいる拠点をタップすると「はいる？」の確認が出ます。カードで選びたいときは、右上の「いちらん」ボタンから。</p>
+          <p class="map-note">拠点をタップでKが移動。Kのいる拠点をタップで入室確認。カード派は右上「いちらん」から。</p>
           <p id="map-hint" class="map-hint hidden" role="status"></p>
           </div>
           </div>
@@ -1050,6 +1111,7 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
               マップへもどる
             </button>
+            <span id="list-world-name" class="hier-world-name"></span>
           </div>
           <div id="stage-grid" class="stage-grid" style="margin-top:0"></div>
         </div>
@@ -2544,7 +2606,7 @@
         html += '<div class="shard-line">' + shardSlotsHtml(cleared, 13) +
           '<span class="count">かけら ' + RA.shardCount(cleared) + "/10</span></div>";
         html += '<div id="world-unlock-slot"></div>';
-        html += '<p class="map-note">ワールドをタップすると、Kが道を歩いて移動します。Kのいるワールドをタップすると「はいる？」の確認が出ます。</p>';
+        html += '<p class="map-note">ワールドをタップでKが移動。Kのいるワールドをタップで入室確認。</p>';
         if (!extrasOpen()) {
           html += '<p class="map-note">ワールド10をクリアすると、まだ見ぬ世界がこのマップに現れるらしい…。</p>';
         }
@@ -2767,6 +2829,11 @@
         selRoot.classList.remove("sv-world", "sv-map", "sv-list");
         selRoot.classList.add("sv-" + selectView);
         $("select-totals").textContent = "セーブデータ" + currentSlot + " ／ " + totalsText();
+        var lwn = $("list-world-name");
+        if (lwn) {
+          var lwd = RA.WORLD_DEFS[currentWorld - 1];
+          lwn.textContent = selectView === "list" && lwd ? lwd.name + " — " + lwd.sub : "";
+        }
         var hasSnow = STAGES.some(function (s) { return s.world === currentWorld && s.theme === 3; });
         $("select-bg-img").classList.toggle("hidden", !hasSnow);
         $("select-bg-veil").classList.toggle("hidden", !hasSnow);
