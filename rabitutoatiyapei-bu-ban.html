@@ -320,6 +320,91 @@
       }
       .ending-lines { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; text-align: left; }
       .ending-lines p { margin: 0; font-size: 0.875rem; line-height: 1.75; }
+      .btn-credits { background: #26231c !important; border-color: #26231c !important; color: #f2c14e !important; font-size: 0.875rem !important; }
+
+      /* ---------- story dialogue scenes (boss talks / opening) ---------- */
+      .dialogue-overlay {
+        position: absolute; inset: 0; z-index: 40; display: flex; align-items: flex-end; justify-content: center;
+        padding: 0.75rem; padding-bottom: max(0.9rem, env(safe-area-inset-bottom));
+        background: linear-gradient(to top, rgba(20, 18, 12, 0.75), rgba(20, 18, 12, 0.25) 55%, transparent);
+      }
+      .dialogue-box {
+        width: 100%; max-width: 36rem; border-radius: var(--radius); border: 1px solid rgba(251, 248, 239, 0.25);
+        background: rgba(38, 35, 28, 0.92); color: #fbf8ef; padding: 0.75rem 1rem;
+        box-shadow: 0 24px 60px rgba(20, 16, 10, 0.45); animation: dialogue-box-in 0.25s ease-out both;
+      }
+      @keyframes dialogue-box-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+      .dlg-head { display: flex; align-items: center; gap: 0.5rem; }
+      .dlg-speaker { border-radius: 6px; padding: 0.15rem 0.5rem; font-size: 11px; font-weight: 900; color: #fbf8ef; background: rgba(38, 35, 28, 0.7); }
+      .dlg-speaker.boss { background: #b5443c; }
+      .dlg-speaker.k { background: var(--accent); }
+      .dlg-count { font-size: 11px; font-weight: 700; color: rgba(251, 248, 239, 0.6); font-variant-numeric: tabular-nums; }
+      .dlg-skip {
+        margin-left: auto; border-radius: 999px; border: 1px solid rgba(251, 248, 239, 0.35);
+        background: transparent; color: rgba(251, 248, 239, 0.9); padding: 0.25rem 0.75rem; font-size: 11px; font-weight: 900;
+      }
+      .dlg-body { display: block; width: 100%; text-align: left; background: none; border: none; color: inherit; margin-top: 0.35rem; min-height: 64px; padding: 0; }
+      .dialogue-line { display: block; font-size: 15px; font-weight: 700; line-height: 1.65; animation: dialogue-line-in 0.3s ease-out both; }
+      @keyframes dialogue-line-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+      .dlg-next { display: block; margin-top: 0.25rem; text-align: right; font-size: 11px; font-weight: 900; color: #f2c14e; }
+      @media (orientation: landscape) {
+        .dialogue-box { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .dlg-body { min-height: 52px; }
+        .dialogue-line { font-size: 14px; }
+      }
+
+      /* ---------- opening storybook (title) ---------- */
+      .opening-btn {
+        margin-top: 0.75rem; display: flex; min-height: 44px; width: 100%; align-items: center; justify-content: center;
+        border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+        font-size: 0.875rem; font-weight: 900;
+      }
+      .opening-overlay { position: fixed; inset: 0; z-index: 55; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #16240f; padding: 1.25rem; }
+      .opening-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
+      .opening-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(22, 36, 15, 0.70), rgba(22, 36, 15, 0.35), rgba(22, 36, 15, 0.85)); }
+      .opening-inner { position: relative; width: 100%; max-width: 28rem; text-align: center; color: #fbf8ef; }
+      .opening-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.3em; color: rgba(251, 248, 239, 0.85); margin: 0; }
+      .opening-panel { margin-top: 1.25rem; animation: opening-panel-in 0.4s ease-out both; }
+      @keyframes opening-panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      .opening-panel h2 { font-size: 1.9rem; font-weight: 900; margin: 0; text-shadow: 0 2px 14px rgba(18, 30, 12, 0.7); }
+      .opening-panel p { margin: 1rem auto 0; max-width: 24rem; font-size: 15px; font-weight: 700; line-height: 2; text-shadow: 0 1px 8px rgba(18, 30, 12, 0.8); }
+      .opening-dots { margin-top: 1.5rem; display: flex; justify-content: center; gap: 0.375rem; }
+      .opening-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(251, 248, 239, 0.35); }
+      .opening-dots span.on { background: #f2c14e; }
+      .opening-btns { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.625rem; }
+      .opening-next { min-height: 52px; border-radius: 12px; border: none; background: var(--accent); color: #fbf8ef; font-size: 1rem; font-weight: 900; box-shadow: 0 10px 24px rgba(20, 16, 10, 0.35); }
+      .opening-skip { min-height: 44px; border-radius: 12px; border: 1px solid rgba(251, 248, 239, 0.4); background: transparent; color: #fbf8ef; font-size: 0.875rem; font-weight: 900; }
+
+      /* ---------- end roll (true ending credits) ---------- */
+      .credits-overlay { position: fixed; inset: 0; z-index: 65; background: #14120c; color: #f0ead8; }
+      .credits-close {
+        position: absolute; right: 1rem; top: max(1rem, env(safe-area-inset-top)); z-index: 10;
+        border-radius: 999px; border: 1px solid rgba(240, 234, 216, 0.4); background: transparent; color: #f0ead8;
+        padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 900;
+      }
+      .credits-viewport { height: 100%; overflow: hidden; }
+      .credits-scroll { margin: 0 auto; width: 100%; max-width: 28rem; padding: 0 1.5rem 4rem; text-align: center; animation: credits-roll 42s linear 0.6s both; }
+      @keyframes credits-roll { from { transform: translateY(58vh); } to { transform: translateY(calc(-100% + 32vh)); } }
+      .credits-scroll .c-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.3em; color: rgba(240, 234, 216, 0.7); margin: 0; }
+      .credits-scroll h2 { margin: 0.5rem 0 0; font-size: 1.9rem; font-weight: 900; }
+      .credits-scroll h3 { margin: 3rem 0 0; font-size: 0.875rem; font-weight: 900; letter-spacing: 0.25em; color: #f2c14e; }
+      .credits-scroll .c-lines { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+      .credits-scroll .c-lines p { margin: 0; font-size: 0.875rem; line-height: 2; }
+      .credits-scroll .c-world { margin-top: 1rem; }
+      .credits-scroll .c-world .t { margin: 0; font-size: 0.875rem; font-weight: 900; }
+      .credits-scroll .c-world .t span { margin-left: 0.5rem; font-size: 0.75rem; font-weight: 700; color: rgba(240, 234, 216, 0.6); }
+      .credits-scroll .c-world .d { margin: 0.15rem 0 0; font-size: 0.75rem; line-height: 1.75; color: rgba(240, 234, 216, 0.8); }
+      .credits-scroll .c-boss { margin: 0.4rem 0 0; font-size: 0.875rem; font-weight: 700; }
+      .credits-scroll .c-staff { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.625rem; }
+      .credits-scroll .c-staff p { margin: 0; font-size: 0.875rem; font-weight: 700; line-height: 1.75; }
+      .credits-scroll .c-totals { margin-top: 3rem; font-size: 0.875rem; font-weight: 900; font-variant-numeric: tabular-nums; color: rgba(240, 234, 216, 0.85); }
+      .credits-scroll .c-thanks { margin: 2rem auto 0; max-width: 24rem; border-radius: 12px; background: var(--accent-ink); padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 900; line-height: 1.75; color: #2b2413; }
+      .credits-scroll .c-end { margin-top: 2.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3em; color: rgba(240, 234, 216, 0.6); }
+      .credits-close2 { margin-top: 1.5rem; min-height: 50px; width: 100%; border-radius: 12px; border: none; background: var(--accent); color: #fbf8ef; font-size: 1rem; font-weight: 900; }
+      @media (prefers-reduced-motion: reduce) {
+        .dialogue-box, .dialogue-line, .opening-panel, .credits-scroll { animation: none; }
+        .credits-viewport { overflow-y: auto; }
+      }
 
       /* ---------- title cover (green key visual) ---------- */
       .cover { position: relative; overflow: hidden; background: #79bfe0; }
@@ -744,9 +829,8 @@
 
         <section class="story-card" aria-label="ものがたり">
           <h2>ものがたり</h2>
-          <p>ある日、森の平和を守るにんじんクリスタルが何者かに砕かれ、持ち去られてしまった。</p>
-          <p>弓の得意なこうさぎ「K」は森の平和を取り戻すため、クリスタルのかけらを探し求めて世界へ旅に出る。</p>
-          <p class="goal">砕けたかけらは全部で10個。各ワールドのボスが1つずつ持っていて、倒せば正気を取り戻して返してくれる。10個集めて、にんじんクリスタルを元通りにしよう！</p>
+          <p>砕かれたにんじんクリスタルのかけらを集めるため、弓の得意なこうさぎ「K」が世界へ旅に出る。</p>
+          <button type="button" id="btn-opening" class="opening-btn">オープニングを見る</button>
           <div class="shard-row">
             <span id="story-shards" class="shard-slots"></span>
             <span id="story-shard-count" class="count">かけら 0/10</span>
@@ -783,7 +867,7 @@
             <li><span class="tag">山場</span><p>ふつうのステージには「山場」が3つあるよ。①中盤に1体だけ現れる金色の強敵——王冠と金のオーラが目印で、同じ種類の敵よりずっとタフで少し速い。倒すとボーナススコアとにんじんが落ちる。しかも強敵は種類ごとに「！」予告つきの追加攻撃を1つ持っている（スライムは粘液、カメは砂、クッキーは生地のかたまり、ケーキはベリーを山なりに飛ばし、イノシシは泥を3つ扇形に、ゴーレムとクリスタルスライムは水晶のかけら、ロボットは光の弾をまっすぐ、転がる敵は急加速、跳ねる敵は狙いをつけた大ジャンプ）。予告中は止まるので、そこが反撃の合図でもある。②ステージ8以降、ワープゲートの先にある「お宝エリア」——高い台の上に宝箱が待っていて、触れるとスコアボーナスとHP回復がもらえる（帰りもゲートで戻れる）。③ステージの後半（55%地点）に入ると場面が切り替わる：水中では水流が強く、風のステージでは風が強くなり、それ以外では夕方の光になって敵が元気になる。バナーが出たら後半戦の合図だよ。</p></li>
             <li><span class="tag">エクストラ</span><p>ワールド10（ステージ100）をクリアすると姿を現すおまけワールドが2つ。それまではステージ選択にも出てこない。ワールド11『おかしのくに』はステージごとに主役の仕掛けが違う国：ゼリー（バネよりずっと高く跳ねる。地面に触れず続けて踏むと「れんさ」でさらに高く・遠くへ飛べる）、チョコのベタベタ地帯（地面に立つと足が重くなり、ジャンプも少し低くなる。足場の上に立っている間は平気）、回るペロペロ台が目玉で、長い街道・チョコの海・高い神殿まである。風は吹かない。ボスはペロペロ回転攻撃・クッキー爆弾・踏みつけで攻めるキャンディキング（皇帝は子分のクッキー・ペロペロ・ケーキも呼ぶ）。ワールド12『でんのういせき』はワープパッド（踏むだけで対のパッドへ一瞬でワープ。ゲートと違って止まる必要なし）とレーザー（暗い→赤い細線の予告→発射、の周期を繰り返す。光っている間だけ当たるとダメージ）が目玉で、ボスはレーザーを撃ち、グリッチ移動で消えては現れるサイバーコア（ポータルから子分のキューブも呼ぶ）。かけらは本編の10個で完結していて、エクストラにかけらはないよ。</p></li>
             <li><span class="tag">難易度</span><p>ステージが進むほど穴は広く、敵は多く速くなる。ワールド4以降は1ステージ自体も長くなっていく。ワールド4・5は新顔と新ギミックが重なり、ワールド6〜10はさらに密度と速度が上がる最終盤。にんじんの場所を覚えて挑もう。</p></li>
-            <li><span class="tag">ボス</span><p>5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、イノシシは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。イノシシ系のボスは頭に2回続けて乗ると怒って大ジャンプし、着地と壁ドンで地面を衝撃波が走る——波はジャンプでかわそう。矢を混ぜると踏み直しがリセットされる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、真の黒幕「ダークK」との真・最終決戦が待っている——闇の矢3方向・クリスタルの雨・煙テレポート、すべて赤い予告つきだ。ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。</p></li>
+            <li><span class="tag">ボス</span><p>5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、イノシシは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。イノシシ系のボスは頭に2回続けて乗ると怒って大ジャンプし、着地と壁ドンで地面を衝撃波が走る——波はジャンプでかわそう。矢を混ぜると踏み直しがリセットされる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。</p></li>
             <li><span class="tag">アイテム</span><p>コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」とパズルステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。</p></li>
             <li><span class="tag">評価</span><p>クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。</p></li>
             <li><span class="tag">横持ち</span><p>スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。</p></li>
@@ -991,6 +1075,23 @@
           </div>
         </div>
       </div>
+
+      <!-- story dialogue scene: before a boss fight (the game waits,
+           paused, behind it) and after a boss falls (over the clear
+           results). One line at a time, tap to advance, skippable. -->
+      <div id="ov-dialogue" class="dialogue-overlay hidden" role="dialog" aria-label="会話シーン">
+        <div class="dialogue-box">
+          <div class="dlg-head">
+            <span id="dlg-speaker" class="dlg-speaker">ものがたり</span>
+            <span id="dlg-count" class="dlg-count">1/1</span>
+            <button type="button" id="dlg-skip" class="dlg-skip" aria-label="会話をスキップ">スキップ</button>
+          </div>
+          <button type="button" id="dlg-advance" class="dlg-body" aria-label="次のセリフへ">
+            <span id="dlg-line" class="dialogue-line"></span>
+            <span id="dlg-next" class="dlg-next">タップで つづく ▼</span>
+          </button>
+        </div>
+      </div>
     </div>
 
 
@@ -1045,11 +1146,38 @@
         <p id="ending-thanks" class="finish-banner" style="text-align:center"></p>
         <p id="ending-totals" class="sub"></p>
         <div class="stack">
+          <button type="button" id="btn-ending-credits" class="btn btn-credits hidden">エンドロールを見る</button>
           <button type="button" id="btn-ending-final" class="btn-final-battle hidden">真・最終決戦へ —— ダークKに挑む</button>
           <button type="button" id="btn-ending-select" class="btn primary">ステージ選択へ</button>
           <button type="button" id="btn-ending-title" class="btn">タイトルへ</button>
           <button type="button" id="btn-ending-close" class="btn">とじる</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ============ OPENING (storybook, re-viewable from the title) ============ -->
+    <div id="ov-opening" class="opening-overlay hidden" role="dialog" aria-modal="true" aria-label="オープニング">
+      <img id="opening-bg" class="opening-bg" alt="" aria-hidden="true" />
+      <div class="opening-veil" aria-hidden="true"></div>
+      <div class="opening-inner">
+        <p class="opening-kicker">OPENING — 旅のはじまり</p>
+        <div id="opening-panel" class="opening-panel">
+          <h2 id="opening-heading"></h2>
+          <p id="opening-text"></p>
+        </div>
+        <div id="opening-dots" class="opening-dots" aria-hidden="true"></div>
+        <div class="opening-btns">
+          <button type="button" id="opening-next" class="opening-next">つぎへ</button>
+          <button type="button" id="opening-skip" class="opening-skip" aria-label="オープニングをスキップ">スキップ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ END ROLL (true ending credits) ============ -->
+    <div id="ov-credits" class="credits-overlay hidden" role="dialog" aria-modal="true" aria-label="エンドロール">
+      <button type="button" id="credits-close" class="credits-close" aria-label="エンドロールを閉じる">とじる</button>
+      <div class="credits-viewport">
+        <div id="credits-scroll" class="credits-scroll"></div>
       </div>
     </div>
 
@@ -1225,7 +1353,7 @@
         ["山場", "ふつうのステージには「山場」が3つあるよ。①中盤に1体だけ現れる金色の強敵——王冠と金のオーラが目印で、同じ種類の敵よりずっとタフで少し速い。倒すとボーナススコアとにんじんが落ちる。しかも強敵は種類ごとに「！」予告つきの追加攻撃を1つ持っている（スライムは粘液、カメは砂、クッキーは生地のかたまり、ケーキはベリーを山なりに飛ばし、イノシシは泥を3つ扇形に、ゴーレムとクリスタルスライムは水晶のかけら、ロボットは光の弾をまっすぐ、転がる敵は急加速、跳ねる敵は狙いをつけた大ジャンプ）。予告中は止まるので、そこが反撃の合図でもある。②ステージ8以降、ワープゲートの先にある「お宝エリア」——高い台の上に宝箱が待っていて、触れるとスコアボーナスとHP回復がもらえる（帰りもゲートで戻れる）。③ステージの後半（55%地点）に入ると場面が切り替わる：水中では水流が強く、風のステージでは風が強くなり、それ以外では夕方の光になって敵が元気になる。バナーが出たら後半戦の合図だよ。"],
         ["エクストラ", "ワールド10（ステージ100）をクリアすると姿を現すおまけワールドが2つ。それまではステージ選択にも出てこない。ワールド11『おかしのくに』はステージごとに主役の仕掛けが違う国：ゼリー（バネよりずっと高く跳ねる。地面に触れず続けて踏むと「れんさ」でさらに高く・遠くへ飛べる）、チョコのベタベタ地帯（地面に立つと足が重くなり、ジャンプも少し低くなる。足場の上に立っている間は平気）、回るペロペロ台が目玉で、長い街道・チョコの海・高い神殿まである。風は吹かない。ボスはペロペロ回転攻撃・クッキー爆弾・踏みつけで攻めるキャンディキング（皇帝は子分のクッキー・ペロペロ・ケーキも呼ぶ）。ワールド12『でんのういせき』はワープパッド（踏むだけで対のパッドへ一瞬でワープ。ゲートと違って止まる必要なし）とレーザー（暗い→赤い細線の予告→発射、の周期を繰り返す。光っている間だけ当たるとダメージ）が目玉で、ボスはレーザーを撃ち、グリッチ移動で消えては現れるサイバーコア（ポータルから子分のキューブも呼ぶ）。かけらは本編の10個で完結していて、エクストラにかけらはないよ。"],
         ["難易度", "ステージが進むほど穴は広く、敵は多く速くなる。ワールド4以降は1ステージ自体も長くなっていく。ワールド4・5は新顔と新ギミックが重なり、ワールド6〜10はさらに密度と速度が上がる最終盤。にんじんの場所を覚えて挑もう。"],
-        ["ボス", "5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、イノシシは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。イノシシ系のボスは頭に2回続けて乗ると怒って大ジャンプし、着地と壁ドンで地面を衝撃波が走る——波はジャンプでかわそう。矢を混ぜると踏み直しがリセットされる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、真の黒幕「ダークK」との真・最終決戦が待っている——闇の矢3方向・クリスタルの雨・煙テレポート、すべて赤い予告つきだ。ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。"],
+        ["ボス", "5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、イノシシは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。イノシシ系のボスは頭に2回続けて乗ると怒って大ジャンプし、着地と壁ドンで地面を衝撃波が走る——波はジャンプでかわそう。矢を混ぜると踏み直しがリセットされる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。"],
         ["アイテム", "コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」とパズルステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。"],
         ["評価", "クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。"],
         ["横持ち", "スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。"],
@@ -1303,11 +1431,444 @@
         thanks.textContent = fake ? "" : RA.ENDING_THANKS;
         thanks.classList.toggle("hidden", fake);
         $("btn-ending-final").classList.toggle("hidden", !fake);
+        $("btn-ending-credits").classList.toggle("hidden", fake);
         var stars = STAGES.reduce(function (sum, s) { var r = recOf(s.id); return sum + (r ? r.bestStars : 0); }, 0);
         $("ending-totals").textContent = "通算 " + progress.totalClears + " 回クリア ／ 星 " + stars + "/" + (STAGES.length * 3);
         $("ov-ending").classList.remove("hidden");
       }
       function closeEnding() { $("ov-ending").classList.add("hidden"); }
+
+      /* ---------- story dialogue scenes (mirrors the main build's
+         story.ts, added there 2026-11-20 at the user's ask) ----------
+         Conversations around the boss fights: a short scene BEFORE
+         the fight (the boss, driven wild by the shard's power,
+         refuses to hand it over; K answers) and one AFTER it (the
+         boss comes back to its senses and entrusts the shard). The
+         plus rematches are friendly rivalry — the boss, sane again,
+         asked for a serious rematch, so no shard changes hands.
+         Extra-world bosses hold no shards either. Stage 100 and
+         stage 121 override everything with their own scenes. */
+      function DLG_N(text) { return { speaker: "narrator", text: text }; }
+      function DLG_B(text) { return { speaker: "boss", text: text }; }
+      function DLG_K(text) { return { speaker: "k", text: text }; }
+      var OPENING_DIALOGUE = [
+        DLG_N("ある日、森の平和を守るにんじんクリスタルが何者かに砕かれ、持ち去られてしまった。"),
+        DLG_N("砕けたかけらは全部で10個。世界中に散らばり、拾ったボスたちの心を荒らしている。"),
+        DLG_K("かけらを全部集めて、クリスタルを元通りにする。森の平和は、ぼくが取り戻す！"),
+        DLG_N("弓の得意なこうさぎ「K」の旅が、いま始まる——")
+      ];
+      var OPENING_PANELS = [
+        { heading: "その日、森で", text: "ある日、森の平和を守るにんじんクリスタルが何者かに砕かれ、かけらが世界中に散らばってしまった。" },
+        { heading: "散らばった かけら", text: "かけらは全部で10個。拾った各地のボスたちは、その力に心を荒らされているという。" },
+        { heading: "こうさぎ K の旅立ち", text: "「かけらを全部集めて、クリスタルを元通りにする！」弓の得意なこうさぎ「K」は、森の平和を取り戻すため、世界へ旅に出た。" },
+        { heading: "ぼうけんの はじまり", text: "行く手には、森・雪原・紅葉林・花畑・遺跡…さまざまな世界と、かけらを持つボスたちが待っている。さあ、旅のはじまりだ！" }
+      ];
+      var BOSS_INTRO_DIALOGUE = {
+        slime: {
+          first: [
+            DLG_N("森の奥——大きなスライムが、オレンジに光るかけらを大事そうに抱えていた。"),
+            DLG_B("キラキラのかけら、ボクのものだもん！　返すもんか！"),
+            DLG_K("そのかけらがないと、森の平和は戻らないんだ。お願い、返して。"),
+            DLG_B("やだやだ！　ほしかったら、跳ねるボクを倒してみせて！")
+          ],
+          plus: [
+            DLG_B("あ、Kだ！　この前は正気に戻してくれて、ありがとう。"),
+            DLG_K("スライムキング、元気そうだね。"),
+            DLG_B("うん！　だから今日は恩返しの本気勝負だもん！　子分もいっぱい呼ぶもん、覚悟してね！")
+          ]
+        },
+        boar: {
+          first: [
+            DLG_N("雪原の主が、かけらを背に、地響きとともに現れた。"),
+            DLG_B("この雪原はオレ様のなわばりだ！　かけらは誰にも渡さん！"),
+            DLG_K("なわばりは荒らさない。かけらだけ返してくれれば、すぐ帰るよ。"),
+            DLG_B("問答無用！　オレ様の突進、受けてみろ！")
+          ],
+          plus: [
+            DLG_B("また来たな、K！　正気に戻ってから、稽古を積んできたんだ。"),
+            DLG_K("大王、なんだか前より速そうだね…。"),
+            DLG_B("当然だ！　今度は突進2連続だ。オレ様の本気、見せてやる！")
+          ]
+        },
+        hedgehog: {
+          first: [
+            DLG_N("紅葉の森の奥。トゲの王が、かけらをトゲで囲って守っていた。"),
+            DLG_B("近づくな！　かけらはトゲで守るんだ！"),
+            DLG_K("トゲは怖いけど、引けないんだ。かけらを返して！"),
+            DLG_B("なら、丸まったボクを止めてみせろ！")
+          ],
+          plus: [
+            DLG_B("Kか…この前は正気に戻してくれて、世話になったな。"),
+            DLG_K("皇帝、今日は勝負に来たよ。"),
+            DLG_B("ふん、皇帝のトゲは前よりずっと硬いんだ！　本気で来い！")
+          ]
+        },
+        bee: {
+          first: [
+            DLG_N("花畑の女王が、かけらを宝物のように抱えて飛んできた。"),
+            DLG_B("ブーン！　かけらは女王の宝物よ！"),
+            DLG_K("女王さま、その宝物は世界の平和のために必要なんだ。"),
+            DLG_B("ダメよ！　ほしければ、この針をかわしてみせて！")
+          ],
+          plus: [
+            DLG_B("あら、Kじゃない。今日は勝負しに来たの？"),
+            DLG_K("うん、皇帝の針は速いって聞いたよ。"),
+            DLG_B("ふふ、皇帝の針は2連続よ。覚悟なさい！")
+          ]
+        },
+        turtle: {
+          first: [
+            DLG_N("遺跡の王は、かけらを甲羅の下に隠して眠っていた…。"),
+            DLG_B("のそ…のそ…かけらは渡さないぞ…"),
+            DLG_K("王さま、かけらを返してくれたら、またゆっくり眠れるよ。"),
+            DLG_B("ねむい…でも、渡さない…のそ…本気で来るなら相手をするぞ…")
+          ],
+          plus: [
+            DLG_B("おお、Kか…のそ…正気に戻してくれた礼に、本気で相手をしよう…"),
+            DLG_K("皇帝の甲羅は硬いって聞いてる。気をつけて戦うよ。"),
+            DLG_B("皇帝の甲羅は前より硬いぞ…のそ…かかってこい…")
+          ]
+        },
+        mole: {
+          first: [
+            DLG_N("土の下から、かけらを抱えたモグラの王が顔を出した。"),
+            DLG_B("土の下はボクの世界！　かけらは渡さない！"),
+            DLG_K("顔を出している間しか届かない…でも、やってみせる！"),
+            DLG_B("捕まえられるものなら、捕まえてみせて！")
+          ],
+          plus: [
+            DLG_B("やあK！　正気に戻してくれたお礼に、本気勝負だよ。"),
+            DLG_K("皇帝は2回顔を出すんだってね。"),
+            DLG_B("その通り！　捕まえてみせて！")
+          ]
+        },
+        golem: {
+          first: [
+            DLG_N("水晶洞窟の最奥。巨大なゴーレムが、胸にかけらをはめ込んで眠っていた。"),
+            DLG_B("水晶の体は　誰にも　砕けない！"),
+            DLG_K("その胸のかけら、洞窟の外の世界に必要なんだ！"),
+            DLG_B("ホシケレバ…チカラヅクデ　ウバエ！")
+          ],
+          plus: [
+            DLG_B("マタ　キタナ、K。コノマエハ　アリガトウ。"),
+            DLG_K("皇帝、今日は本気勝負だよ。"),
+            DLG_B("ヨシ…コンドハ　サイショカラ　ホンキダ。カカッテコイ！")
+          ]
+        },
+        bat: {
+          first: [
+            DLG_N("夜空の浮島。コウモリの王が、かけらをぶら下げて舞い降りた。"),
+            DLG_B("キキッ！　夜空からかけらを守っている！"),
+            DLG_K("空から来るなら、空で受けるよ。かけらを返して！"),
+            DLG_B("急降下をかわせるかな？　キキッ、やってみせて！")
+          ],
+          plus: [
+            DLG_B("キキッ、Kか！　この前はまいったよ。"),
+            DLG_K("皇帝の急降下は2連続なんだってね。"),
+            DLG_B("その通り！　夜空の本気、見せてやる。行くぞ！")
+          ]
+        },
+        ghost: {
+          first: [
+            DLG_N("月夜の古城。冷たい風とともに、ユーレイの王がすうっと現れた。"),
+            DLG_B("ふふふ…かけらは　あげないよ…"),
+            DLG_K("消えたり現れたり…でも、見えている間は戦える！"),
+            DLG_B("つかまえられるかな…？　ふふふ…")
+          ],
+          plus: [
+            DLG_B("ふふふ…また会えたね、K…"),
+            DLG_K("神さま、今度は急降下が2連続なんだよね。"),
+            DLG_B("神の力、見せてあげる…ふふふ…本気で来て…")
+          ]
+        },
+        spike: {
+          first: [
+            DLG_N("砂漠の洞窟跡。トゲだらけの王が、かけらを転がして守っていた。"),
+            DLG_B("ゴロゴロ…！　かけらはトゲで守る！"),
+            DLG_K("踏めない相手には、弓がある。かけらを返して！"),
+            DLG_B("ゴロゴロ、止めてみせろ！")
+          ],
+          plus: [
+            DLG_B("ゴロゴロ…K、また来たな。"),
+            DLG_K("皇帝のトゲはもっと痛いって聞いたよ。"),
+            DLG_B("その通りゴロ！　本気で行くゴロ！")
+          ]
+        },
+        pyon: {
+          first: [
+            DLG_B("ピョン！　皇帝さまのかけら、渡さないピョン！"),
+            DLG_K("跳ね回る相手は苦手だけど…かけらを返して！"),
+            DLG_B("跳ねて跳ねて、捕まらないピョン！")
+          ],
+          plus: [
+            DLG_B("ピョン！　今度は本気ピョン！"),
+            DLG_K("また勝負だね、行くよ！"),
+            DLG_B("ピョンピョン、かかってくるピョン！")
+          ]
+        },
+        candy: {
+          first: [
+            DLG_N("お菓子の国の王さまが、飴の玉座から跳ね下りてきた。"),
+            DLG_B("あま〜い国の王さまに、ようこそ！"),
+            DLG_K("王さま、今日は力くらべに来たよ！"),
+            DLG_B("よかろう！　甘い甘い本気、味わっていけ！")
+          ],
+          plus: [
+            DLG_B("おお、K！　皇帝の甘さを味わいに来たか！"),
+            DLG_K("うん、今度はお菓子の子分も呼ぶんだってね。"),
+            DLG_B("皇帝の甘さは本物だぞ！　子分もいっぱい呼ぶぞ、かかってこい！")
+          ]
+        },
+        core: {
+          first: [
+            DLG_N("電脳遺跡の最奥で、眠っていた守護コアが目を覚ました。"),
+            DLG_B("ケイサン…カイシ。侵入者を　ハイジョ　する…"),
+            DLG_K("戦いに来たんじゃない…でも、止まってはくれないみたいだね。"),
+            DLG_B("レーザー、ジュンビ　カンリョウ…！")
+          ],
+          plus: [
+            DLG_B("サイキドウ…フルスペック…カイドウ。皇帝コア、ユク…"),
+            DLG_K("皇帝コア、今度は最初から全力なんだね。"),
+            DLG_B("ケイサン　ズミ。マケル　ワケニハ　イカナイ…！")
+          ]
+        },
+        magma: {
+          first: [
+            DLG_N("火山の玉座。クリスタルの番人、マグマの王が静かに目を開けた。"),
+            DLG_B("よくぞ来た、弓の子兎。最後のかけらは、この玉座が守っておる！"),
+            DLG_K("番人さま、かけらを集めてクリスタルを直しに来ました！"),
+            DLG_B("ならば、その覚悟を試させてもらおう。番人の炎、受けてみよ！")
+          ],
+          plus: [
+            DLG_B("皇帝の炎は、かけらを狙う影を焼き払うためにある！"),
+            DLG_K("番人さま、本気で来てください！"),
+            DLG_B("よかろう…全力の炎、受けてみよ！")
+          ]
+        },
+        darkk: {
+          first: [
+            DLG_N("闇の中——もう一匹の弓使いが、静かに立っていた。"),
+            DLG_B("フフフ…よく来たな、K。クリスタルの「心」は、オレがいただいた…！"),
+            DLG_K("ダークK…！　クリスタルを砕いたのは、本当に君なんだね。"),
+            DLG_B("かけら集め、ご苦労だったな。だが『心』は渡さん。力は、強い者のものだ！"),
+            DLG_K("違うよ。クリスタルは、みんなの平和を守るものだ——取り返す！")
+          ],
+          plus: []
+        }
+      };
+      var MAGMA_100_INTRO = [
+        DLG_N("火山の最奥、皇帝の玉座。最後のかけらが、炎の中で光っていた。"),
+        DLG_B("かけらは守り抜く…！　クリスタルの心を狙う影からな！"),
+        DLG_K("影…？　番人さま、何かを知っているの？"),
+        DLG_B("問う前に、勝ってみせよ！　皇帝の炎は、影を焼き払うためにある！")
+      ];
+      function bossIntroDialogue(stage, kind, plus) {
+        if (stage === 100) return MAGMA_100_INTRO;
+        var d = BOSS_INTRO_DIALOGUE[kind];
+        if (!d) return [];
+        var lines = plus ? d.plus : d.first;
+        return lines.length > 0 ? lines : d.first;
+      }
+      var BOSS_SANE_LINES = {
+        slime: "ハッ…！　あたまがスッキリした…ボク、かけらに操られてたんだ…",
+        boar: "ハッ…！　オレ様は…何をしていたんだ…かけらの力に、呑まれていたのか…",
+        hedgehog: "ハッ…トゲが、すうっと落ち着いた…ボク、荒れてたんだね…",
+        bee: "ハッ…！　頭がクリアになったわ…かけらに、心を焼かれていたのね…",
+        turtle: "ハッ…のそ…長い夢から、覚めた気分だ…のそ…",
+        mole: "ハッ…！　土の中より、頭が軽いや…かけらのせいだったんだ…",
+        golem: "ハッ…アタマノ　モヤガ　ハレタ…ワタシハ　マモルハズガ、アラシテイタ…",
+        bat: "ハッ…！　キキッ…夜空が、まっすぐ見える…操られてたんだな…",
+        ghost: "ハッ…ふふ…なんだか、軽い…荒れていたのは、かけらのせい…",
+        spike: "ハッ…ゴロ…トゲのイライラが、消えたゴロ…",
+        pyon: "ハッ…ピョン…あたまスッキリ、ピョン…",
+        candy: "まいった！　甘い国一番の強さ、しかと見たぞ！",
+        core: "テイシ…ショウブ、シュウリョウ。アナタハ…ツヨイ…",
+        magma: "ハッ…見事だ。番人の目に狂いはなかった——そなたこそ、かけらを託すにふさわしい。",
+        darkk: "クッ…負けた…"
+      };
+      var BOSS_PLUS_DEFEAT_LINES = {
+        slime: "まいったもん！　やっぱりKは強いもん。また勝負だもん！",
+        boar: "まいった！　オレ様の本気を受け切るとはな。また稽古して出直す！",
+        hedgehog: "まいった…皇帝のトゲより、君の弓が上だったね。",
+        bee: "まいったわ。皇帝の針、全部かわすなんて…また勝負よ！",
+        turtle: "まいった…のそ…皇帝の甲羅も、君の前では眠くなる…のそ…",
+        mole: "まいった！　今度こそ捕まえたと思ったのに！",
+        golem: "マケタ…デモ　イイショウブダッタ。マタ　タタカオウ。",
+        bat: "まいった、キキッ！　皇帝の急降下をかわし切るとはな！",
+        ghost: "まいった…ふふふ、いい勝負だった…また遊ぼう…",
+        spike: "まいったゴロ！　皇帝のトゲ、次はもっと磨くゴロ。",
+        pyon: "まいったピョン！　また跳んで勝負ピョン！",
+        candy: "皇帝の甘さ、完敗だ！　まいった、いい勝負だったぞ！",
+        core: "ケッカ…カンハイ。デモ、ツギハ　マケナイ…カクシュウ、カイシ…",
+        magma: "見事だ…皇帝の炎を、受け切ったな。",
+        darkk: "クッ…負けた…"
+      };
+      function bossDefeatDialogue(stage, kind, plus, shardEarned) {
+        if (stage === 121) {
+          return [
+            DLG_B("クッ…負けた…。オレは、力を独り占めしようとして…間違っていた…"),
+            DLG_B("『心』は返す。クリスタルは…お前の言う通り、みんなのものだ…"),
+            DLG_K("ダークK、もう独り占めはやめよう。森はみんなで守るんだ。"),
+            DLG_N("クリスタルの「心」を取り戻した！")
+          ];
+        }
+        if (stage === 100) {
+          return [
+            DLG_B("見事だ、弓の子兎…。かけらは、そなたに託そう。"),
+            DLG_K("ありがとう、番人さま！　これで全部揃った——"),
+            DLG_B("だが、気をつけよ…。『心』の気配がない。影はまだ、近くにおる…"),
+            DLG_N("最後のかけらを手に入れた！")
+          ];
+        }
+        if (plus) {
+          return [
+            DLG_B(BOSS_PLUS_DEFEAT_LINES[kind]),
+            DLG_K("いい勝負だった！　また戦おう。")
+          ];
+        }
+        if (shardEarned) {
+          return [
+            DLG_B(BOSS_SANE_LINES[kind]),
+            DLG_B("このかけら、持っていってくれ。…荒らして、すまなかった。"),
+            DLG_K("ありがとう。必ずクリスタルを元通りにするよ。"),
+            DLG_N("にんじんクリスタルのかけらを手に入れた！")
+          ];
+        }
+        return [
+          DLG_B(BOSS_SANE_LINES[kind]),
+          DLG_K("いい勝負だった！　また戦おう。")
+        ];
+      }
+
+      /* ---------- dialogue overlay control ---------- */
+      var dlgLines = null;
+      var dlgIndex = 0;
+      var dlgBossName = "";
+      var dlgKind = null; /* "intro" (before the fight) | "defeat" (over the results) */
+      var pendingEnding = null; /* stage 100/121 ending waits until the defeat scene is read */
+      function dlgActive() { return dlgLines !== null; }
+      function showDialogue(lines, bossName, kind) {
+        if (!lines || !lines.length) {
+          if (kind === "defeat" && pendingEnding) { var v0 = pendingEnding; pendingEnding = null; openEnding(v0); }
+          return;
+        }
+        dlgLines = lines;
+        dlgIndex = 0;
+        dlgBossName = bossName || "";
+        dlgKind = kind;
+        renderDlgLine();
+        $("ov-dialogue").classList.remove("hidden");
+      }
+      function renderDlgLine() {
+        var line = dlgLines[Math.min(dlgIndex, dlgLines.length - 1)];
+        var sp = $("dlg-speaker");
+        if (line.speaker === "boss") { sp.textContent = dlgBossName || "ボス"; sp.className = "dlg-speaker boss"; }
+        else if (line.speaker === "k") { sp.textContent = "K"; sp.className = "dlg-speaker k"; }
+        else { sp.textContent = "ものがたり"; sp.className = "dlg-speaker"; }
+        $("dlg-count").textContent = (dlgIndex + 1) + "/" + dlgLines.length;
+        var el = $("dlg-line");
+        el.textContent = line.text;
+        el.classList.remove("dialogue-line");
+        void el.offsetWidth;
+        el.classList.add("dialogue-line");
+        var last = dlgIndex >= dlgLines.length - 1;
+        $("dlg-next").textContent = last ? "タップで おわる ▼" : "タップで つづく ▼";
+        $("dlg-advance").setAttribute("aria-label", last ? "会話をおわる" : "次のセリフへ");
+      }
+      function advanceDialogue() {
+        if (!dlgLines) return;
+        RA.sfx.click();
+        if (dlgIndex >= dlgLines.length - 1) finishDialogue();
+        else { dlgIndex++; renderDlgLine(); }
+      }
+      function finishDialogue() {
+        if (!dlgLines) return;
+        var kind = dlgKind;
+        dlgLines = null;
+        dlgKind = null;
+        $("ov-dialogue").classList.add("hidden");
+        /* the intro scene held the game paused: release it (unless
+           the player paused on purpose, or the run already ended) */
+        if (kind === "intro" && game && !paused && !ended) game.paused = false;
+        if (kind === "defeat" && pendingEnding) {
+          var v = pendingEnding;
+          pendingEnding = null;
+          openEnding(v);
+        }
+      }
+      function hideDialogue() {
+        dlgLines = null;
+        dlgKind = null;
+        pendingEnding = null;
+        $("ov-dialogue").classList.add("hidden");
+      }
+      function introLinesFor(stage) {
+        if (stage === 1) return OPENING_DIALOGUE;
+        var def = STAGES[stage - 1];
+        if (def && def.boss) return bossIntroDialogue(stage, def.boss.kind, !!def.boss.plus);
+        return [];
+      }
+
+      /* ---------- opening storybook control ---------- */
+      var openingIndex = 0;
+      function openOpening() {
+        openingIndex = 0;
+        var bg = document.querySelector(".cover-bg");
+        if (bg) $("opening-bg").src = bg.src;
+        renderOpeningPanel();
+        $("ov-opening").classList.remove("hidden");
+      }
+      function renderOpeningPanel() {
+        var p = OPENING_PANELS[Math.min(openingIndex, OPENING_PANELS.length - 1)];
+        $("opening-heading").textContent = p.heading;
+        $("opening-text").textContent = p.text;
+        var panel = $("opening-panel");
+        panel.classList.remove("opening-panel");
+        void panel.offsetWidth;
+        panel.classList.add("opening-panel");
+        var dots = "";
+        OPENING_PANELS.forEach(function (_, i) { dots += '<span class="' + (i === openingIndex ? "on" : "") + '"></span>'; });
+        $("opening-dots").innerHTML = dots;
+        var last = openingIndex >= OPENING_PANELS.length - 1;
+        $("opening-next").textContent = last ? "ぼうけんへ 出発！" : "つぎへ";
+        $("opening-skip").classList.toggle("hidden", last);
+      }
+      function closeOpening() { $("ov-opening").classList.add("hidden"); }
+
+      /* ---------- end roll (true ending only; the fake ending's
+         story is not over, so it never gets one) ---------- */
+      function openCredits() {
+        var bossNames = [];
+        STAGES.forEach(function (s) { if (s.boss && bossNames.indexOf(s.boss.name) < 0) bossNames.push(s.boss.name); });
+        var stars = STAGES.reduce(function (sum, s) { var r = recOf(s.id); return sum + (r ? r.bestStars : 0); }, 0);
+        var html = '<p class="c-kicker">TRUE ENDING</p><h2>' + RA.ENDING_TITLE + "</h2>" +
+          '<div style="margin-top:1rem;display:flex;justify-content:center">' + shardSlotsHtml(new Set(STAGES.map(function (s) { return s.id; })), 19) + "</div>" +
+          '<div class="c-lines">' + RA.ENDING_LINES.map(function (l) { return "<p>" + l + "</p>"; }).join("") + "</div>" +
+          "<h3>— 旅の記録 —</h3>" +
+          RA.WORLD_DEFS.map(function (w) {
+            return '<div class="c-world"><p class="t">ワールド' + w.world + "　" + w.name + "<span>" + w.sub + '</span></p><p class="d">' + (RA.WORLD_STORY[w.world] || "") + "</p></div>";
+          }).join("") +
+          "<h3>— たたかったボスたち —</h3>" +
+          bossNames.map(function (n) { return '<p class="c-boss">' + n + "</p>"; }).join("") +
+          '<h3>— スタッフ —</h3><div class="c-staff">' +
+          "<p>ものがたり ―― 砕かれたにんじんクリスタルの伝説</p>" +
+          "<p>キャラクター原案・イラスト ―― プレイヤーの描いたキャラクターシート／採用した生成シート</p>" +
+          "<p>おんがく ―― プロシージャルBGM（WebAudio）</p>" +
+          "<p>スペシャルサンクス ―― あそんでくれた あなた</p></div>" +
+          '<p class="c-totals">通算 ' + progress.totalClears + " 回クリア ／ 星 " + stars + "/" + (STAGES.length * 3) + "</p>" +
+          '<p class="c-thanks">' + RA.ENDING_THANKS + "</p>" +
+          '<p class="c-end">— おわり —</p>' +
+          '<button type="button" id="credits-close2" class="credits-close2">とじる</button>';
+        var sc = $("credits-scroll");
+        sc.innerHTML = html;
+        $("ov-credits").classList.remove("hidden");
+        /* restart the roll from the top on every open */
+        sc.style.animation = "none";
+        void sc.offsetWidth;
+        sc.style.animation = "";
+        $("credits-close2").addEventListener("click", function () { RA.sfx.click(); closeCredits(); });
+      }
+      function closeCredits() { $("ov-credits").classList.add("hidden"); }
 
       function renderTitle() {
         var next = nextUncleared();
@@ -2120,6 +2681,15 @@
       $("btn-select").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openSelect(); });
       $("btn-back-title").addEventListener("click", function () { renderTitle(); showScreen("title"); });
       $("btn-ending").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openEnding(isCleared(121) ? "true" : "fake"); });
+      $("btn-opening").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openOpening(); });
+      $("opening-next").addEventListener("click", function () {
+        RA.sfx.click();
+        if (openingIndex >= OPENING_PANELS.length - 1) closeOpening();
+        else { openingIndex++; renderOpeningPanel(); }
+      });
+      $("opening-skip").addEventListener("click", function () { RA.sfx.click(); closeOpening(); });
+      $("btn-ending-credits").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openCredits(); });
+      $("credits-close").addEventListener("click", function () { RA.sfx.click(); closeCredits(); });
       $("btn-final").addEventListener("click", function () { startGame(121); });
       $("btn-ending-final").addEventListener("click", function () { closeEnding(); startGame(121); });
       $("btn-ending-close").addEventListener("click", function () { closeEnding(); });
@@ -2289,6 +2859,7 @@
         curStage = stage;
         ended = false;
         paused = false;
+        hideDialogue();
         lastHp = -1;
         lastHud = null;
         var def = STAGES[stage - 1];
@@ -2317,18 +2888,37 @@
               shardSnap = after;
             }
             showClear(s, res);
-            /* the journey's two ends: stage 100 opens the FAKE
-               ending (Dark K's reveal), stage 121 the TRUE one */
-            if (s.stage === 100 && res.saved) openEnding("fake");
-            if (s.stage === 121 && res.saved) openEnding("true");
+            /* Boss stages close with a story scene over the
+               results: the boss back in its right mind, handing
+               over the shard. The journey's two ends (stage 100 →
+               the FAKE ending, stage 121 → the TRUE one) wait
+               until that scene has been read. */
+            var wantEnding = null;
+            if (s.stage === 100 && res.saved) wantEnding = "fake";
+            if (s.stage === 121 && res.saved) wantEnding = "true";
+            var defC = STAGES[s.stage - 1];
+            if (defC && defC.boss) {
+              pendingEnding = wantEnding;
+              showDialogue(bossDefeatDialogue(s.stage, defC.boss.kind, !!defC.boss.plus, !!res.shardEarned), defC.boss.name, "defeat");
+            } else if (wantEnding) {
+              openEnding(wantEnding);
+            }
           },
           onGameOver: function (s) { showOver(s); },
           onPauseRequest: function () {
-            if (ended) return;
+            if (ended || dlgActive()) return;
             setPaused(!paused);
           }
         });
         game.start(stage);
+        /* A story scene opens this stage (stage 1's opening, or a
+           boss's pre-fight conversation): the game waits, paused,
+           until the scene is read or skipped (finishDialogue). */
+        var introLines = introLinesFor(stage);
+        if (introLines.length) {
+          game.paused = true;
+          showDialogue(introLines, def && def.boss ? def.boss.name : "", "intro");
+        }
       }
       /* Leaving a run lands on the select screen the way the
          Mario flow prescribes (see applyReturn's callers): never
@@ -2398,6 +2988,9 @@
         releaseAllPads();
         ended = false;
         paused = false;
+        /* a retry goes straight back into the fight: the story
+           scenes play on entry, not on every restart */
+        hideDialogue();
         if (game) game.paused = false;
         $("ov-pause").classList.add("hidden");
         $("ov-clear").classList.add("hidden");
@@ -2493,8 +3086,10 @@
       window.addEventListener("blur", releaseAllPads);
 
       $("btn-pause").addEventListener("click", function () {
-        if (!ended) setPaused(true);
+        if (!ended && !dlgActive()) setPaused(true);
       });
+      $("dlg-advance").addEventListener("click", advanceDialogue);
+      $("dlg-skip").addEventListener("click", function () { RA.sfx.click(); finishDialogue(); });
       $("btn-resume").addEventListener("click", function () { setPaused(false); });
       $("btn-restart-p").addEventListener("click", restartStage);
       $("btn-exit-p").addEventListener("click", exitToMap);
@@ -2507,7 +3102,7 @@
       document.addEventListener("visibilitychange", function () {
         if (document.hidden) {
           releaseAllPads();
-          if (game && !ended && !paused) setPaused(true);
+          if (game && !ended && !paused && !dlgActive()) setPaused(true);
         }
       });
 
