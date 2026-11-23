@@ -738,6 +738,44 @@
       /* ---------- select layout helpers (landscape side columns) ---------- */
       .screen-title { margin: 0; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.04em; }
       .slot-list { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+      /* ---------- boss gallery （ボス図鑑） ---------- */
+      .boss-world { margin-top: 1.5rem; }
+      .boss-world-title { margin: 0 0 0.5rem; font-size: 0.8125rem; font-weight: 900; letter-spacing: 0.12em; color: var(--dim); }
+      .boss-world-title span { margin-left: 0.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: normal; }
+      .boss-row {
+        display: flex; width: 100%; align-items: center; gap: 0.75rem;
+        padding: 0.75rem 0.875rem; margin-top: 0.5rem; text-align: left;
+        border: 1px solid var(--border); border-radius: var(--radius);
+        background: var(--surface); color: var(--text);
+        font: inherit; box-sizing: border-box;
+      }
+      button.boss-row { cursor: pointer; }
+      button.boss-row:active { transform: scale(0.99); }
+      .boss-row.beaten { border-color: #c19a5b; }
+      .boss-row.locked { opacity: 0.7; }
+      .boss-badge {
+        display: flex; flex: none; width: 2.75rem; height: 2.75rem; align-items: center; justify-content: center;
+        border-radius: 999px; font-size: 1rem; font-weight: 900;
+        background: rgba(38, 35, 28, 0.08); color: var(--dim);
+      }
+      .boss-badge.open { background: transparent; border: 2px solid var(--danger); color: var(--danger); }
+      .boss-badge.beaten { background: #f2c14e; color: #2b2413; }
+      @media (prefers-color-scheme: dark) {
+        .boss-badge { background: rgba(251, 248, 239, 0.1); }
+        .boss-badge.beaten { background: #f2c14e; color: #2b2413; }
+      }
+      .boss-main { flex: 1; min-width: 0; }
+      .boss-line1 { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.5rem; }
+      .boss-name { font-size: 0.9375rem; font-weight: 900; }
+      .boss-chip {
+        padding: 0 0.5rem; border-radius: 999px; font-size: 0.625rem; font-weight: 900; line-height: 1.7;
+        background: rgba(38, 35, 28, 0.08); color: var(--dim); white-space: nowrap;
+      }
+      .boss-chip.tier { background: rgba(102, 112, 76, 0.16); color: var(--accent); }
+      .boss-chip.plus { background: var(--danger); color: #fbf8ef; }
+      .boss-chip.danger { background: rgba(181, 68, 60, 0.13); color: var(--danger); }
+      .boss-line2 { display: block; margin-top: 0.125rem; font-size: 0.75rem; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; }
+      .boss-rematch { flex: none; font-size: 0.75rem; font-weight: 900; color: var(--accent); }
       /* the landscape-only copy of the world info card that rides in
          the map screen's side column; CSS alone decides visibility */
       #world-panel-ls { display: none; }
@@ -1042,6 +1080,7 @@
             <div style="display:flex;flex-direction:column;gap:0.75rem">
               <button type="button" id="btn-continue" class="big-btn primary">つづきから —— ステージ1 もりのはじまり</button>
               <button type="button" id="btn-select" class="big-btn">ステージ選択（全120ステージ）</button>
+              <button type="button" id="btn-bosses" class="big-btn" style="min-height:44px;font-size:0.875rem;background:rgba(22,36,15,0.35);color:#fbf8ef;border-color:rgba(251,248,239,0.5);backdrop-filter:blur(2px)">ボス図鑑 —— 皇帝ボスと再戦</button>
               <button type="button" id="btn-slots" class="big-btn" style="min-height:44px;font-size:0.875rem;background:rgba(22,36,15,0.35);color:#fbf8ef;border-color:rgba(251,248,239,0.5);backdrop-filter:blur(2px)">セーブデータ1 で あそんでいます（かえる）</button>
               <button type="button" id="btn-transfer" class="big-btn" style="min-height:44px;font-size:0.875rem;background:rgba(22,36,15,0.35);color:#fbf8ef;border-color:rgba(251,248,239,0.5);backdrop-filter:blur(2px)">データの引き継ぎ（ホーム画面・機種変更）</button>
             </div>
@@ -1093,7 +1132,7 @@
             <li><span class="tag">山場</span><p>ふつうのステージには「山場」が3つあるよ。①中盤に1体だけ現れる金色の強敵——王冠と金のオーラが目印で、同じ種類の敵よりずっとタフで少し速い。倒すとボーナススコアとにんじんが落ちる。しかも強敵は種類ごとに「！」予告つきの追加攻撃を1つ持っている（スライムは粘液、カメは砂、クッキーは生地のかたまり、ケーキはベリーを山なりに飛ばし、イノシシは泥を3つ扇形に、ゴーレムとクリスタルスライムは水晶のかけら、ロボットは光の弾をまっすぐ、転がる敵は急加速、跳ねる敵は狙いをつけた大ジャンプ）。予告中は止まるので、そこが反撃の合図でもある。②ステージ8以降、ワープゲートの先にある「お宝エリア」——高い台の上に宝箱が待っていて、触れるとスコアボーナスとHP回復がもらえる（帰りもゲートで戻れる）。③ステージの後半（55%地点）に入ると場面が切り替わる：水中では水流が強く、風のステージでは風が強くなり、それ以外では夕方の光になって敵が元気になる。バナーが出たら後半戦の合図だよ。</p></li>
             <li><span class="tag">エクストラ</span><p>ワールド10のステージX「真・最終決戦」でダークKを倒すと姿を現すおまけワールドが2つ。真・最終決戦は、ワールド10のボス（ステージ100）を倒したあと、そのワールドのマップに初めて姿を現す。それまではステージ選択にも出てこない（以前のルールですでに解放していたセーブデータでは、そのまま遊べる）。ワールド11『おかしのくに』はステージごとに主役の仕掛けが違う国：ゼリー（バネよりずっと高く跳ねる。地面に触れず続けて踏むと「れんさ」でさらに高く・遠くへ飛べる）、チョコのベタベタ地帯（地面に立つと足が重くなり、ジャンプも少し低くなる。足場の上に立っている間は平気）、回るペロペロ台が目玉で、長い街道・チョコの海・高い神殿まである。風は吹かない。ボスはペロペロ回転攻撃・クッキー爆弾・踏みつけで攻めるキャンディキング（皇帝はお菓子の子分も呼ぶ）。ワールド12『でんのういせき』はワープパッド（踏むだけで対のパッドへ一瞬でワープ。ゲートと違って止まる必要なし）とレーザー（暗い→赤い細線の予告→発射、の周期を繰り返す。光っている間だけ当たるとダメージ）が目玉で、ボスはレーザーを撃ち、グリッチ移動で消えては現れるサイバーコア（ポータルから子分のキューブも呼ぶ）。かけらは本編の10個で完結していて、エクストラにかけらはないよ。</p></li>
             <li><span class="tag">難易度</span><p>ステージが進むほど穴は広く、敵は多く速くなる。ワールド4以降は1ステージ自体も長くなっていく。ワールド4・5は新顔と新ギミックが重なり、ワールド6〜10はさらに密度と速度が上がる最終盤。にんじんの場所を覚えて挑もう。</p></li>
-            <li><span class="tag">ボス</span><p>5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。5番目で倒しても、ボスは諦めずにかけらを持ったまま逃げてしまう——かけらが手に入るのは、パワーアップして戻ってきた10番目のボスとの決着に勝ったときだけだよ。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、イノシシは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。イノシシ系のボスは頭に2回続けて乗ると怒って大ジャンプし、着地と壁ドンで地面を衝撃波が走る——波はジャンプでかわそう。矢を混ぜると踏み直しがリセットされる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。</p></li>
+            <li><span class="tag">ボス</span><p>5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。5番目で倒しても、ボスは諦めずにかけらを持ったまま逃げてしまう——かけらが手に入るのは、パワーアップして戻ってきた10番目のボスとの決着に勝ったときだけだよ。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、マンモスは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。ユキマンモスは鼻を上げたら突進の予告——壁にぶつかると衝撃波が走るので、波はジャンプでかわそう。台の上に居座ると、雪玉を山なりに投げてくる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。</p></li>
             <li><span class="tag">アイテム</span><p>コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」とパズルステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。</p></li>
             <li><span class="tag">評価</span><p>クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。</p></li>
             <li><span class="tag">横持ち</span><p>スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。</p></li>
@@ -1166,6 +1205,23 @@
             <p id="transfer-status" class="transfer-status" role="status"></p>
           </div>
         </section>
+      </main>
+    </div>
+
+    <!-- ============ BOSS GALLERY ============ -->
+    <div id="screen-bosses" class="page hidden">
+      <main class="wrap">
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <button type="button" id="btn-bosses-back" class="icon-btn" aria-label="タイトルへ戻る">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <div class="head-text" style="flex:1;min-width:0">
+            <h1 class="screen-title">ボス図鑑</h1>
+            <p id="boss-gallery-sub" style="margin:0;font-size:0.75rem;font-weight:700;color:var(--dim)"></p>
+          </div>
+          <button type="button" class="icon-btn sound-toggle" aria-label="サウンドをオフにする"></button>
+        </div>
+        <div id="boss-gallery"></div>
       </main>
     </div>
 
@@ -1671,7 +1727,7 @@
         ["山場", "ふつうのステージには「山場」が3つあるよ。①中盤に1体だけ現れる金色の強敵——王冠と金のオーラが目印で、同じ種類の敵よりずっとタフで少し速い。倒すとボーナススコアとにんじんが落ちる。しかも強敵は種類ごとに「！」予告つきの追加攻撃を1つ持っている（スライムは粘液、カメは砂、クッキーは生地のかたまり、ケーキはベリーを山なりに飛ばし、イノシシは泥を3つ扇形に、ゴーレムとクリスタルスライムは水晶のかけら、ロボットは光の弾をまっすぐ、転がる敵は急加速、跳ねる敵は狙いをつけた大ジャンプ）。予告中は止まるので、そこが反撃の合図でもある。②ステージ8以降、ワープゲートの先にある「お宝エリア」——高い台の上に宝箱が待っていて、触れるとスコアボーナスとHP回復がもらえる（帰りもゲートで戻れる）。③ステージの後半（55%地点）に入ると場面が切り替わる：水中では水流が強く、風のステージでは風が強くなり、それ以外では夕方の光になって敵が元気になる。バナーが出たら後半戦の合図だよ。"],
         ["エクストラ", "ワールド10のステージX「真・最終決戦」でダークKを倒すと姿を現すおまけワールドが2つ。真・最終決戦は、ワールド10のボス（ステージ100）を倒したあと、そのワールドのマップに初めて姿を現す。それまではステージ選択にも出てこない（以前のルールですでに解放していたセーブデータでは、そのまま遊べる）。ワールド11『おかしのくに』はステージごとに主役の仕掛けが違う国：ゼリー（バネよりずっと高く跳ねる。地面に触れず続けて踏むと「れんさ」でさらに高く・遠くへ飛べる）、チョコのベタベタ地帯（地面に立つと足が重くなり、ジャンプも少し低くなる。足場の上に立っている間は平気）、回るペロペロ台が目玉で、長い街道・チョコの海・高い神殿まである。風は吹かない。ボスはペロペロ回転攻撃・クッキー爆弾・踏みつけで攻めるキャンディキング（皇帝はお菓子の子分も呼ぶ）。ワールド12『でんのういせき』はワープパッド（踏むだけで対のパッドへ一瞬でワープ。ゲートと違って止まる必要なし）とレーザー（暗い→赤い細線の予告→発射、の周期を繰り返す。光っている間だけ当たるとダメージ）が目玉で、ボスはレーザーを撃ち、グリッチ移動で消えては現れるサイバーコア（ポータルから子分のキューブも呼ぶ）。かけらは本編の10個で完結していて、エクストラにかけらはないよ。"],
         ["難易度", "ステージが進むほど穴は広く、敵は多く速くなる。ワールド4以降は1ステージ自体も長くなっていく。ワールド4・5は新顔と新ギミックが重なり、ワールド6〜10はさらに密度と速度が上がる最終盤。にんじんの場所を覚えて挑もう。"],
-        ["ボス", "5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。5番目で倒しても、ボスは諦めずにかけらを持ったまま逃げてしまう——かけらが手に入るのは、パワーアップして戻ってきた10番目のボスとの決着に勝ったときだけだよ。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、イノシシは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。イノシシ系のボスは頭に2回続けて乗ると怒って大ジャンプし、着地と壁ドンで地面を衝撃波が走る——波はジャンプでかわそう。矢を混ぜると踏み直しがリセットされる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。"],
+        ["ボス", "5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。5番目で倒しても、ボスは諦めずにかけらを持ったまま逃げてしまう——かけらが手に入るのは、パワーアップして戻ってきた10番目のボスとの決着に勝ったときだけだよ。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——コウモリとユーレイの急降下も、予告が出てから落ちてくる。コウモリは急降下のあと地面すれすれを這って追ってきて、ユーレイは消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、マンモスは突進が2連続、ハチとユーレイは攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメと水晶ゴーレムとトゲボールは衝撃波を出す、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。ユキマンモスは鼻を上げたら突進の予告——壁にぶつかると衝撃波が走るので、波はジャンプでかわそう。台の上に居座ると、雪玉を山なりに投げてくる。ボスは全部で12種類＋真のラスボス：ハリネズミキングとトゲボールロードはトゲで頭が踏めない（弓で戦う）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。台の上にいたり距離を取ったりすると、水晶のかけらを山なりに降らせる「水晶シャワー」に切り替えてくる——上の安全地帯はない、ユーレイキングは姿を消すと矢がすり抜ける、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、溶岩石投げ、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。そしてステージ100をクリアした先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——長い戦いほど、守るより攻めた方が早く終わる。"],
         ["アイテム", "コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」とパズルステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。"],
         ["評価", "クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。"],
         ["横持ち", "スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。"],
@@ -1687,6 +1743,7 @@
       function showScreen(name) {
         $("screen-title").classList.toggle("hidden", name !== "title");
         $("screen-slots").classList.toggle("hidden", name !== "slots");
+        $("screen-bosses").classList.toggle("hidden", name !== "bosses");
         $("screen-select").classList.toggle("hidden", name !== "select");
         $("screen-game").classList.toggle("hidden", name !== "game");
         window.scrollTo(0, 0);
@@ -3198,6 +3255,80 @@
         showScreen("select");
       }
 
+      /* ---------- boss gallery （ボス図鑑・再戦) ----------
+         Mirrors the main build's gallery (2026-11-23): every boss
+         in world order on one page — a beaten boss in full colour
+         with its best time / stars / clear count, an open but
+         unbeaten boss with a 未撃破 chip, a boss not yet reached
+         as a silhouette (？？？), with the EXTRA bosses and stage
+         X keeping the select screens' own secrecy rules. Rematch
+         from this page is limited to the EMPEROR bosses (the
+         powered-up x0 returns — the user's call: 「再戦のボスは
+         皇帝のみでいい」) plus stage X's Dark K, who has no
+         emperor form; the first (x5) fights stay as records here
+         and are replayed from the stage select like any stage. */
+      function bossVisible(s) {
+        if (s.id === 121) return isCleared(100) || isCleared(121);
+        if (s.id >= 101) return extrasOpen();
+        return true;
+      }
+      function bossRowHtml(s) {
+        var b = s.boss;
+        var rec = recOf(s.id);
+        var clears = rec ? rec.clears : 0;
+        var vis = bossVisible(s);
+        var open = vis && isUnlocked(s.id);
+        var beaten = clears > 0;
+        var canRematch = open && (b.plus === true || s.id === 121);
+        var inner = '<span class="boss-badge' + (beaten ? " beaten" : open ? " open" : "") + '" aria-hidden="true">' + (vis ? "王" : "?") + "</span>";
+        inner += '<span class="boss-main"><span class="boss-line1">';
+        inner += '<span class="boss-name">' + (vis ? b.name : "？？？") + "</span>";
+        inner += '<span class="boss-chip">ステージ' + stageNumLabel(s.id) + "</span>";
+        if (vis) inner += '<span class="boss-chip ' + (b.plus ? "plus" : "tier") + '">' + b.tierLabel + "</span>";
+        if (vis && !beaten && open) inner += '<span class="boss-chip danger">未撃破</span>';
+        if (vis && !open) inner += '<span class="boss-chip">まだ会えない</span>';
+        inner += '</span><span class="boss-line2">';
+        if (vis) {
+          inner += "HP " + b.hp;
+          if (beaten && rec) inner += "　ベスト " + (rec.bestTimeSec !== null ? fmtTime(rec.bestTimeSec) : "—") + " ／ " + clears + "回撃破";
+          else if (open) inner += "　" + s.name;
+          else inner += "　前のステージをクリアすると会える";
+        } else {
+          inner += "まだ姿を見せていないボス";
+        }
+        inner += "</span></span>";
+        if (beaten && rec) inner += starsSvg(rec.bestStars, 14);
+        if (canRematch) inner += '<span class="boss-rematch" aria-hidden="true">再戦 ▶</span>';
+        var cls = "boss-row" + (beaten ? " beaten" : "") + (open ? "" : " locked");
+        if (canRematch) {
+          return '<button type="button" class="' + cls + '" data-rematch="' + s.id + '" aria-label="' + b.name + "と再戦する（ステージ" + stageNumLabel(s.id) + "）\">" + inner + "</button>";
+        }
+        return '<div class="' + cls + '">' + inner + "</div>";
+      }
+      function renderBossGallery() {
+        var bosses = STAGES.filter(function (s) { return s.boss; });
+        var beaten = 0;
+        bosses.forEach(function (s) { if (isCleared(s.id)) beaten++; });
+        $("boss-gallery-sub").textContent = "撃破 " + beaten + "体 —— 再戦できるのは皇帝ボス（とダークK）だけ。タップでそのまま戦える";
+        var html = "";
+        RA.WORLD_DEFS.forEach(function (w) {
+          var ws = bosses.filter(function (s) { return s.world === w.world; });
+          if (!ws.length) return;
+          html += '<section class="boss-world" aria-label="ワールド' + w.world + 'のボス">';
+          html += '<h2 class="boss-world-title">ワールド' + w.world + "　" + w.name + "<span>" + w.sub + "</span></h2>";
+          ws.forEach(function (s) { html += bossRowHtml(s); });
+          html += "</section>";
+        });
+        $("boss-gallery").innerHTML = html;
+        $("boss-gallery").querySelectorAll("[data-rematch]").forEach(function (el) {
+          el.addEventListener("click", function () { startGame(Number(el.getAttribute("data-rematch"))); });
+        });
+      }
+      function openBossGallery() {
+        renderBossGallery();
+        showScreen("bosses");
+      }
+
       /* hierarchy navigation wiring */
       $("btn-to-worlds").addEventListener("click", function () {
         RA.unlockAudio(); RA.sfx.click();
@@ -3608,6 +3739,8 @@
       $("btn-slots-back").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); renderTitle(); showScreen("title"); });
 
       $("btn-select").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openSelect(); });
+      $("btn-bosses").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openBossGallery(); });
+      $("btn-bosses-back").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); renderTitle(); showScreen("title"); });
       $("btn-back-title").addEventListener("click", function () { renderTitle(); showScreen("title"); });
       $("btn-ending").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openEnding(isCleared(121) ? "true" : "fake"); });
       $("btn-opening").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openOpening(); });
