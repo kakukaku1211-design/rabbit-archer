@@ -830,6 +830,28 @@
         border-radius: 12px; font-size: 1rem; border: 1px solid var(--border); background: var(--surface);
         color: var(--text); font-weight: 700; cursor: pointer; font-family: inherit;
       }
+      /* landscape fit (synced from the main build, 2026-11-24):
+         in landscape the boss popup splits into two columns —
+         portrait block on the left, profile + record + buttons
+         on the right — so the whole popup sits inside one
+         landscape screen with NO vertical scroll. Portrait
+         keeps the single centred column (the .cb-cols / .cb-left
+         / .cb-right wrappers are plain blocks there). The
+         dialog's overflow-y-auto stays only as a safety net for
+         very short viewports. */
+      @media (orientation: landscape) {
+        #ov-confirm-boss .confirm-dialog { max-width: 42rem; padding: 1rem; text-align: left; }
+        .cb-cols { display: flex; gap: 1.25rem; }
+        .cb-left { width: 11rem; flex-shrink: 0; text-align: center; }
+        .cb-right { min-width: 0; flex: 1; }
+        #ov-confirm-boss .cb-icon-slot { height: 5rem; }
+        #ov-confirm-boss .c-desc { margin-top: 0.125rem; font-size: 13px; line-height: 1.375; }
+        #ov-confirm-boss .confirm-stats, #ov-confirm-boss .cb-status { margin-top: 0.5rem; }
+        #ov-confirm-boss .confirm-q { margin-top: 0.75rem; }
+        #ov-confirm-boss .confirm-btns { margin-top: 0.5rem; }
+        #ov-confirm-boss .confirm-btns .btn { min-height: 44px; }
+        #ov-confirm-boss .cb-close-btn { margin-top: 0.75rem; min-height: 44px; }
+      }
 
       /* ---------- landscape (matches the main game's adjustments) ---------- */
       @media (orientation: landscape) {
@@ -1504,22 +1526,28 @@
     <!-- ============ CONFIRM: BOSS GALLERY （ボス図鑑の確認ポップ) ============ -->
     <div id="ov-confirm-boss" class="confirm-overlay hidden" role="dialog" aria-modal="true" aria-label="ボスの詳細">
       <div class="dialog confirm-dialog">
-        <p class="ov-kicker" id="cb-kicker"></p>
-        <div class="cb-icon-slot">
-          <img id="cb-icon" alt="" draggable="false" />
-          <span id="cb-icon-fallback" aria-hidden="true" style="display:none;font-size:2.25rem;font-weight:900;color:var(--dim)">王</span>
+        <div class="cb-cols">
+          <div class="cb-left">
+            <p class="ov-kicker" id="cb-kicker"></p>
+            <div class="cb-icon-slot">
+              <img id="cb-icon" alt="" draggable="false" />
+              <span id="cb-icon-fallback" aria-hidden="true" style="display:none;font-size:2.25rem;font-weight:900;color:var(--dim)">王</span>
+            </div>
+            <h2 id="cb-name" style="font-size:1.25rem"></h2>
+            <p style="margin:0.25rem 0 0;font-size:0.75rem;font-weight:700;color:var(--dim)" id="cb-sub"></p>
+          </div>
+          <div class="cb-right">
+            <p class="c-desc" id="cb-desc"></p>
+            <div class="confirm-stats hidden" id="cb-rec"></div>
+            <p class="cb-status hidden" id="cb-status"></p>
+            <p class="confirm-q" id="cb-q">このボスと再戦する？</p>
+            <div class="confirm-btns" id="cb-btns">
+              <button type="button" id="cb-yes" class="btn primary">再戦する</button>
+              <button type="button" id="cb-no" class="btn">やめる</button>
+            </div>
+            <button type="button" id="cb-close" class="cb-close-btn hidden">とじる</button>
+          </div>
         </div>
-        <h2 id="cb-name" style="font-size:1.25rem"></h2>
-        <p style="margin:0.25rem 0 0;font-size:0.75rem;font-weight:700;color:var(--dim)" id="cb-sub"></p>
-        <p class="c-desc" id="cb-desc"></p>
-        <div class="confirm-stats hidden" id="cb-rec"></div>
-        <p class="cb-status hidden" id="cb-status"></p>
-        <p class="confirm-q" id="cb-q">このボスと再戦する？</p>
-        <div class="confirm-btns" id="cb-btns">
-          <button type="button" id="cb-yes" class="btn primary">再戦する</button>
-          <button type="button" id="cb-no" class="btn">やめる</button>
-        </div>
-        <button type="button" id="cb-close" class="cb-close-btn hidden">とじる</button>
       </div>
     </div>
 
@@ -3522,11 +3550,14 @@
          works only on emperors actually beaten in this slot.
          And tapping a revealed tile no longer starts anything
          straight away: it opens a confirmation popup in the
-         stage-entry style — boss and stage contents, the
-         slot's record, and 「再戦する？」 — and only its
-         再戦する button starts the fight (synced from the
-         main build, 2026-11-24). A met-but-unbeaten tile's
-         tap opens the same popup as a detail view. */
+         stage-entry style — the boss's portrait and its
+         character profile (BOSS_PROFILE below: who the boss
+         is, never HP/attack specs — synced from the main
+         build, 2026-11-24), the slot's record, and
+         「再戦する？」 — and only its 再戦する button starts
+         the fight (synced from the main build, 2026-11-24).
+         A met-but-unbeaten tile's tap opens the same popup
+         as a detail view. */
       var BOSS_ICON = {
         slime: "assets/7c20db2cbe08d447.png",
         mammoth: "assets/a2ffa084324ef125.png",
@@ -3564,6 +3595,36 @@
         magma: 0.981, candy: 0.981, core: 0.977, darkk: 0.987
       };
       var BOSS_ICON_TARGET_HFRAC = 0.964;
+      /* Character profiles for the gallery's confirmation popup
+         (synced from the main build, 2026-11-24: the user's ask
+         「ポップの説明は、ボスのキャラクターについて触れた内容
+         にしたい。体力とか攻撃とかゲームの仕様はいらない」).
+         The popup used to print the stage's desc, which is a
+         tactics brief (HP numbers, attack patterns, phase-2
+         notes) — right for the stage-entry confirmation, wrong
+         for a compendium. These profiles instead say who each
+         boss IS — personality, role, and story place — drawn
+         from the game's own dialogue (story: intro scenes, sane
+         lines, parting lines). No HP, no attack specs, no
+         mechanics. Keyed by kind; the gallery only ever lists
+         the emperor of each kind (plus Dark K), so one profile
+         per kind serves both the king's memory and the
+         emperor's tile. */
+      var BOSS_PROFILE = {
+        slime: "もりの奥に住む、大きなスライムの王さま。キラキラ光るものが大好きで、拾ったかけらを「ボクのものだもん！」と大事に抱えていた。負けず嫌いで、負けても「覚えてろもん！」と逃げていく憎めない性格。正気に戻れば素直にあやまる、森のみんなに愛される王さまだ。",
+        hedgehog: "紅葉の森のトゲの王。近づく者をトゲで追い払うけれど、本当は気が小さくて、かけらを守るのに必死だっただけ。皇帝として戻ってくるときは、トゲを一本ずつ磨き上げてきた努力家。そのひたむきさに、森の仲間たちは一目置いている。",
+        mammoth: "雪原の奥で長い眠りについていた、太古のユキマンモス。「わし」と話す古風な巨獣で、本来は雪原の平和を見守る穏やかな主。眠る場所と雪原を何より大事にしていて、かけらの力に呑まれて荒れていた間も、どこかで目覚める時を待っていた。",
+        bee: "花畑の丘を治める女王バチ。気品のある物腰と、強い負けん気が同居する、巣の皆の憧れ。拾ったかけらを「女王の宝物」と決め込んで、誰にも渡そうとしなかった。皇帝として舞い戻ってくるときも、その誇り高さは少しも変わらない。",
+        turtle: "夕日の遺跡王国の王。いつも眠そうなのんびり屋で、「のそ…」と言いながらゆっくり歩く。争いは好まず、かけらは甲羅の下に隠して、眠りながら守っていた。本当は、誰より平和を愛する穏やかな王さまだ。",
+        golem: "水晶洞窟の最奥で眠っていた、巨大な水晶の巨像。胸にかけらをはめ込んで、洞窟を守り続けてきた番人。片言でゆっくり話す不器用な性格で、守るはずの洞窟を荒らしてしまったことに、誰より心を痛めていた。",
+        eagle: "天空の浮島を治める、白金のワシの王。「グワッ！」という鳴き声とともに黄金の空を舞う、空の誇りを背負う王。かけらを持ち去ったのも、空の平和を守るためだと信じていた。敗れれば翼を鍛え直して戻ってくる、ストイックな性格。",
+        vampire: "月夜の古城の主、コウモリ伯爵。黒マントをまとった礼儀正しい紳士で、Kのことを「子兎」と呼ぶ。かけらを「城の宝」として玉座で守っていたが、その実、かけらの力に酔っていた。敗れても品位を崩さない、古城にふさわしい主である。",
+        sandworm: "砂漠の深淵で太古から眠る、骨の砂龍。「ガラガラ」「カタカタ」と骨を鳴らして話す、伝説の生き物。長い夢の中でかけらを守り続け、目覚めた今も、砂の底の静けさを愛している。その巨体は、砂漠の誰もが恐れる存在だ。",
+        magma: "火山の城に座すマグマの王。にんじんクリスタルの最後の番人で、かけらを奪ったのではなく、クリスタルの「心」を狙う影から守り抜いていた忠義の王。Kの覚悟を試すためにあえて戦いを挑み、敗れて初めて「そなたこそ、かけらを託すにふさわしい」と認めた。",
+        candy: "平和になった世界の果てに生まれた、お菓子の国の皇帝。甘いものと力くらべが大好きな、陽気で茶目っ気のある王さま。かけらの争いとは無縁で、Kとの勝負そのものを心から楽しんでいる。子分のクッキーやペロペロたちにも、とても慕われている。",
+        core: "電脳遺跡の最奥で眠っていた守護コア。感情を持たないはずの機械で、すべてを計算で判断する。片言の機械言葉で話し、敗北すらも「学習」のデータとして取り込む。皇帝として再起動した今も、その静かな知性は遺跡を守り続けている。",
+        darkk: "にんじんクリスタルを砕いた黒幕。Kと同じく弓を操る、もう一匹のこうさぎ。クリスタルの中心にある「心」を奪い、「力は、強い者のものだ」と信じて疑わない。Kとは正反対の考えを持つ、静かで冷たい弓使いだ。"
+      };
       /* one stage of a boss counts as met once entered at
          least once (the encounter log) or cleared (clear rows
          from before the encounter log existed count too) */
@@ -3644,8 +3705,12 @@
       /* ---------- boss gallery confirmation popup ----------
          The stage-entry confirmation (ov-confirm-stage) in
          boss form, mirroring the main build: the boss's icon,
-         name, its stage's contents and HP, and this slot's
-         record. A beaten boss gets 「このボスと再戦する？」
+         name, its character profile (BOSS_PROFILE — no HP or
+         attack specs; the stage-entry popup keeps the tactics
+         desc as before), and this slot's record. In landscape
+         the popup splits into two columns so it fits one
+         screen with no vertical scroll (see the .cb-cols CSS).
+         A beaten boss gets 「このボスと再戦する？」
          with 再戦する／やめる; a met-but-unbeaten boss gets a
          status line and just とじる — where it was met decides
          the wording (at the emperor stage itself, or only at
@@ -3670,8 +3735,8 @@
           $("cb-icon-fallback").style.display = "";
         }
         $("cb-name").textContent = b.name;
-        $("cb-sub").textContent = s.name + "（" + s.sub + "） ／ HP " + b.hp;
-        $("cb-desc").textContent = s.desc;
+        $("cb-sub").textContent = s.name + "（" + s.sub + "）";
+        $("cb-desc").textContent = BOSS_PROFILE[b.kind] || s.desc;
         var recEl = $("cb-rec");
         var statusEl = $("cb-status");
         if (isBeaten && rec) {
