@@ -816,6 +816,20 @@
         font-size: 1rem; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-weight: 700;
       }
       .confirm-btns .btn.primary { background: var(--accent); border-color: var(--accent); color: #fbf8ef; font-weight: 900; }
+      /* boss gallery confirmation （ボス図鑑の確認ポップ）: the
+         stage-entry confirmation's layout with the boss's own
+         icon on top — see #ov-confirm-boss in the markup */
+      .cb-icon-slot { margin-top: 0.5rem; display: flex; height: 6rem; align-items: flex-end; justify-content: center; }
+      .cb-icon-slot img { height: 100%; width: auto; max-width: 100%; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+      .cb-status {
+        margin-top: 0.75rem; border-radius: 12px; background: var(--surface); padding: 0.5rem 0.75rem;
+        font-size: 0.75rem; font-weight: 700; line-height: 1.6; color: var(--dim);
+      }
+      .cb-close-btn {
+        margin-top: 1rem; display: flex; width: 100%; min-height: 52px; align-items: center; justify-content: center;
+        border-radius: 12px; font-size: 1rem; border: 1px solid var(--border); background: var(--surface);
+        color: var(--text); font-weight: 700; cursor: pointer; font-family: inherit;
+      }
 
       /* ---------- landscape (matches the main game's adjustments) ---------- */
       @media (orientation: landscape) {
@@ -998,6 +1012,13 @@
         #ov-confirm-stage .confirm-stats { margin-top: 0.5rem; }
         #ov-confirm-stage .confirm-q { margin-top: 0.75rem; }
         #ov-confirm-stage .confirm-btns { margin-top: 0.5rem; }
+        #ov-confirm-boss .dialog { max-width: 32rem; padding: 1rem; }
+        #ov-confirm-boss .c-desc { margin-top: 0.5rem; font-size: 13px; line-height: 1.45; }
+        #ov-confirm-boss .confirm-stats, #ov-confirm-boss .cb-status { margin-top: 0.5rem; }
+        #ov-confirm-boss .confirm-q { margin-top: 0.75rem; }
+        #ov-confirm-boss .confirm-btns { margin-top: 0.5rem; }
+        #ov-confirm-boss .confirm-btns .btn, #ov-confirm-boss .cb-close-btn { min-height: 44px; }
+        #ov-confirm-boss .cb-close-btn { margin-top: 0.75rem; }
         /* stage select, final pass: the screen owns the full
            landscape height — a compact header, then the active view
            filling whatever height remains — so there is no page
@@ -1477,6 +1498,28 @@
           <button type="button" id="cs-yes" class="btn primary">はい</button>
           <button type="button" id="cs-no" class="btn">いいえ</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ============ CONFIRM: BOSS GALLERY （ボス図鑑の確認ポップ) ============ -->
+    <div id="ov-confirm-boss" class="confirm-overlay hidden" role="dialog" aria-modal="true" aria-label="ボスの詳細">
+      <div class="dialog confirm-dialog">
+        <p class="ov-kicker" id="cb-kicker"></p>
+        <div class="cb-icon-slot">
+          <img id="cb-icon" alt="" draggable="false" />
+          <span id="cb-icon-fallback" aria-hidden="true" style="display:none;font-size:2.25rem;font-weight:900;color:var(--dim)">王</span>
+        </div>
+        <h2 id="cb-name" style="font-size:1.25rem"></h2>
+        <p style="margin:0.25rem 0 0;font-size:0.75rem;font-weight:700;color:var(--dim)" id="cb-sub"></p>
+        <p class="c-desc" id="cb-desc"></p>
+        <div class="confirm-stats hidden" id="cb-rec"></div>
+        <p class="cb-status hidden" id="cb-status"></p>
+        <p class="confirm-q" id="cb-q">このボスと再戦する？</p>
+        <div class="confirm-btns" id="cb-btns">
+          <button type="button" id="cb-yes" class="btn primary">再戦する</button>
+          <button type="button" id="cb-no" class="btn">やめる</button>
+        </div>
+        <button type="button" id="cb-close" class="cb-close-btn hidden">とじる</button>
       </div>
     </div>
 
@@ -3464,12 +3507,26 @@
          Visibility is three-stage (the user's rule, 2026-11-23:
          「そのボスに出会うまでは？？？で表示。戦ってたら表示。
          再戦は倒せてたら可能」): a boss shows itself only once
-         MET — its stage entered at least once, win or lose (a
-         clear implies a meeting); until then the tile stays a
-         black silhouette (？？？), the treatment the EXTRA
-         bosses already had. Meeting is not enough for the
-         rematch: the tap works only on bosses actually beaten
-         in this slot. */
+         MET — a stage of its entered at least once, win or lose
+         (a clear implies a meeting); until then the tile stays
+         a black silhouette (？？？), the treatment the EXTRA
+         bosses already had. The meeting counts at EITHER of the
+         boss's two stages: the emperor is the x5 boss returned
+         powered up — the same individual — so entering the x5
+         first fight (win or lose) reveals the emperor's tile
+         too (synced from the main build's fix, 2026-11-24: the
+         reveal used to check only the emperor's own stage, so
+         losing the first fight left the tile at ？？？). Dark K
+         (121) has no first fight — only his own stage.
+         Meeting is not enough for the rematch: the rematch
+         works only on emperors actually beaten in this slot.
+         And tapping a revealed tile no longer starts anything
+         straight away: it opens a confirmation popup in the
+         stage-entry style — boss and stage contents, the
+         slot's record, and 「再戦する？」 — and only its
+         再戦する button starts the fight (synced from the
+         main build, 2026-11-24). A met-but-unbeaten tile's
+         tap opens the same popup as a detail view. */
       var BOSS_ICON = {
         slime: "assets/7c20db2cbe08d447.png",
         mammoth: "assets/a2ffa084324ef125.png",
@@ -3507,11 +3564,22 @@
         magma: 0.981, candy: 0.981, core: 0.977, darkk: 0.987
       };
       var BOSS_ICON_TARGET_HFRAC = 0.964;
-      function bossMet(s) {
-        var rec = recOf(s.id);
+      /* one stage of a boss counts as met once entered at
+         least once (the encounter log) or cleared (clear rows
+         from before the encounter log existed count too) */
+      function bossStageMet(id) {
+        var rec = recOf(id);
         if (rec && rec.clears > 0) return true;
         var enc = progress.encountered || [];
-        return enc.indexOf(s.id) >= 0;
+        return enc.indexOf(id) >= 0;
+      }
+      /* the emperor's first fight is the stage 5 before it;
+         Dark K has none */
+      function bossFirstFightId(s) { return s.id === 121 ? null : s.id - 5; }
+      function bossMet(s) {
+        if (bossStageMet(s.id)) return true;
+        var f = bossFirstFightId(s);
+        return f !== null && bossStageMet(f);
       }
       function bossTileHtml(s) {
         var b = s.boss;
@@ -3540,28 +3608,104 @@
           inner += '<span class="boss-tile-note">まだ姿を見せていない</span>';
         }
         var cls = "boss-tile" + (isBeaten ? " beaten" : "") + (isMet ? "" : " unmet");
-        if (isBeaten) {
-          return '<button type="button" class="' + cls + '" data-rematch="' + s.id + '" aria-label="' + b.name + "と再戦する（ステージ" + stageNumLabel(s.id) + "）\">" + inner + "</button>";
+        /* A revealed tile is a button, but the tap only opens
+           the confirmation popup — the fight itself starts
+           from the popup's 再戦する button, never from the
+           tile directly. An unmet tile stays inert: there is
+           nothing it may show yet. */
+        if (isMet) {
+          return '<button type="button" class="' + cls + '" data-boss-info="' + s.id + '" aria-label="' +
+            (isBeaten ? b.name + "と再戦する（ステージ" + stageNumLabel(s.id) + "）" : b.name + "の詳細を見る（未撃破）") + '">' + inner + "</button>";
         }
-        return '<div class="' + cls + '" aria-label="' + (isMet ? b.name + "（未撃破）" : "まだ姿を見せていないボス") + '">' + inner + "</div>";
+        return '<div class="' + cls + '" aria-label="まだ姿を見せていないボス">' + inner + "</div>";
       }
       function renderBossGallery() {
         var bosses = STAGES.filter(function (s) { return s.boss && (s.boss.plus === true || s.id === 121); });
         var beaten = 0;
         bosses.forEach(function (s) { if (isCleared(s.id)) beaten++; });
-        $("boss-gallery-sub").textContent = "撃破 " + beaten + "/" + bosses.length + " —— 皇帝ボスとダークKだけの一覧。出会うまでは？？？で、倒したボスはタップで再戦できる";
+        $("boss-gallery-sub").textContent = "撃破 " + beaten + "/" + bosses.length + " —— 皇帝ボスとダークKだけの一覧。初戦か皇帝戦で出会うと姿を現し、倒したボスはタップで確認してから再戦できる";
         var html = '<div class="boss-grid">';
         bosses.forEach(function (s) { html += bossTileHtml(s); });
         html += "</div>";
         html += '<p class="boss-gallery-note">皇帝ボスは、各ワールドの10番目で帰ってくる強化再戦。初戦で逃げたボスが、フェーズ2の技を最初から使ってくる。弱点ゲージはボスのHPバーの下——攻撃を当てるほどたまり、満タンで弱点が開いてダメージ2倍になる。</p>';
         $("boss-gallery").innerHTML = html;
-        $("boss-gallery").querySelectorAll("[data-rematch]").forEach(function (el) {
-          el.addEventListener("click", function () { startGame(Number(el.getAttribute("data-rematch")), { fromBossGallery: true }); });
+        $("boss-gallery").querySelectorAll("[data-boss-info]").forEach(function (el) {
+          el.addEventListener("click", function () {
+            RA.unlockAudio(); RA.sfx.click();
+            showConfirmBoss(Number(el.getAttribute("data-boss-info")));
+          });
         });
       }
       function openBossGallery() {
         renderBossGallery();
         showScreen("bosses");
+      }
+
+      /* ---------- boss gallery confirmation popup ----------
+         The stage-entry confirmation (ov-confirm-stage) in
+         boss form, mirroring the main build: the boss's icon,
+         name, its stage's contents and HP, and this slot's
+         record. A beaten boss gets 「このボスと再戦する？」
+         with 再戦する／やめる; a met-but-unbeaten boss gets a
+         status line and just とじる — where it was met decides
+         the wording (at the emperor stage itself, or only at
+         the x5 first fight, with the emperor still ahead). */
+      var confirmBossId = null;
+      function showConfirmBoss(id) {
+        var s = STAGES[id - 1];
+        if (!s || !s.boss) return;
+        confirmBossId = id;
+        var b = s.boss;
+        var rec = recOf(s.id);
+        var isBeaten = !!(rec && rec.clears > 0);
+        $("ov-confirm-boss").setAttribute("aria-label", isBeaten ? b.name + "と再戦しますか" : b.name + "の詳細");
+        $("cb-kicker").textContent = (s.id === 121 ? "ステージX" : "ステージ" + stageNumLabel(s.id) + " ／ ワールド" + s.world) + " ／ " + b.tierLabel;
+        var icon = BOSS_ICON[b.kind];
+        if (icon) {
+          $("cb-icon").src = icon;
+          $("cb-icon").style.display = "";
+          $("cb-icon-fallback").style.display = "none";
+        } else {
+          $("cb-icon").style.display = "none";
+          $("cb-icon-fallback").style.display = "";
+        }
+        $("cb-name").textContent = b.name;
+        $("cb-sub").textContent = s.name + "（" + s.sub + "） ／ HP " + b.hp;
+        $("cb-desc").textContent = s.desc;
+        var recEl = $("cb-rec");
+        var statusEl = $("cb-status");
+        if (isBeaten && rec) {
+          recEl.innerHTML = starsSvg(rec.bestStars, 13) +
+            "<span>ベスト " + (rec.bestTimeSec !== null ? fmtTime(rec.bestTimeSec) : "—") + " ／ " +
+            rec.bestScore.toLocaleString() + "点 ／ " + rec.clears + "回撃破</span>";
+          recEl.classList.remove("hidden");
+          statusEl.classList.add("hidden");
+          $("cb-q").classList.remove("hidden");
+          $("cb-btns").classList.remove("hidden");
+          $("cb-close").classList.add("hidden");
+        } else {
+          recEl.innerHTML = "";
+          recEl.classList.add("hidden");
+          if (bossStageMet(s.id)) {
+            statusEl.textContent = "まだ倒せていない。再戦は撃破後にここからできる——いまはステージ" + stageNumLabel(s.id) + "のマップから挑戦できる。";
+          } else {
+            var f = bossFirstFightId(s);
+            var fd = f !== null ? STAGES[f - 1] : null;
+            statusEl.textContent = fd
+              ? "初戦のステージ" + f + "「" + fd.name + "」で出会ったボス。皇帝はステージ" + stageNumLabel(s.id) + "で帰ってくる——倒すとここから再戦できる。"
+              : "まだ倒せていない。";
+          }
+          statusEl.classList.remove("hidden");
+          $("cb-q").classList.add("hidden");
+          $("cb-btns").classList.add("hidden");
+          $("cb-close").classList.remove("hidden");
+        }
+        $("ov-confirm-boss").classList.remove("hidden");
+      }
+      function hideConfirmBoss() {
+        confirmBossId = null;
+        var el = $("ov-confirm-boss");
+        if (el) el.classList.add("hidden");
       }
 
       /* hierarchy navigation wiring */
@@ -3601,13 +3745,32 @@
         RA.unlockAudio(); RA.sfx.click();
         hideConfirmStage();
       });
-      /* tapping the dark backdrop (not the panel) closes either
+      /* the boss popup's 再戦する is the only path from the
+         gallery into a fight — and it keeps the gallery's
+         round trip (fromBossGallery) like the old direct tap */
+      $("cb-yes").addEventListener("click", function () {
+        var id = confirmBossId;
+        hideConfirmBoss();
+        if (id !== null) startGame(id, { fromBossGallery: true });
+      });
+      $("cb-no").addEventListener("click", function () {
+        RA.unlockAudio(); RA.sfx.click();
+        hideConfirmBoss();
+      });
+      $("cb-close").addEventListener("click", function () {
+        RA.unlockAudio(); RA.sfx.click();
+        hideConfirmBoss();
+      });
+      /* tapping the dark backdrop (not the panel) closes any
          confirmation, running the exact いいえ path */
       $("ov-confirm-world").addEventListener("click", function (e) {
         if (e.target === e.currentTarget) { RA.unlockAudio(); RA.sfx.click(); hideConfirmWorld(); }
       });
       $("ov-confirm-stage").addEventListener("click", function (e) {
         if (e.target === e.currentTarget) { RA.unlockAudio(); RA.sfx.click(); hideConfirmStage(); }
+      });
+      $("ov-confirm-boss").addEventListener("click", function (e) {
+        if (e.target === e.currentTarget) { RA.unlockAudio(); RA.sfx.click(); hideConfirmBoss(); }
       });
 
       /* ---------- save slots (Mario-style: 3 independent files) ---------- */
