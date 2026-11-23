@@ -420,6 +420,23 @@
       .ending-lines p { margin: 0; font-size: 0.875rem; line-height: 1.75; }
       .btn-credits { background: #26231c !important; border-color: #26231c !important; color: #f2c14e !important; font-size: 0.875rem !important; }
 
+      /* ---------- ending carousel (mirrors the opening
+         storybook, like the main build) ---------- */
+      .ending-veil-fake { background: linear-gradient(to bottom, rgba(20, 16, 31, 0.80), rgba(20, 16, 31, 0.50), rgba(20, 16, 31, 0.90)); }
+      #ending-crystal { margin-top: 0.75rem; justify-content: center; }
+      .opening-panel .ending-caption { margin: 0.25rem auto 0; font-size: 0.75rem; font-weight: 900; font-variant-numeric: tabular-nums; color: rgba(251, 248, 239, 0.85); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.7); }
+      .ending-darkbox { margin: 0.5rem auto 0; max-width: 24rem; border-radius: 12px; border: 1px solid rgba(240, 234, 216, 0.15); background: rgba(44, 40, 56, 0.9); padding: 1rem; }
+      .opening-panel .ending-darkbox p { margin: 0; max-width: none; font-size: 15px; font-weight: 700; line-height: 2; color: #f0ead8; text-shadow: none; }
+      .opening-panel .ending-thanks-box { margin: 1rem auto 0; max-width: 24rem; border-radius: 12px; background: var(--accent-ink); padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 900; line-height: 1.75; color: #2b2413; text-shadow: none; }
+      .opening-panel .ending-totals-line { margin: 1rem auto 0; font-size: 0.75rem; font-weight: 700; font-variant-numeric: tabular-nums; color: rgba(251, 248, 239, 0.85); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.7); }
+      .ending-final-btns { display: flex; flex-direction: column; gap: 0.625rem; }
+      .ending-final-btns .btn {
+        display: flex; min-height: 50px; width: 100%; align-items: center; justify-content: center;
+        border-radius: 12px; border: 1px solid rgba(251, 248, 239, 0.4); background: transparent;
+        color: #fbf8ef; font-size: 1rem; font-weight: 700; padding: 0 1rem; box-sizing: border-box; font-family: inherit; cursor: pointer;
+      }
+      .ending-final-btns .btn.primary { background: var(--accent); border-color: var(--accent); font-weight: 900; box-shadow: 0 10px 24px rgba(20, 16, 10, 0.35); }
+
       /* ---------- story dialogue scenes (boss talks / opening) ---------- */
       .dialogue-overlay {
         position: absolute; inset: 0; z-index: 40; display: flex; align-items: flex-end; justify-content: center;
@@ -738,44 +755,40 @@
       /* ---------- select layout helpers (landscape side columns) ---------- */
       .screen-title { margin: 0; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.04em; }
       .slot-list { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
-      /* ---------- boss gallery （ボス図鑑） ---------- */
-      .boss-world { margin-top: 1.5rem; }
-      .boss-world-title { margin: 0 0 0.5rem; font-size: 0.8125rem; font-weight: 900; letter-spacing: 0.12em; color: var(--dim); }
-      .boss-world-title span { margin-left: 0.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: normal; }
-      .boss-row {
-        display: flex; width: 100%; align-items: center; gap: 0.75rem;
-        padding: 0.75rem 0.875rem; margin-top: 0.5rem; text-align: left;
+      /* ---------- boss gallery （ボス図鑑） ----------
+         A compact icon grid (mirrors the main build, 2026-11-23):
+         one small tile per boss — its own sprite as the icon —
+         so the whole roster (emperor bosses + Dark K only) fits
+         on one screen. Icons are height-normalised in JS so every
+         boss's body renders at the same visual size. */
+      .boss-grid { margin-top: 1rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .boss-tile {
+        display: flex; flex-direction: column; align-items: center; width: 100%;
+        padding: 0.5rem; box-sizing: border-box; text-align: center;
         border: 1px solid var(--border); border-radius: var(--radius);
-        background: var(--surface); color: var(--text);
-        font: inherit; box-sizing: border-box;
+        background: var(--surface); color: var(--text); font: inherit;
       }
-      button.boss-row { cursor: pointer; }
-      button.boss-row:active { transform: scale(0.99); }
-      .boss-row.beaten { border-color: #c19a5b; }
-      .boss-row.locked { opacity: 0.7; }
-      .boss-badge {
-        display: flex; flex: none; width: 2.75rem; height: 2.75rem; align-items: center; justify-content: center;
-        border-radius: 999px; font-size: 1rem; font-weight: 900;
-        background: rgba(38, 35, 28, 0.08); color: var(--dim);
+      button.boss-tile { cursor: pointer; }
+      button.boss-tile:active { transform: scale(0.97); }
+      .boss-tile.beaten { border-color: #c19a5b; }
+      .boss-tile.unmet { opacity: 0.75; }
+      .boss-icon-slot { position: relative; display: flex; width: 100%; height: 3rem; align-items: flex-end; justify-content: center; }
+      .boss-icon-slot img { width: auto; max-width: 100%; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+      .boss-icon-slot img.silhouette { filter: brightness(0); opacity: 0.9; }
+      .boss-met-chip {
+        position: absolute; right: 0; top: 0; border-radius: 999px; background: var(--danger); color: #fbf8ef;
+        padding: 0 0.375rem; font-size: 9px; font-weight: 900; line-height: 1.7; white-space: nowrap;
       }
-      .boss-badge.open { background: transparent; border: 2px solid var(--danger); color: var(--danger); }
-      .boss-badge.beaten { background: #f2c14e; color: #2b2413; }
-      @media (prefers-color-scheme: dark) {
-        .boss-badge { background: rgba(251, 248, 239, 0.1); }
-        .boss-badge.beaten { background: #f2c14e; color: #2b2413; }
+      .boss-tile-name { margin-top: 0.25rem; width: 100%; font-size: 11px; font-weight: 900; line-height: 1.35; }
+      .boss-tile-name.unmet { color: var(--dim); }
+      .boss-tile-meta { font-size: 10px; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; }
+      .boss-tile-record { margin-top: 0.125rem; display: flex; flex-direction: column; align-items: center; gap: 0.125rem; }
+      .boss-tile-note { margin-top: 0.125rem; font-size: 10px; font-weight: 700; color: var(--dim); }
+      .boss-gallery-note { margin-top: 1rem; font-size: 11px; font-weight: 700; line-height: 1.7; color: var(--dim); }
+      @media (orientation: landscape) {
+        .boss-grid { grid-template-columns: repeat(5, 1fr); gap: 0.625rem; }
+        .boss-icon-slot { height: 4rem; }
       }
-      .boss-main { flex: 1; min-width: 0; }
-      .boss-line1 { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.5rem; }
-      .boss-name { font-size: 0.9375rem; font-weight: 900; }
-      .boss-chip {
-        padding: 0 0.5rem; border-radius: 999px; font-size: 0.625rem; font-weight: 900; line-height: 1.7;
-        background: rgba(38, 35, 28, 0.08); color: var(--dim); white-space: nowrap;
-      }
-      .boss-chip.tier { background: rgba(102, 112, 76, 0.16); color: var(--accent); }
-      .boss-chip.plus { background: var(--danger); color: #fbf8ef; }
-      .boss-chip.danger { background: rgba(181, 68, 60, 0.13); color: var(--danger); }
-      .boss-line2 { display: block; margin-top: 0.125rem; font-size: 0.75rem; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; }
-      .boss-rematch { flex: none; font-size: 0.75rem; font-weight: 900; color: var(--accent); }
       /* the landscape-only copy of the world info card that rides in
          the map screen's side column; CSS alone decides visibility */
       #world-panel-ls { display: none; }
@@ -930,6 +943,10 @@
         #screen-select .screen-title { font-size: 1.25rem; }
         #screen-select .icon-btn { width: 36px; height: 36px; }
         .head-text { display: flex; align-items: baseline; gap: 0.75rem; }
+        /* the title keeps its own width in the row — a long note
+           beside it wraps instead of squeezing the title into a
+           per-character column (the boss gallery's note did) */
+        .head-text .screen-title { flex: none; }
         #world-panel { margin-top: 0.5rem; }
         /* on the landscape map screen the normal-flow world card
            hides; its twin rides in the side column instead */
@@ -1463,23 +1480,32 @@
       </div>
     </div>
 
-    <!-- ============ ENDING ============ -->
-    <div id="ov-ending" class="ending-overlay hidden" role="dialog" aria-modal="true" aria-label="エンディング">
-      <div class="dialog">
-        <p class="ov-kicker" id="ending-kicker">TRUE ENDING</p>
-        <h2 id="ending-title">にんじんクリスタル、復活！</h2>
-        <div id="ending-shards" style="margin-top:0.75rem;display:flex;justify-content:center"></div>
-        <p id="ending-shard-note" style="margin-top:0.25rem;font-size:0.75rem;font-weight:900;color:var(--dim);font-variant-numeric:tabular-nums">かけら 10/10 コンプリート！</p>
-        <div id="ending-lines" class="ending-lines"></div>
-        <div id="ending-reveal" class="ending-reveal hidden"></div>
-        <p id="ending-thanks" class="finish-banner" style="text-align:center"></p>
-        <p id="ending-totals" class="sub"></p>
-        <div class="stack">
-          <button type="button" id="btn-ending-credits" class="btn btn-credits hidden">エンドロールを見る</button>
-          <button type="button" id="btn-ending-final" class="btn-final-battle hidden">真・最終決戦へ —— ダークKに挑む</button>
-          <button type="button" id="btn-ending-select" class="btn primary">ステージ選択へ</button>
-          <button type="button" id="btn-ending-title" class="btn">タイトルへ</button>
-          <button type="button" id="btn-ending-close" class="btn">とじる</button>
+    <!-- ============ ENDING (tap-through carousel, built like the opening storybook) ============ -->
+    <div id="ov-ending" class="opening-overlay hidden" role="dialog" aria-modal="true" aria-label="エンディング">
+      <img id="ending-bg" class="opening-bg" alt="" aria-hidden="true" />
+      <div id="ending-veil" class="opening-veil" aria-hidden="true"></div>
+      <div class="opening-inner">
+        <p class="opening-kicker" id="ending-kicker">TRUE ENDING</p>
+        <div id="ending-panel" class="opening-panel">
+          <h2 id="ending-heading"></h2>
+          <div id="ending-crystal" style="display:none"></div>
+          <p id="ending-caption" class="ending-caption hidden"></p>
+          <div id="ending-darkbox" class="ending-darkbox hidden"><p id="ending-darktext"></p></div>
+          <p id="ending-text"></p>
+          <p id="ending-thanks-box" class="ending-thanks-box hidden"></p>
+          <p id="ending-totals" class="ending-totals-line hidden"></p>
+        </div>
+        <div id="ending-dots" class="opening-dots" aria-hidden="true"></div>
+        <div class="opening-btns">
+          <button type="button" id="ending-next" class="opening-next">つぎへ</button>
+          <button type="button" id="ending-skip" class="opening-skip" aria-label="エンディングをスキップ">スキップ</button>
+          <div id="ending-final-btns" class="ending-final-btns hidden">
+            <button type="button" id="btn-ending-final" class="btn-final-battle hidden">真・最終決戦へ —— ダークKに挑む</button>
+            <button type="button" id="btn-ending-credits" class="btn btn-credits hidden">エンドロールを見る</button>
+            <button type="button" id="btn-ending-select" class="btn primary">ステージ選択へ</button>
+            <button type="button" id="btn-ending-title" class="btn">タイトルへ</button>
+            <button type="button" id="btn-ending-close" class="btn">とじる</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1541,7 +1567,7 @@
       var PKEY = "rabbit-archer-share-progress-v1";
       var PKEY2 = "rabbit-archer-share-progress-v2";
       var SLOTKEY = "rabbit-archer-save-slot";
-      function emptyProgress() { return { stages: {}, totalClears: 0, extrasUnlocked: false }; }
+      function emptyProgress() { return { stages: {}, totalClears: 0, extrasUnlocked: false, encountered: [] }; }
       /* Grandfathering for the EXTRA-world rule change (2026-11-22,
          mirrors the main build's server flag): worlds 11/12 used to
          open on the stage-100 clear alone; they now open on Dark K's
@@ -1560,6 +1586,17 @@
           }
         });
       }
+      /* Boss encounters (2026-11-23, mirrors the main build's
+         encountered_stages): the boss stages this slot has entered
+         at least once, win or lose. Saves written before the field
+         existed simply start with an empty list — a clear already
+         implies a meeting, so nothing already earned is hidden. */
+      function migrateEncountered(all) {
+        [1, 2, 3].forEach(function (n) {
+          var s = all.slots[n];
+          if (s && !Array.isArray(s.encountered)) s.encountered = [];
+        });
+      }
       function loadAllSlots() {
         try {
           var raw2 = localStorage.getItem(PKEY2);
@@ -1572,6 +1609,7 @@
                 out.slots[n] = s && s.stages ? s : emptyProgress();
               });
               migrateExtras(out);
+              migrateEncountered(out);
               return out;
             }
           }
@@ -1588,6 +1626,7 @@
         } catch (e) { /* storage unavailable */ }
         var all = { slots: { 1: legacy, 2: emptyProgress(), 3: emptyProgress() } };
         migrateExtras(all);
+        migrateEncountered(all);
         try { localStorage.setItem(PKEY2, JSON.stringify(all)); } catch (e) { /* session-only */ }
         return all;
       }
@@ -1909,28 +1948,93 @@
          FAKE ending right after the stage-100 clear — the celebration
          Dark K interrupts, with the road to stage 121 — and the TRUE
          ending after the stage-121 clear. Re-viewing from the title
-         shows the true one once stage 121 is on record, else fake. */
+         shows the true one once stage 121 is on record, else fake.
+         Both play as a tap-through carousel built exactly like the
+         opening storybook (the user's ask, 2026-11-23: 「エンディ
+         ングもオープニングと同じようにカルーセルにしたい」): the
+         crystal reveal opens it, the story lines follow one panel
+         at a time — for the fake ending Dark K's reveal comes
+         after, in its dark box — and the closing panel carries the
+         totals and the ways onward (the final battle / the end
+         roll / stage select / title). Nothing scrolls: each panel
+         fits the screen like the opening's do. */
+      var endingPanels = [];
+      var endingIndex = 0;
+      var endingFake = false;
       function openEnding(variant) {
-        var fake = variant === "fake";
+        endingFake = variant === "fake";
+        var fake = endingFake;
         $("ending-kicker").textContent = fake ? "ENDING…?" : "TRUE ENDING";
-        $("ending-title").textContent = fake ? RA.FAKE_ENDING_TITLE : RA.ENDING_TITLE;
+        $("ending-veil").classList.toggle("ending-veil-fake", fake);
+        var bg = document.querySelector(".cover-bg");
+        if (bg) $("ending-bg").src = bg.src;
+        endingPanels = fake
+          ? [{ crystal: true, heading: RA.FAKE_ENDING_TITLE, caption: "かけら 10/10…でも、クリスタルは光らない" }]
+              .concat(RA.FAKE_ENDING_LINES.map(function (t) { return { text: t }; }))
+              .concat(RA.DARKK_REVEAL_LINES.map(function (t) { return { text: t, dark: true }; }))
+              .concat([{ final: true, heading: "物語は まだ終わらない" }])
+          : [{ crystal: true, heading: RA.ENDING_TITLE, caption: "かけら 10/10 コンプリート！" }]
+              .concat(RA.ENDING_LINES.map(function (t) { return { text: t }; }))
+              .concat([{ final: true, heading: "おわり", text: RA.ENDING_THANKS }]);
+        endingIndex = 0;
+        renderEndingPanel();
+        $("ov-ending").classList.remove("hidden");
+      }
+      function renderEndingPanel() {
+        var fake = endingFake;
+        var p = endingPanels[Math.min(endingIndex, endingPanels.length - 1)];
+        if (!p) return;
+        var last = endingIndex >= endingPanels.length - 1;
+        $("ending-heading").textContent = p.heading || "";
+        $("ending-heading").classList.toggle("hidden", !p.heading);
         /* The assembled crystal: in the fake ending all ten shards
            are in place but the heart is missing, so it stays dark;
            the true ending's crystal is lit (mirrors the main build). */
-        $("ending-shards").innerHTML = carrotCrystalHtml(new Set(STAGES.map(function (s) { return s.id; })), { heart: !fake, height: 132 });
-        $("ending-shard-note").textContent = fake ? "かけら 10/10…でも、クリスタルは光らない" : "かけら 10/10 コンプリート！";
-        $("ending-lines").innerHTML = (fake ? RA.FAKE_ENDING_LINES : RA.ENDING_LINES).map(function (l) { return "<p>" + l + "</p>"; }).join("");
-        var reveal = $("ending-reveal");
-        reveal.innerHTML = fake ? RA.DARKK_REVEAL_LINES.map(function (l) { return "<p>" + l + "</p>"; }).join("") : "";
-        reveal.classList.toggle("hidden", !fake);
-        var thanks = $("ending-thanks");
-        thanks.textContent = fake ? "" : RA.ENDING_THANKS;
-        thanks.classList.toggle("hidden", fake);
-        $("btn-ending-final").classList.toggle("hidden", !fake);
-        $("btn-ending-credits").classList.toggle("hidden", fake);
-        var stars = STAGES.reduce(function (sum, s) { var r = recOf(s.id); return sum + (r ? r.bestStars : 0); }, 0);
-        $("ending-totals").textContent = "通算 " + progress.totalClears + " 回クリア ／ 星 " + stars + "/" + (STAGES.length * 3);
-        $("ov-ending").classList.remove("hidden");
+        var crystal = $("ending-crystal");
+        if (p.crystal) {
+          crystal.innerHTML = carrotCrystalHtml(new Set(STAGES.map(function (s) { return s.id; })), { heart: !fake, height: 132 });
+          crystal.style.display = "flex";
+        } else {
+          crystal.style.display = "none";
+          crystal.innerHTML = "";
+        }
+        var caption = $("ending-caption");
+        caption.textContent = p.caption || "";
+        caption.classList.toggle("hidden", !p.caption);
+        var darkbox = $("ending-darkbox");
+        if (p.dark) {
+          $("ending-darktext").textContent = p.text || "";
+          darkbox.classList.remove("hidden");
+        } else {
+          darkbox.classList.add("hidden");
+        }
+        var plainText = p.text && !p.dark && !p.final ? p.text : "";
+        var text = $("ending-text");
+        text.textContent = plainText;
+        text.classList.toggle("hidden", !plainText);
+        var thanksBox = $("ending-thanks-box");
+        thanksBox.textContent = p.final && p.text ? p.text : "";
+        thanksBox.classList.toggle("hidden", !(p.final && p.text));
+        var totals = $("ending-totals");
+        if (p.final) {
+          var stars = STAGES.reduce(function (sum, s) { var r = recOf(s.id); return sum + (r ? r.bestStars : 0); }, 0);
+          totals.textContent = "通算 " + progress.totalClears + " 回クリア ／ 星 " + stars + "/" + (STAGES.length * 3);
+          totals.classList.remove("hidden");
+        } else {
+          totals.classList.add("hidden");
+        }
+        var panel = $("ending-panel");
+        panel.classList.remove("opening-panel");
+        void panel.offsetWidth;
+        panel.classList.add("opening-panel");
+        var dots = "";
+        endingPanels.forEach(function (_, i) { dots += '<span class="' + (i === endingIndex ? "on" : "") + '"></span>'; });
+        $("ending-dots").innerHTML = dots;
+        $("ending-next").classList.toggle("hidden", last);
+        $("ending-skip").classList.toggle("hidden", last);
+        $("ending-final-btns").classList.toggle("hidden", !last);
+        $("btn-ending-final").classList.toggle("hidden", !(last && fake));
+        $("btn-ending-credits").classList.toggle("hidden", !(last && !fake));
       }
       function closeEnding() { $("ov-ending").classList.add("hidden"); }
 
@@ -3256,69 +3360,105 @@
       }
 
       /* ---------- boss gallery （ボス図鑑・再戦) ----------
-         Mirrors the main build's gallery (2026-11-23): every boss
-         in world order on one page — a beaten boss in full colour
-         with its best time / stars / clear count, an open but
-         unbeaten boss with a 未撃破 chip, a boss not yet reached
-         as a silhouette (？？？), with the EXTRA bosses and stage
-         X keeping the select screens' own secrecy rules. Rematch
-         from this page is limited to the EMPEROR bosses (the
-         powered-up x0 returns — the user's call: 「再戦のボスは
-         皇帝のみでいい」) plus stage X's Dark K, who has no
-         emperor form; the first (x5) fights stay as records here
-         and are replayed from the stage select like any stage. */
-      function bossVisible(s) {
-        if (s.id === 121) return isCleared(100) || isCleared(121);
-        if (s.id >= 101) return extrasOpen();
-        return true;
+         Mirrors the main build's compendium (rebuilt there
+         2026-11-23): a compact icon grid — one small tile per
+         boss, its own sprite as the icon — so the whole roster
+         fits on one screen. Only the EMPEROR bosses (the x0
+         returns) are listed, plus stage X's Dark K, the one-off
+         true final boss who has no emperor form: the first (x5)
+         fights are NOT shown at all (the user's call: 「全ての
+         5面のボスはそもそも表示しなくていい」).
+         Visibility is three-stage (the user's rule, 2026-11-23:
+         「そのボスに出会うまでは？？？で表示。戦ってたら表示。
+         再戦は倒せてたら可能」): a boss shows itself only once
+         MET — its stage entered at least once, win or lose (a
+         clear implies a meeting); until then the tile stays a
+         black silhouette (？？？), the treatment the EXTRA
+         bosses already had. Meeting is not enough for the
+         rematch: the tap works only on bosses actually beaten
+         in this slot. */
+      var BOSS_ICON = {
+        slime: "assets/7c20db2cbe08d447.png",
+        mammoth: "assets/a2ffa084324ef125.png",
+        hedgehog: "assets/54280ca0d1adc238.png",
+        bee: "assets/0cffc8fe4ef1edd7.png",
+        turtle: "assets/479203a6041a2b71.png",
+        golem: "assets/fb9a4078e566eff9.png",
+        bat: "assets/05a325f25fde6956.png",
+        ghost: "assets/5d4c5b4116f573d3.png",
+        spike: "assets/352abefd87862b09.png",
+        magma: "assets/0e813c80c1e5e15b.png",
+        candy: "assets/381e25525357b892.png",
+        core: "assets/e2b881977e95ae46.png",
+        darkk: "assets/c5b49498f384786c.png"
+      };
+      /* How much of each icon canvas's height the boss's body
+         actually fills (the rest is transparent margin baked
+         into the cut — measured from the PNGs' alpha bounds,
+         the same table as the main build). The sprites were cut
+         with different margins, so drawing every canvas at the
+         same height made the bosses themselves different sizes
+         on screen; the grid scales each icon by TARGET / its
+         own fraction so every boss's BODY renders at the same
+         height on the same baseline (the user's ask, 2026-11-23:
+         「ボス図鑑のボスも見た目のサイズを揃えたい」). TARGET is
+         the smallest fraction (the ghost's), so no icon ever
+         grows past its tile — they only shrink to match. The
+         mammoth's icon is the margin-trimmed copy, like main's. */
+      var BOSS_ICON_HFRAC = {
+        slime: 1.0, mammoth: 0.971, hedgehog: 0.966, bee: 1.0,
+        turtle: 1.0, golem: 0.957, bat: 0.978, ghost: 0.964,
+        spike: 1.0, magma: 0.981, candy: 0.981, core: 0.977,
+        darkk: 0.987
+      };
+      var BOSS_ICON_TARGET_HFRAC = 0.964;
+      function bossMet(s) {
+        var rec = recOf(s.id);
+        if (rec && rec.clears > 0) return true;
+        var enc = progress.encountered || [];
+        return enc.indexOf(s.id) >= 0;
       }
-      function bossRowHtml(s) {
+      function bossTileHtml(s) {
         var b = s.boss;
         var rec = recOf(s.id);
         var clears = rec ? rec.clears : 0;
-        var vis = bossVisible(s);
-        var open = vis && isUnlocked(s.id);
-        var beaten = clears > 0;
-        var canRematch = open && (b.plus === true || s.id === 121);
-        var inner = '<span class="boss-badge' + (beaten ? " beaten" : open ? " open" : "") + '" aria-hidden="true">' + (vis ? "王" : "?") + "</span>";
-        inner += '<span class="boss-main"><span class="boss-line1">';
-        inner += '<span class="boss-name">' + (vis ? b.name : "？？？") + "</span>";
-        inner += '<span class="boss-chip">ステージ' + stageNumLabel(s.id) + "</span>";
-        if (vis) inner += '<span class="boss-chip ' + (b.plus ? "plus" : "tier") + '">' + b.tierLabel + "</span>";
-        if (vis && !beaten && open) inner += '<span class="boss-chip danger">未撃破</span>';
-        if (vis && !open) inner += '<span class="boss-chip">まだ会えない</span>';
-        inner += '</span><span class="boss-line2">';
-        if (vis) {
-          inner += "HP " + b.hp;
-          if (beaten && rec) inner += "　ベスト " + (rec.bestTimeSec !== null ? fmtTime(rec.bestTimeSec) : "—") + " ／ " + clears + "回撃破";
-          else if (open) inner += "　" + s.name;
-          else inner += "　前のステージをクリアすると会える";
+        var isMet = bossMet(s);
+        var isBeaten = clears > 0;
+        var icon = BOSS_ICON[b.kind];
+        var iconHeightPct = (BOSS_ICON_TARGET_HFRAC / (BOSS_ICON_HFRAC[b.kind] || 1)) * 100;
+        var inner = '<span class="boss-icon-slot">';
+        if (icon) {
+          inner += '<img src="' + icon + '" alt="" draggable="false" style="height:' + iconHeightPct.toFixed(1) + '%" class="' + (isMet ? "" : "silhouette") + '" />';
         } else {
-          inner += "まだ姿を見せていないボス";
+          inner += '<span aria-hidden="true" style="font-size:1.5rem;font-weight:900;color:var(--dim)">' + (isMet ? "王" : "?") + "</span>";
         }
-        inner += "</span></span>";
-        if (beaten && rec) inner += starsSvg(rec.bestStars, 14);
-        if (canRematch) inner += '<span class="boss-rematch" aria-hidden="true">再戦 ▶</span>';
-        var cls = "boss-row" + (beaten ? " beaten" : "") + (open ? "" : " locked");
-        if (canRematch) {
+        if (isMet && !isBeaten) inner += '<span class="boss-met-chip">未撃破</span>';
+        inner += "</span>";
+        inner += '<span class="boss-tile-name' + (isMet ? "" : " unmet") + '">' + (isMet ? b.name : "？？？") + "</span>";
+        inner += '<span class="boss-tile-meta">' + (s.id === 121 ? "ステージX" : "W" + s.world + "・" + stageNumLabel(s.id)) + " ／ HP " + (isMet ? b.hp : "???") + "</span>";
+        if (isBeaten && rec) {
+          inner += '<span class="boss-tile-record">' + starsSvg(rec.bestStars, 11) +
+            '<span class="boss-tile-meta">' + (rec.bestTimeSec !== null ? fmtTime(rec.bestTimeSec) : "—") + " ／ " + clears + "回撃破</span></span>";
+        } else if (isMet) {
+          inner += '<span class="boss-tile-note">まだ倒せていない</span>';
+        } else {
+          inner += '<span class="boss-tile-note">まだ姿を見せていない</span>';
+        }
+        var cls = "boss-tile" + (isBeaten ? " beaten" : "") + (isMet ? "" : " unmet");
+        if (isBeaten) {
           return '<button type="button" class="' + cls + '" data-rematch="' + s.id + '" aria-label="' + b.name + "と再戦する（ステージ" + stageNumLabel(s.id) + "）\">" + inner + "</button>";
         }
-        return '<div class="' + cls + '">' + inner + "</div>";
+        return '<div class="' + cls + '" aria-label="' + (isMet ? b.name + "（未撃破）" : "まだ姿を見せていないボス") + '">' + inner + "</div>";
       }
       function renderBossGallery() {
-        var bosses = STAGES.filter(function (s) { return s.boss; });
+        var bosses = STAGES.filter(function (s) { return s.boss && (s.boss.plus === true || s.id === 121); });
         var beaten = 0;
         bosses.forEach(function (s) { if (isCleared(s.id)) beaten++; });
-        $("boss-gallery-sub").textContent = "撃破 " + beaten + "体 —— 再戦できるのは皇帝ボス（とダークK）だけ。タップでそのまま戦える";
-        var html = "";
-        RA.WORLD_DEFS.forEach(function (w) {
-          var ws = bosses.filter(function (s) { return s.world === w.world; });
-          if (!ws.length) return;
-          html += '<section class="boss-world" aria-label="ワールド' + w.world + 'のボス">';
-          html += '<h2 class="boss-world-title">ワールド' + w.world + "　" + w.name + "<span>" + w.sub + "</span></h2>";
-          ws.forEach(function (s) { html += bossRowHtml(s); });
-          html += "</section>";
-        });
+        $("boss-gallery-sub").textContent = "撃破 " + beaten + "/" + bosses.length + " —— 皇帝ボスとダークKだけの一覧。出会うまでは？？？で、倒したボスはタップで再戦できる";
+        var html = '<div class="boss-grid">';
+        bosses.forEach(function (s) { html += bossTileHtml(s); });
+        html += "</div>";
+        html += '<p class="boss-gallery-note">皇帝ボスは、各ワールドの10番目で帰ってくる強化再戦。初戦で逃げたボスが、フェーズ2の技を最初から使ってくる。弱点ゲージはボスのHPバーの下——攻撃を当てるほどたまり、満タンで弱点が開いてダメージ2倍になる。</p>';
         $("boss-gallery").innerHTML = html;
         $("boss-gallery").querySelectorAll("[data-rematch]").forEach(function (el) {
           el.addEventListener("click", function () { startGame(Number(el.getAttribute("data-rematch"))); });
@@ -3522,7 +3662,7 @@
         return parts.join(" ／ ");
       }
       function transferHasData(slotsObj) {
-        return [1, 2, 3].some(function (n) { var p = slotsObj[n]; return p && (transferCountCleared(p) > 0 || (p.totalClears || 0) > 0); });
+        return [1, 2, 3].some(function (n) { var p = slotsObj[n]; return p && (transferCountCleared(p) > 0 || (p.totalClears || 0) > 0 || (p.encountered && p.encountered.length > 0)); });
       }
       function makeTransferCode() {
         var payload = { v: 1, cur: currentSlot || 1, slots: {} };
@@ -3534,7 +3674,7 @@
             if (r) arr.push([Number(k), r.bestTimeSec, r.bestCoins, r.bestCoinsTotal, r.bestScore, r.bestStars, r.clears]);
           });
           arr.sort(function (a, b) { return a[0] - b[0]; });
-          payload.slots[n] = { t: p.totalClears || 0, s: arr, x: slotExtrasOpen(p) ? 1 : 0 };
+          payload.slots[n] = { t: p.totalClears || 0, s: arr, x: slotExtrasOpen(p) ? 1 : 0, e: (p.encountered || []).slice() };
         });
         var json = JSON.stringify(payload);
         var b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -3589,6 +3729,19 @@
            written and the unlock is grandfathered in. */
         if (raw && raw.x !== undefined && raw.x !== null) out.extrasUnlocked = Number(raw.x) === 1;
         else out.extrasUnlocked = !!(out.stages[100] && out.stages[100].clears > 0);
+        /* Boss encounters travel with the code too (e): codes
+           written by older builds carry none, and a clear already
+           implies a meeting, so an absent list loses nothing.
+           Codes written by this build stay readable by older
+           builds, which simply ignore the extra field. */
+        if (raw && Array.isArray(raw.e)) {
+          var seenE = {};
+          raw.e.forEach(function (v) {
+            var eid = Number(v);
+            if (validIds[eid] && !seenE[eid]) { seenE[eid] = true; out.encountered.push(eid); }
+          });
+          out.encountered.sort(function (a, b) { return a - b; });
+        }
         return out;
       }
       function parseTransferCode(text) {
@@ -3750,6 +3903,15 @@
         else { openingIndex++; renderOpeningPanel(); }
       });
       $("opening-skip").addEventListener("click", function () { RA.sfx.click(); closeOpening(); });
+      $("ending-next").addEventListener("click", function () {
+        RA.sfx.click();
+        if (endingIndex < endingPanels.length - 1) { endingIndex++; renderEndingPanel(); }
+      });
+      $("ending-skip").addEventListener("click", function () {
+        RA.sfx.click();
+        endingIndex = endingPanels.length - 1;
+        renderEndingPanel();
+      });
       $("btn-ending-credits").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openCredits(); });
       $("credits-close").addEventListener("click", function () { RA.sfx.click(); closeCredits(); });
       $("btn-ending-final").addEventListener("click", function () { closeEnding(); startGame(121); });
@@ -3933,6 +4095,20 @@
       function startGame(stage) {
         RA.unlockAudio();
         RA.sfx.click();
+        /* Boss encounters (mirrors the main build): entering a
+           boss stage means K has MET that boss, win or lose — the
+           boss gallery reveals a boss once met and offers its
+           rematch only once beaten. Recorded on the current
+           slot's save the moment the stage starts. */
+        var defM = STAGES[stage - 1];
+        if (currentSlot && defM && defM.boss) {
+          var enc = progress.encountered || (progress.encountered = []);
+          if (enc.indexOf(stage) < 0) {
+            enc.push(stage);
+            enc.sort(function (a, b) { return a - b; });
+            saveProgress();
+          }
+        }
         curStage = stage;
         ended = false;
         paused = false;
