@@ -104,23 +104,42 @@
          instead of wrapping */
       .big-btn.slim { min-height: 48px; font-size: 15px; }
       .big-btn .btn-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      /* title sub-function chips: icon + short label in one row
-         （ボス図鑑 / セーブデータ切替 / データの引き継ぎ — the
-         transfer chip is this shell's own third chip, in the
-         main build's arrangement) */
+      /* title sub-function chips: ONE row of three icon chips
+         （ものがたり / ボス図鑑 / データ — synced from the main
+         build, 2026-11-24): the icon stands over a short label,
+         so all three line up neatly at any width. ものがたり is
+         the opening storybook as a chip like the others, on the
+         left. This shell's データ chip merges what used to be
+         two separate entrances — save-slot switching and the
+         transfer code — into the one データ screen, whose two
+         sections are labelled あそぶデータの切替 and
+         引き継ぎコード (the user's call, 2026-11-24: the two
+         looked the same as separate doors, so they became one). */
       .cover-main-btns { display: flex; flex-direction: column; gap: 0.625rem; }
-      .cover-chips { margin-top: 0.625rem; display: flex; gap: 0.5rem; }
+      .cover-chips { margin-top: 0.625rem; display: flex; gap: 0.625rem; }
       .cover-chip {
-        display: flex; min-height: 44px; min-width: 0; flex: 1; align-items: center; justify-content: center; gap: 0.35rem;
-        white-space: nowrap; border-radius: 999px; border: 1px solid rgba(251, 248, 239, 0.5);
-        background: rgba(22, 36, 15, 0.35); padding: 0 0.5rem; font-size: 12px; font-weight: 900; color: #fbf8ef;
+        display: flex; min-height: 52px; min-width: 0; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem;
+        white-space: nowrap; border-radius: 16px; border: 1px solid rgba(251, 248, 239, 0.5);
+        background: rgba(22, 36, 15, 0.35); padding: 0 0.5rem; font-size: 11px; font-weight: 900; color: #fbf8ef;
         backdrop-filter: blur(2px); font-family: inherit; cursor: pointer;
       }
       .cover-chip:active { transform: scale(0.99); }
       .cover-chip svg { flex-shrink: 0; }
-      @media (max-width: 26rem) {
-        .cover-chip { font-size: 11px; padding: 0 0.4rem; }
+      /* the ending re-watch is a late-game extra, not one of the
+         three standing chips: once stage 100 is on record it
+         appears as its own wide chip under the chip row (mirrors
+         the main build) */
+      .cover-chip-wide {
+        margin-top: 0.625rem; display: flex; min-height: 44px; width: 100%; align-items: center; justify-content: center; gap: 0.375rem;
+        white-space: nowrap; border-radius: 999px; border: 1px solid rgba(251, 248, 239, 0.5);
+        background: rgba(22, 36, 15, 0.35); padding: 0 1rem; font-size: 13px; font-weight: 900; color: #fbf8ef;
+        backdrop-filter: blur(2px); font-family: inherit; cursor: pointer;
       }
+      .cover-chip-wide:active { transform: scale(0.99); }
+      .cover-chip-wide svg { flex-shrink: 0; }
+      /* the Dark K / EXTRA hint line under the chips (moved up
+         from the old story section with everything else) */
+      .cover-extra-note { margin: 0.5rem 0 0; font-size: 11px; font-weight: 700; line-height: 1.65; color: rgba(251, 248, 239, 0.9); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.65); }
       @media (max-width: 22rem) {
         .kicker.light { font-size: 10px; letter-spacing: 0.2em; }
       }
@@ -571,6 +590,18 @@
       .rabbit-shadow { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 8rem; height: 1rem; border-radius: 50%; background: rgba(22, 36, 15, 0.35); filter: blur(6px); }
       .rabbit-stand img { position: relative; display: block; height: 204px; width: auto; filter: drop-shadow(0 8px 12px rgba(18, 30, 12, 0.35)); }
       .totals.light { color: rgba(251, 248, 239, 0.95); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.65); font-weight: 700; }
+      /* the story's one-line setup under the title, and the
+         carrot crystal standing beside the hero rabbit — the
+         old story section moved up into the hero, so the whole
+         title screen lives on the first screen (mirrors the
+         main build, 2026-11-24) */
+      .cover-story-line { margin: 0.375rem 0 0; max-width: 320px; font-size: 0.75rem; font-weight: 700; line-height: 1.65; color: rgba(251, 248, 239, 0.95); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.65); }
+      .hero-shard { display: flex; align-items: flex-end; gap: 0.5rem; min-width: 0; padding-bottom: 0.25rem; }
+      .hero-shard .shard-text { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; padding-bottom: 0.125rem; }
+      .hero-shard .count { font-size: 0.875rem; font-weight: 900; font-variant-numeric: tabular-nums; color: #fbf8ef; text-shadow: 0 1px 6px rgba(18, 30, 12, 0.65); white-space: nowrap; }
+      .hero-shard .note { font-size: 11px; font-weight: 700; line-height: 1.45; color: rgba(251, 248, 239, 0.9); text-shadow: 0 1px 6px rgba(18, 30, 12, 0.65); max-width: 8.25rem; }
+      .hero-shard .note.done { color: #ffe9a8; }
+      .hero-shard .note.missing { color: #ffb4a6; }
       .tab-hint { margin-left: auto; margin-right: auto; max-width: 22rem; line-height: 1.65; }
       .cover-below { padding-top: 1.25rem; }
 
@@ -618,6 +649,13 @@
       .slot-erase { margin-top: 0.75rem; border-radius: 12px; border: 1px solid var(--danger); background: var(--bg); padding: 0.75rem; }
       .slot-erase p { margin: 0; font-size: 0.875rem; font-weight: 900; line-height: 1.6; }
       .slot-erase .btn.danger { background: var(--danger); border-color: var(--danger); color: #fbf8ef; font-weight: 900; }
+
+      /* the データ screen's two section headings: あそぶデータの
+         切替 (the slot list) and 引き継ぎコード (the transfer
+         panel) — one screen, two clearly separated jobs (the
+         user's call, 2026-11-24) */
+      .data-sec-title { margin: 1.25rem 0 0; font-size: 0.875rem; font-weight: 900; letter-spacing: 0.12em; color: var(--dim); }
+      .data-sec-title:first-of-type { margin-top: 0.5rem; }
 
       /* ---------- save transfer (引き継ぎコード) ---------- */
       .transfer-panel {
@@ -847,8 +885,15 @@
       .rush-card-name { font-size: 0.875rem; font-weight: 900; }
       .rush-card-meta { font-size: 11px; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
       .rush-card-sub { margin-top: 0.125rem; font-size: 11px; font-weight: 700; color: var(--dim); }
-      .rush-members { margin-top: 0.375rem; display: flex; align-items: flex-end; gap: 0.375rem; }
-      .rush-members img { height: 1.75rem; width: auto; max-width: 2.25rem; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+      /* the member strip WRAPS (synced from the main build,
+         2026-11-24: the 11-icon 全てコース row ran past the
+         card's edge and its last boss was cut off). Smaller
+         icons on a wrapping row — every course's full roster
+         now stays inside its card, in one row where it fits and
+         two where it must. The silhouette rule is unchanged:
+         unbeaten bosses stay black. */
+      .rush-members { margin-top: 0.375rem; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.25rem; }
+      .rush-members img { height: 1.5rem; width: auto; max-width: 1.75rem; object-fit: contain; -webkit-user-drag: none; user-select: none; }
       .rush-members img.silhouette { filter: brightness(0); opacity: 0.9; }
       .rush-members .unknown { font-size: 0.875rem; font-weight: 900; color: var(--dim); }
       .rush-card-foot { margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
@@ -915,6 +960,21 @@
       /* the in-fight rush chip in the HUD (main build: a red tag
          beside the hearts naming the fight's place in the run) */
       .rush-chip { border-radius: 6px; background: var(--danger); padding: 0.1rem 0.5rem; font-size: 11px; font-weight: 900; color: #fbf8ef; white-space: nowrap; }
+      /* the rest stage's chip wears the golden carrot's colours
+         and carries the room's remaining stock (mirrors the main
+         build's rest-stage HUD) */
+      .rush-chip.rest { background: #c19a5b; color: #2b2413; display: inline-flex; align-items: center; gap: 0.3rem; }
+      .rush-chip.rest img { height: 15px; width: auto; display: block; }
+      .rush-chip.rest.empty { opacity: 0.55; filter: grayscale(0.7); }
+      /* the rest stage's HUD keeps only what the room is about —
+         hearts, the stage name and the carrot stock: no coins,
+         kills, score or course clock (rest time never counts
+         toward the record; the wrapper sums fight times only) */
+      #screen-game.resting .hud-stats > span:nth-child(2),
+      #screen-game.resting .hud-stats > span:nth-child(3),
+      #screen-game.resting .hud-stats > span:nth-child(4) { display: none; }
+      #screen-game.resting .hud-coins-ls,
+      #screen-game.resting .hud-time { visibility: hidden; }
       /* the landscape-only copy of the world info card that rides in
          the map screen's side column; CSS alone decides visibility */
       #world-panel-ls { display: none; }
@@ -1266,11 +1326,19 @@
             <div>
               <p class="kicker light">RABBIT ARCHER — 横スクロールアクション</p>
               <h1 class="game-title light">ラビットアーチャー</h1>
+              <p class="cover-story-line">砕かれたにんじんクリスタルのかけらを集めるため、弓の得意なこうさぎ「K」が世界へ旅に出る。</p>
             </div>
           <div class="hero-rabbit">
             <div class="rabbit-stand">
               <div class="rabbit-shadow" aria-hidden="true"></div>
               <img src="assets/0ea60a2706f41409.png" alt="弓と矢筒を背負ったウサギの弓使い" />
+            </div>
+            <div class="hero-shard">
+              <span id="story-crystal"></span>
+              <span class="shard-text">
+                <span id="story-shard-count" class="count">かけら 0/10</span>
+                <span id="story-shard-note" class="note">ワールドボスを倒して集めよう</span>
+              </span>
             </div>
           </div>
             <p id="title-totals" class="totals light">クリア 0/121 ／ 星 0/363 ／ 通算 0 回クリア</p>
@@ -1282,36 +1350,32 @@
               <button type="button" id="btn-select" class="big-btn slim">ステージ選択</button>
             </div>
             <div class="cover-chips">
-              <button type="button" id="btn-bosses" class="cover-chip" aria-label="ボス図鑑 —— 皇帝ボスと再戦"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10.4 5 8.3 4.4 5.5 4.4v13.2c2.8 0 4.9.6 6.5 1.8 1.6-1.2 3.7-1.8 6.5-1.8V4.4c-2.8 0-4.9.6-6.5 1.8z"/><path d="M12 6.2v13.2"/></svg>ボス図鑑</button>
-              <button type="button" id="btn-slots" class="cover-chip" aria-label="セーブデータ1 で あそんでいます（かえる）"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.4" rx="7" ry="2.7"/><path d="M5 5.4v13.2c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7V5.4"/><path d="M5 12c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7"/></svg><span id="btn-slots-label">データ1・かえる</span></button>
-              <button type="button" id="btn-transfer" class="cover-chip" aria-label="データの引き継ぎ（ホーム画面・機種変更）"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13"/><path d="M13.5 3.5L17 7l-3.5 3.5"/><path d="M20 17H7"/><path d="M10.5 13.5L7 17l3.5 3.5"/></svg>データの引き継ぎ</button>
+              <button type="button" id="btn-story" class="cover-chip" aria-label="ものがたりを見る（オープニングを見る）"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/><path d="M12 7l.9 1.9 2.1.3-1.5 1.5.35 2.1L12 11.8l-1.85 1-.35-2.1-1.5-1.5 2.1-.3z" fill="currentColor" stroke="none"/></svg>ものがたり</button>
+              <button type="button" id="btn-bosses" class="cover-chip" aria-label="ボス図鑑 —— 皇帝ボスと再戦"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10.4 5 8.3 4.4 5.5 4.4v13.2c2.8 0 4.9.6 6.5 1.8 1.6-1.2 3.7-1.8 6.5-1.8V4.4c-2.8 0-4.9.6-6.5 1.8z"/><path d="M12 6.2v13.2"/></svg>ボス図鑑</button>
+              <button type="button" id="btn-slots" class="cover-chip" aria-label="データ —— セーブデータ1 で あそんでいます（切替・引き継ぎ）"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.4" rx="7" ry="2.7"/><path d="M5 5.4v13.2c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7V5.4"/><path d="M5 12c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7"/></svg>データ</button>
             </div>
-            <p id="tab-hint" class="totals light tab-hint hidden">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。※iPhoneではブラウザとホーム画面アプリで記録の保存場所が別になることがあります。追加する前に「データの引き継ぎ」でコードを作っておくと、ホーム画面版へそのまま移せます。</p>
+            <button type="button" id="btn-ending" class="cover-chip-wide hidden" aria-label="エンディングを見る"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.6l2.5 5.1 5.6.8-4 4 1 5.6-5.1-2.7-5.1 2.7 1-5.6-4-4 5.6-.8z"/></svg>エンディングを見る</button>
+            <p id="story-extra-note" class="cover-extra-note hidden"></p>
+            <p id="tab-hint" class="totals light tab-hint hidden">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。※iPhoneではブラウザとホーム画面アプリで記録の保存場所が別になることがあります。追加する前に「データ」の「引き継ぎコード」でコードを作っておくと、ホーム画面版へそのまま移せます。</p>
           </section>
         </div>
       </header>
 
       <main class="wrap cover-below">
-        <section class="story-card" aria-label="ものがたり">
-          <h2>ものがたり</h2>
-          <p>砕かれたにんじんクリスタルのかけらを集めるため、弓の得意なこうさぎ「K」が世界へ旅に出る。</p>
-          <button type="button" id="btn-opening" class="opening-btn">オープニングを見る</button>
-          <div class="shard-row">
-            <span id="story-crystal"></span>
-            <span class="shard-text">
-              <span id="story-shard-count" class="count">かけら 0/10</span>
-              <span id="story-shard-note" class="note">ワールドの10面でボスとの決着をつけよう</span>
-            </span>
-          </div>
-          <button type="button" id="btn-ending" class="ending-btn hidden">エンディングを見る</button>
-          <p id="story-extra-note" class="hidden" style="margin-top:0.5rem;font-size:0.75rem;font-weight:700;line-height:1.6;color:var(--accent)">エクストラワールド（ステージ101〜120）も解放されているよ——ステージ選択からどうぞ。</p>
-        </section>
+        <!-- The story section that used to sit here is gone: its
+             one-line setup, the carrot crystal and the two story
+             re-watch buttons all moved up into the hero (synced
+             from the main build, 2026-11-24 — the story-view
+             button became the ものがたり chip in the chip row,
+             the ending a wide chip under it, and the whole title
+             screen now fits one landscape screen). What remains
+             below the hero is the how-to-play reference alone. -->
 
         <section class="howto" aria-label="遊び方" style="margin-top:2rem">
           <details>
             <summary class="howto-summary"><span>遊び方</span><span class="howto-pill">タップで開く</span></summary>
           <ul id="howto-list">
-            <li><span class="tag">セーブデータ</span><p>記録はセーブデータ1・2・3の3つまで、それぞれ独立して残せるよ（マリオのデータ選択と同じ）。家族や友達と分けたり、最初から遊び直したりできる。タイトルの「セーブデータを かえる」から切り替えられて、スロット画面では各データの進み具合（クリア数・星・かけら）が見られる。いらなくなったデータはスロット画面から消せる（消す前に確認が出る）。今までの記録はそのままデータ1に入っているよ。</p></li>
+            <li><span class="tag">セーブデータ</span><p>記録はセーブデータ1・2・3の3つまで、それぞれ独立して残せるよ（マリオのデータ選択と同じ）。家族や友達と分けたり、最初から遊び直したりできる。タイトルの「データ」から切り替えられて、データ画面では各データの進み具合（クリア数・星・かけら）が見られる。いらなくなったデータはデータ画面から消せる（消す前に確認が出る）。今までの記録はそのままデータ1に入っているよ。</p></li>
             <li><span class="tag">ステージ選択</span><p>ステージ選択は、まず「ワールド」の画面で旅全体を見渡してワールドを選ぶと、そのワールドの「マップ」に入るよ（別のワールドへ行きたいときは「ワールドへもどる」で上の画面に戻って選び直す）。ワールド画面もマップと同じ操作：拠点をタップすると、ちっちゃいKが道を歩いて移動する——Kのいる拠点をタップすると「はいる？ はい／いいえ」の確認が出る（ワールド画面ではワールド、マップではステージ）。クリアした道は金色、星の記録は拠点の下に表示。急ぐときはマップ右上の「いちらん」ボタンからカード一覧でも選べるよ。ワールド10には、ワールドボス（10番目）を倒したあとにだけ姿を現すステージX「真・最終決戦」があるよ。エクストラワールドは真のラスボス・ダークKを倒すまで、ワールド画面にも姿を見せないよ。ステージをクリアすると、結果（スコア・星・タイム・コイン）だけの画面が出て、「マップへもどる」でそのワールドのマップに戻るよ——初めてのクリアなら、戻った瞬間に次のステージへの道が金色に伸びて、新しい拠点が開くのが見える——開いたら、Kがその新しい拠点まで歩いていくよ。ワールド最後のステージをクリアしたときだけワールド画面に戻って、次のワールドが開き、Kがそこまで歩いていくよ。</p></li>
             <li><span class="tag">進む</span><p>画面左下の ◀ ▶ ボタンで左右に移動（PCは ←→ / AD）。右端の赤い旗がゴール。</p></li>
             <li><span class="tag">ジャンプ</span><p>右下の大きなボタンでジャンプ。長押しで高く、離すと低く。足場や動く床に乗って穴を越えよう。敵は上から踏んでも倒せる（踏んだ瞬間にジャンプ長押しで高く跳ねる）。着地せずに続けて踏むと、2回目から前にぐんと加速する——敵の列は踏み台の滑走路だ。</p></li>
@@ -1334,7 +1398,7 @@
             <li><span class="tag">エクストラ</span><p>ワールド10のステージX「真・最終決戦」でダークKを倒すと姿を現すおまけワールドが2つ。真・最終決戦は、ワールド10のボス（ステージ100）を倒したあと、そのワールドのマップに初めて姿を現す。それまではステージ選択にも出てこない（以前のルールですでに解放していたセーブデータでは、そのまま遊べる）。ワールド11『おかしのくに』はステージごとに主役の仕掛けが違う国：ゼリー（バネよりずっと高く跳ねる。地面に触れず続けて踏むと「れんさ」でさらに高く・遠くへ飛べる）、チョコのベタベタ地帯（地面に立つと足が重くなり、ジャンプも少し低くなる。足場の上に立っている間は平気）、回るペロペロ台が目玉で、長い街道・チョコの海・高い神殿まである。風は吹かない。ボスはペロペロ回転攻撃・クッキー爆弾・踏みつけで攻めるキャンディキング（皇帝はお菓子の子分も呼ぶ）。ワールド12『でんのういせき』はワープパッド（踏むだけで対のパッドへ一瞬でワープ。ゲートと違って止まる必要なし）とレーザー（暗い→赤い細線の予告→発射、の周期を繰り返す。光っている間だけ当たるとダメージ）が目玉で、ボスはレーザーを撃ち、グリッチ移動で消えては現れるサイバーコア（ポータルから子分のキューブも呼ぶ）。かけらは本編の10個で完結していて、エクストラにかけらはないよ。</p></li>
             <li><span class="tag">難易度</span><p>ステージが進むほど穴は広く、敵は多く速くなる。ワールド4以降は1ステージ自体も長くなっていく。ワールド4・5は新顔と新ギミックが重なり、ワールド6〜10はさらに密度と速度が上がる最終盤。にんじんの場所を覚えて挑もう。</p></li>
             <li><span class="tag">ボス</span><p>5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。物語の流れ：本編ワールドでは、5番目のボスを倒しても、ボスは「このやろう、覚えてろ！」と、にんじんクリスタルのかけらを持ったままワールドの奥へ逃げてしまう。10番目では、そのボスがパワーアップして帰ってくる——その再戦に勝って初めて、ボスは正気を取り戻し、そのワールドのかけらが手に入る。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——ワシの急降下もコウモリ伯爵の爪の急襲も、予告が出てから落ちてくる。ワシは急降下のあと地面すれすれを這って追ってきて、コウモリ伯爵は霧に消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、ユキマンモスは突進が2連続、ハチとコウモリ伯爵は攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメは着地で衝撃波を出し、ホネサンドワームは噛みつきと砂の波が2連続になる、水晶ゴーレムは水晶シャワーが2連射になる、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。ユキマンモスは鼻を上げたら突進の予告——壁にぶつかると衝撃波が走るので、波はジャンプでかわそう。台の上に居座ると、雪玉を山なりに投げてくる。ボスは全部で12種類＋真のラスボス：ハリネズミキングはトゲで頭が踏めない（弓で戦う）、ホネサンドワームは砂に潜ると矢がすり抜け、出没して顎で噛みつき、砂の波を走らせる（出てきた頭は踏める）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ氷の衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。叩き落としの合間には、水晶のかけらを山なりに降らせる「水晶シャワー」も放ってくる（怒ると、強化版は最初から、2連射になる）——台の上も遠くも安全地帯はない。さらに、地面に赤い印が並ぶと、水晶の柱が次々と突き上がりながら迫ってくる「水晶サージ」も放ってくる——下がるか、突き上げの先端をジャンプで越えよう、コウモリ伯爵は霧に消えると矢がすり抜け、暗赤の魔力弾を放ち、眷属のコウモリを呼んでくる、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。遠くにいると、炎ブレスがまっすぐ飛んでくる（皇帝は赤い照準線が止まったあとに撃ってくるが、キングには照準線が出ず、そのぶん炎も少し遅い。皇帝と怒ったキングは2連射）し、大きなマグマボールを1つ山なりに投げてくる——ボールが地面に落ちると両側およそ1マスにマグマが飛び散ってしばらく燃え（触れるとダメージ）、落ちた場所からプチ・マグママンが生まれてくる。さらに、地面が光った場所からはマグマ柱が吹き上がる（皇帝は最初から、キングは怒ってから）——光る地面の上には立たないこと。そしてワールド10のボス（ステージ100）を倒した先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——弱点が開くまでのたまり具合は、ボスのHPバーの下の金色のゲージで見えるよ。長い戦いほど、守るより攻めた方が早く終わる。</p></li>
-            <li><span class="tag">ボスラッシュ</span><p>ボス図鑑の中の連戦モード。コースは4つ（前半＝W1〜5の皇帝5体／後半＝W6〜10の皇帝5体／全て＝W1〜10の皇帝＋ダークKの11体／エクストラ＝W11・W12の皇帝2体）で、それぞれ、そのコースのボスを全員倒したデータで解放される。ハートはコースの中で持ち越し。1戦ごとに回復部屋に戻ってきて、そこにある「金の人参」を食べるとハートが全回復——ただし個数はコース全体の分だけ（前半3個／後半3個／全て6個／エクストラは回復なし）。食べるか、温存して進むかは自分で選ぶ。制覇するとコースごとのベストタイムと制覇回数が記録される。途中で力尽きると、そこまでの到達（○体目まで）が表示される。</p></li>
+            <li><span class="tag">ボスラッシュ</span><p>ボス図鑑の中の連戦モード。コースは4つ（前半＝W1〜5の皇帝5体／後半＝W6〜10の皇帝5体／全て＝W1〜10の皇帝＋ダークKの11体／エクストラ＝W11・W12の皇帝2体）で、それぞれ、そのコースのボスを全員倒したデータで解放される。ハートはコースの中で持ち越し。1戦ごとに休憩ステージ（敵のいない特設ステージ）へ移動して、そこに置かれた「金の人参」を実際に歩いて拾いに行く——拾った瞬間に食べたことになってハートが全回復。ただし個数はコース全体の分だけ（前半3個／後半3個／全て6個／エクストラは人参なし）。拾わずに出口の扉へ進めば温存でき、残した人参は次の休憩でも使える。制覇するとコースごとのベストタイムと制覇回数が記録される。途中で力尽きると、そこまでの到達（○体目まで）が表示される。</p></li>
             <li><span class="tag">アイテム</span><p>コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」としかけステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。</p></li>
             <li><span class="tag">評価</span><p>クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。</p></li>
             <li><span class="tag">横持ち</span><p>スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。</p></li>
@@ -1343,7 +1407,7 @@
           </details>
         </section>
 
-        <p class="share-note">このページは友達に配るための配布版です。記録（クリア状況・ベストスコア）はこの端末のブラウザに、セーブデータ1・2・3として保存されます。iPhoneでは開き方（Safari／ホーム画面）ごとに保存場所が分かれることがあるため、ホーム画面へ移すときや機種変更のときは「セーブデータ」画面の「データの引き継ぎ」でコードを作って移してください。</p>
+        <p class="share-note">このページは友達に配るための配布版です。記録（クリア状況・ベストスコア）はこの端末のブラウザに、セーブデータ1・2・3として保存されます。iPhoneでは開き方（Safari／ホーム画面）ごとに保存場所が分かれることがあるため、ホーム画面へ移すときや機種変更のときは「データ」画面の「引き継ぎコード」でコードを作って移してください。</p>
       </main>
     </div>
 
@@ -1355,16 +1419,18 @@
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
           </button>
           <div class="head-text" style="flex:1;min-width:0">
-            <h1 class="screen-title">セーブデータ</h1>
-            <p style="margin:0;font-size:0.75rem;font-weight:700;color:var(--dim)">あそぶデータを えらんでね（3つまで それぞれ独立）</p>
+            <h1 class="screen-title">データ</h1>
+            <p style="margin:0;font-size:0.75rem;font-weight:700;color:var(--dim)">あそぶデータの切替と、引き継ぎコードの画面です</p>
           </div>
           <button type="button" class="icon-btn sound-toggle" aria-label="サウンドをオフにする"></button>
         </div>
+        <h2 class="data-sec-title">あそぶデータの切替</h2>
+        <p style="margin:0.35rem 0 0;font-size:0.75rem;font-weight:700;color:var(--dim)">あそぶデータを えらんでね（3つまで それぞれ独立）</p>
         <div id="slot-list" class="slot-list"></div>
         <p style="margin-top:1.25rem;font-size:0.75rem;line-height:1.7;color:var(--dim)">データごとに、クリアしたステージ・星・かけらの進み具合が別々に残ります。スロットを切り替えても、ほかのデータの記録は消えません。</p>
 
-        <section id="transfer-panel" class="transfer-panel" aria-label="データの引き継ぎ">
-          <h2>データの引き継ぎ</h2>
+        <section id="transfer-panel" class="transfer-panel" aria-label="引き継ぎコード">
+          <h2>引き継ぎコード</h2>
           <p class="t-lead">iPhoneでは、<strong>Safariで開いたときと、ホーム画面のアイコンから開いたときで、記録の保存場所が別</strong>になることがあります。そのためホーム画面に追加しただけでは記録は自動で移りません。下の「引き継ぎコード」を使うと、セーブデータ1・2・3をまとめて移せます。機種変更のときも同じ手順です。</p>
           <ol class="transfer-steps">
             <li>記録が残っている方（例：Safari）で、この画面の「コードを作る」を押してコピーする（LINEやメモに送っておいてもOK）</li>
@@ -1427,7 +1493,7 @@
       </main>
     </div>
 
-    <!-- ============ BOSS RUSH （ボスラッシュ: 回復部屋／制覇／敗北) ============ -->
+    <!-- ============ BOSS RUSH （ボスラッシュ: 制覇／敗北パネル —— 休憩はゲーム画面の特設ステージ) ============ -->
     <div id="screen-rush" class="page hidden" role="dialog" aria-modal="true" aria-label="ボスラッシュ">
       <main class="wrap">
         <div id="rush-room"></div>
@@ -1978,7 +2044,7 @@
 
       /* ---------- how-to (same manual as the main game) ---------- */
       var HOWTO = [
-        ["セーブデータ", "記録はセーブデータ1・2・3の3つまで、それぞれ独立して残せるよ（マリオのデータ選択と同じ）。家族や友達と分けたり、最初から遊び直したりできる。タイトルの「セーブデータを かえる」から切り替えられて、スロット画面では各データの進み具合（クリア数・星・かけら）が見られる。いらなくなったデータはスロット画面から消せる（消す前に確認が出る）。今までの記録はそのままデータ1に入っているよ。"],
+        ["セーブデータ", "記録はセーブデータ1・2・3の3つまで、それぞれ独立して残せるよ（マリオのデータ選択と同じ）。家族や友達と分けたり、最初から遊び直したりできる。タイトルの「データ」から切り替えられて、データ画面では各データの進み具合（クリア数・星・かけら）が見られる。いらなくなったデータはデータ画面から消せる（消す前に確認が出る）。今までの記録はそのままデータ1に入っているよ。"],
         ["ステージ選択", "ステージ選択は、まず「ワールド」の画面で旅全体を見渡してワールドを選ぶと、そのワールドの「マップ」に入るよ（別のワールドへ行きたいときは「ワールドへもどる」で上の画面に戻って選び直す）。ワールド画面もマップと同じ操作：拠点をタップすると、ちっちゃいKが道を歩いて移動する——Kのいる拠点をタップすると「はいる？ はい／いいえ」の確認が出る（ワールド画面ではワールド、マップではステージ）。クリアした道は金色、星の記録は拠点の下に表示。急ぐときはマップ右上の「いちらん」ボタンからカード一覧でも選べるよ。ワールド10には、ワールドボス（10番目）を倒したあとにだけ姿を現すステージX「真・最終決戦」があるよ。エクストラワールドは真のラスボス・ダークKを倒すまで、ワールド画面にも姿を見せないよ。ステージをクリアすると、結果（スコア・星・タイム・コイン）だけの画面が出て、「マップへもどる」でそのワールドのマップに戻るよ——初めてのクリアなら、戻った瞬間に次のステージへの道が金色に伸びて、新しい拠点が開くのが見える——開いたら、Kがその新しい拠点まで歩いていくよ。ワールド最後のステージをクリアしたときだけワールド画面に戻って、次のワールドが開き、Kがそこまで歩いていくよ。"],
         ["進む", "画面左下の ◀ ▶ ボタンで左右に移動（PCは ←→ / AD）。右端の赤い旗がゴール。"],
         ["ジャンプ", "右下の大きなボタンでジャンプ。長押しで高く、離すと低く。足場や動く床に乗って穴を越えよう。敵は上から踏んでも倒せる（踏んだ瞬間にジャンプ長押しで高く跳ねる）。着地せずに続けて踏むと、2回目から前にぐんと加速する——敵の列は踏み台の滑走路だ。"],
@@ -2001,13 +2067,13 @@
         ["エクストラ", "ワールド10のステージX「真・最終決戦」でダークKを倒すと姿を現すおまけワールドが2つ。真・最終決戦は、ワールド10のボス（ステージ100）を倒したあと、そのワールドのマップに初めて姿を現す。それまではステージ選択にも出てこない（以前のルールですでに解放していたセーブデータでは、そのまま遊べる）。ワールド11『おかしのくに』はステージごとに主役の仕掛けが違う国：ゼリー（バネよりずっと高く跳ねる。地面に触れず続けて踏むと「れんさ」でさらに高く・遠くへ飛べる）、チョコのベタベタ地帯（地面に立つと足が重くなり、ジャンプも少し低くなる。足場の上に立っている間は平気）、回るペロペロ台が目玉で、長い街道・チョコの海・高い神殿まである。風は吹かない。ボスはペロペロ回転攻撃・クッキー爆弾・踏みつけで攻めるキャンディキング（皇帝はお菓子の子分も呼ぶ）。ワールド12『でんのういせき』はワープパッド（踏むだけで対のパッドへ一瞬でワープ。ゲートと違って止まる必要なし）とレーザー（暗い→赤い細線の予告→発射、の周期を繰り返す。光っている間だけ当たるとダメージ）が目玉で、ボスはレーザーを撃ち、グリッチ移動で消えては現れるサイバーコア（ポータルから子分のキューブも呼ぶ）。かけらは本編の10個で完結していて、エクストラにかけらはないよ。"],
         ["難易度", "ステージが進むほど穴は広く、敵は多く速くなる。ワールド4以降は1ステージ自体も長くなっていく。ワールド4・5は新顔と新ギミックが重なり、ワールド6〜10はさらに密度と速度が上がる最終盤。にんじんの場所を覚えて挑もう。"],
         ["ボス", "5の倍数のステージはボス戦（本編20戦＋エクストラ4戦）。ゴールはなく、横持ちで画面いっぱいに広がるアリーナでボスのHP（画面上部の赤いバー）を削って倒す。縦持ちではカメラが横にスクロールする。ボスの種類はワールドごとに統一されていて、各ワールドの5番目と10番目のステージで同じ種類と戦う（10番目は強化版）。物語の流れ：本編ワールドでは、5番目のボスを倒しても、ボスは「このやろう、覚えてろ！」と、にんじんクリスタルのかけらを持ったままワールドの奥へ逃げてしまう。10番目では、そのボスがパワーアップして帰ってくる——その再戦に勝って初めて、ボスは正気を取り戻し、そのワールドのかけらが手に入る。頭を踏めば安全にダメージ、横から触れると自分がダメージ。ただしボスが赤く光る攻撃中に踏むと相打ちで自分もダメージを受ける。どのボスの攻撃にも赤い予告（オーラと「！」）が出る——ワシの急降下もコウモリ伯爵の爪の急襲も、予告が出てから落ちてくる。ワシは急降下のあと地面すれすれを這って追ってきて、コウモリ伯爵は霧に消えたあと地面に姿を現して這い寄ることがある（その間は地面から頭を踏める）。HPが半分を切ると怒り状態（第2フェーズ）で速くなるうえ、種類ごとに新しい技が増える（スライムは着地で子分を呼ぶ、ユキマンモスは突進が2連続、ハチとコウモリ伯爵は攻撃が2連続、ハリネズミの転がりは壁で跳ね返る、カメは着地で衝撃波を出し、ホネサンドワームは噛みつきと砂の波が2連続になる、水晶ゴーレムは水晶シャワーが2連射になる、など）。強化版（10番目）のボスは、その新技を最初から使ってくる。HP40以上の長い戦いでは、怒り状態に入ったときにニンジンが1個だけ中央に再出現する。ユキマンモスは鼻を上げたら突進の予告——壁にぶつかると衝撃波が走るので、波はジャンプでかわそう。台の上に居座ると、雪玉を山なりに投げてくる。ボスは全部で12種類＋真のラスボス：ハリネズミキングはトゲで頭が踏めない（弓で戦う）、ホネサンドワームは砂に潜ると矢がすり抜け、出没して顎で噛みつき、砂の波を走らせる（出てきた頭は踏める）、カメキングは甲羅に閉じこもると矢を弾く、水晶ゴーレムキングは水晶洞窟の主で、いつでも当たる代わりに両手を振り上げて叩き落とし、両側へ氷の衝撃波を走らせる（怒ると、強化版は最初から、叩き落としのたびに子分のクリスタルスライムも呼んでくる）。叩き落としの合間には、水晶のかけらを山なりに降らせる「水晶シャワー」も放ってくる（怒ると、強化版は最初から、2連射になる）——台の上も遠くも安全地帯はない。さらに、地面に赤い印が並ぶと、水晶の柱が次々と突き上がりながら迫ってくる「水晶サージ」も放ってくる——下がるか、突き上げの先端をジャンプで越えよう、コウモリ伯爵は霧に消えると矢がすり抜け、暗赤の魔力弾を放ち、眷属のコウモリを呼んでくる、ハチクイーンは狙いを定めて地面まで届く猛ダッシュと、地面すれすれを横切る低空飛行で攻めてくる。最終ワールドのマグマキングはクリスタルの番人：火炎ブレス（地面に炎の帯）、踏みつけジャンプ（怒ると着地で両側へ衝撃波）で攻め、子分のプチ・マグママンを呼んでくる。遠くにいると、炎ブレスがまっすぐ飛んでくる（皇帝は赤い照準線が止まったあとに撃ってくるが、キングには照準線が出ず、そのぶん炎も少し遅い。皇帝と怒ったキングは2連射）し、大きなマグマボールを1つ山なりに投げてくる——ボールが地面に落ちると両側およそ1マスにマグマが飛び散ってしばらく燃え（触れるとダメージ）、落ちた場所からプチ・マグママンが生まれてくる。さらに、地面が光った場所からはマグマ柱が吹き上がる（皇帝は最初から、キングは怒ってから）——光る地面の上には立たないこと。そしてワールド10のボス（ステージ100）を倒した先には、まだ明かされていない最後の戦いが待っている…？（ネタバレ防止のため、ここでは伏せておくよ）ハリネズミ系のボスは、土台の上に居座るとトゲを飛ばして落としてくるし、カメ系のボスは大ジャンプで土台まで踏みに来る（着地で衝撃波も走る）——どのボス戦でも土台は安全地帯じゃないよ。攻撃を当て続けると、ボスの弱点が金色の輪とともに開く（約3秒間、与えるダメージが2倍）——弱点が開くまでのたまり具合は、ボスのHPバーの下の金色のゲージで見えるよ。長い戦いほど、守るより攻めた方が早く終わる。"],
-        ["ボスラッシュ", "ボス図鑑の中の連戦モード。コースは4つ（前半＝W1〜5の皇帝5体／後半＝W6〜10の皇帝5体／全て＝W1〜10の皇帝＋ダークKの11体／エクストラ＝W11・W12の皇帝2体）で、それぞれ、そのコースのボスを全員倒したデータで解放される。ハートはコースの中で持ち越し。1戦ごとに回復部屋に戻ってきて、そこにある「金の人参」を食べるとハートが全回復——ただし個数はコース全体の分だけ（前半3個／後半3個／全て6個／エクストラは回復なし）。食べるか、温存して進むかは自分で選ぶ。制覇するとコースごとのベストタイムと制覇回数が記録される。途中で力尽きると、そこまでの到達（○体目まで）が表示される。"],
+        ["ボスラッシュ", "ボス図鑑の中の連戦モード。コースは4つ（前半＝W1〜5の皇帝5体／後半＝W6〜10の皇帝5体／全て＝W1〜10の皇帝＋ダークKの11体／エクストラ＝W11・W12の皇帝2体）で、それぞれ、そのコースのボスを全員倒したデータで解放される。ハートはコースの中で持ち越し。1戦ごとに休憩ステージ（敵のいない特設ステージ）へ移動して、そこに置かれた「金の人参」を実際に歩いて拾いに行く——拾った瞬間に食べたことになってハートが全回復。ただし個数はコース全体の分だけ（前半3個／後半3個／全て6個／エクストラは人参なし）。拾わずに出口の扉へ進めば温存でき、残した人参は次の休憩でも使える。制覇するとコースごとのベストタイムと制覇回数が記録される。途中で力尽きると、そこまでの到達（○体目まで）が表示される。"],
         ["アイテム", "コインを集め、にんじんでHP回復（にんじんは難所の直後に置かれている）。星を取ると8秒むてき＆連射——星は各ワールドに1つの「星ステージ」としかけステージだけの特別なアイテムで、星ステージでは敵の群れの手前に置かれているから、取って一気に突っ切るのが見せ場。ハートが尽きるか、残りハートで穴に落ち続けるとゲームオーバー。"],
         ["評価", "クリアでスコアと★評価（1〜3）。★は3つの目標（コイン70%以上／ノーダメージ／目安タイム以内）で決まり、どれか1つ達成で★2、2つ達成で★3——被弾しても、速さやコインで取り返せる。ボス戦の目標は「目安タイム以内に撃破／ノーダメージ／弱点を突いた」の3つ。ノーダメージではボーナス+500も付く。連続で敵を倒すとコンボ倍率アップ、被弾でリセット。早クリアではタイムボーナスが付く（上限あり）。"],
         ["横持ち", "スマホを横向きにするとプレイ画面が横長に広がって、先のステージが見やすくなるよ。縦の見える範囲が狭くならないよう、横持ちのときだけ表示倍率が自動で少し引いて調整される。プレイ中に回転させてもそのまま続けられる。"],
         ["音", "BGMと効果音つき。BGMはワールドごとに専用のメロディがあり、キーとテンポ、音色も少しずつ違うアレンジになっている。水晶洞窟（ワールド6）と火山（ワールド10）はコード進行から専用の曲だよ（ボス戦の曲は共通）。右上のボタンでいつでもオン/オフできる。"],
         ["全画面", "ブラウザで開くと、上下にアドレスバーやツールバーが出て画面が狭くなります。共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開くと、バーなしの全画面で遊べます。すでに追加したのにバーが出る場合は、アイコンをいったん消して、もう一度追加し直してください（追加した時期や方法によって、昔のアイコンがブラウザで開くショートカットのままになっていることがあります）。"],
-        ["引き継ぎ", "iPhoneでは、Safariで開いたときとホーム画面のアイコンから開いたときで、記録の保存場所が別になることがあります。ホーム画面に追加しても記録が自動では移らないので、移すときは引き継ぎコードを使ってください。手順は3つ：①記録が残っている方で「セーブデータ」画面の「データの引き継ぎ」からコードを作ってコピー（LINEやメモに送っておくと楽）、②移したい方で同じ画面を開いてコードを貼り付け、③「このコードで引き継ぐ」を押して上書きを確認。これでセーブデータ1・2・3がまとめて移ります。コードを作る前に、元のアイコンやブラウザのデータを消さないでください——元の記録は元の開き方で開けば残っています。機種変更のときも同じ手順で移せます。"]
+        ["引き継ぎ", "iPhoneでは、Safariで開いたときとホーム画面のアイコンから開いたときで、記録の保存場所が別になることがあります。ホーム画面に追加しても記録が自動では移らないので、移すときは引き継ぎコードを使ってください。手順は3つ：①記録が残っている方で「データ」画面の「引き継ぎコード」からコードを作ってコピー（LINEやメモに送っておくと楽）、②移したい方で同じ画面を開いてコードを貼り付け、③「このコードで引き継ぐ」を押して上書きを確認。これでセーブデータ1・2・3がまとめて移ります。コードを作る前に、元のアイコンやブラウザのデータを消さないでください——元の記録は元の開き方で開けば残っています。機種変更のときも同じ手順で移せます。"]
       ];
       $("howto-list").innerHTML = HOWTO.map(function (r) {
         return '<li><span class="tag">' + r[0] + '</span><p>' + r[1] + "</p></li>";
@@ -2152,12 +2218,12 @@
         /* The carrot crystal itself, assembling shard by shard as
            the world bosses fall — the journey's progress at a
            glance, always on the title (mirrors the main build). */
-        $("story-crystal").innerHTML = carrotCrystalHtml(cleared, { heart: trueCleared, height: 112 });
+        $("story-crystal").innerHTML = carrotCrystalHtml(cleared, { heart: trueCleared, height: 84 });
         $("story-shard-count").textContent = "かけら " + n + "/10";
         var note = $("story-shard-note");
         note.textContent = n === 10
-          ? (trueCleared ? "にんじんクリスタルは元通り！" : "かけらは揃った。でも、まだ光らない…「心」が足りない！")
-          : "ワールドの10面でボスとの決着をつけよう";
+          ? (trueCleared ? "クリスタルは元通り！" : "あとは「心」だけ…！")
+          : "ワールドボスを倒して集めよう";
         note.classList.toggle("done", n === 10 && trueCleared);
         note.classList.toggle("missing", n === 10 && !trueCleared);
         /* Dark K himself is NOT on the title screen (mirrors the
@@ -2948,8 +3014,10 @@
            the total is a spoiler kept out of player-facing text) */
         $("btn-select").textContent = "ステージ選択";
         if (currentSlot) {
-          $("btn-slots-label").textContent = "データ" + currentSlot + "・かえる";
-          $("btn-slots").setAttribute("aria-label", "セーブデータ" + currentSlot + " で あそんでいます（かえる）");
+          /* the chip's visible label is just データ (the merged
+             data screen's name); which slot is live rides in the
+             aria-label, like the main build's chip */
+          $("btn-slots").setAttribute("aria-label", "データ —— セーブデータ" + currentSlot + " で あそんでいます（切替・引き継ぎ）");
         }
         renderStory();
       }
@@ -3959,18 +4027,21 @@
          open the moment Dark K falls, while "extra" needs the
          EXTRA worlds — which only open after Dark K — played
          through as well, so in unlock order "all" comes first.
-         Hearts carry over between a course's fights; between
-         fights the run returns to a recovery room holding a
-         fixed stock of GOLDEN carrots for the whole course
-         (eating one fully restores hearts; the stock never
-         refills mid-course and never carries into another
-         course). The extra course is a short no-recovery sprint:
-         its stock is zero. A course unlocks for a slot once
-         EVERY boss in it has been beaten individually in that
-         slot. Records (best full-course time + clear count) are
-         per slot per course, saved only on a full clear; a run
-         that falls mid-course saves nothing — its defeat screen
-         shows how far it got. */
+          Hearts carry over between a course's fights; between
+          fights the run detours to a rest stage (a playable
+          special stage, not a panel) holding a fixed stock of
+          GOLDEN carrots for the whole course (walking over one
+          eats it on the spot: hearts fully restore; the stock
+          never refills mid-course and never carries into
+          another course, and carrots left untaken in one rest
+          are still there at the next). The extra course is a
+          short no-recovery sprint:
+          its stock is zero. A course unlocks for a slot once
+          EVERY boss in it has been beaten individually in that
+          slot. Records (best full-course time + clear count) are
+          per slot per course, saved only on a full clear; a run
+          that falls mid-course saves nothing — its defeat screen
+          shows how far it got. */
       var RUSH_COURSES = [
         { id: "first", name: "前半コース", subLocked: "W1〜5の皇帝ボス", subUnlocked: "W1〜5の皇帝ボス", stages: [10, 20, 30, 40, 50], carrots: 3 },
         { id: "second", name: "後半コース", subLocked: "W6〜10の皇帝ボス", subUnlocked: "W6〜10の皇帝ボス", stages: [60, 70, 80, 90, 100], carrots: 3 },
@@ -4022,7 +4093,7 @@
       }
       function rushSectionHtml() {
         var html = '<section aria-label="ボスラッシュ"><h2 style="margin:1rem 0 0;font-size:1.125rem;font-weight:900">ボスラッシュ</h2>' +
-          '<p class="rush-note">皇帝ボスを続けて倒す連戦。ハートは次の戦いへ持ち越し——戦いの合間の回復部屋で、コース全体で個数が決まった「金の人参」を食べるとハート全回復。コースのボスを全員倒したデータで解放される。</p>' +
+          '<p class="rush-note">皇帝ボスを続けて倒す連戦。ハートは次の戦いへ持ち越し——戦いの合間は休憩ステージへ。コース全体で個数が決まった「金の人参」が置かれていて、実際に歩いて拾うとハート全回復。拾わずに出口の扉へ進んでもよく、残した人参は次の休憩でも使える。コースのボスを全員倒したデータで解放される。</p>' +
           '<div class="rush-grid">';
         RUSH_COURSES.forEach(function (c) { html += rushCardHtml(c); });
         html += "</div></section>";
@@ -4030,14 +4101,16 @@
       }
 
       /* One full rush attempt, owned end to end: fight →
-         recovery room → fight … → course clear (the record is
+         rest stage → fight … → course clear (the record is
          saved) or defeat (the reached count is shown; nothing
          is saved). The carried hearts and the golden carrot
          stock live in rushRun, not in the game: each fight is a
          fresh startGame that begins at the carried hearts and
-         reports the survivors back inside its ClearStats.
-         Quitting mid-run (the pause menu's exit) simply abandons
-         the attempt — partial runs are never recorded. */
+         reports the survivors back inside its ClearStats, and
+         each rest is a fresh startRestStage that begins at the
+         carried stock and reports the untaken carrots back the
+         same way. Quitting mid-run (a pause menu's exit) simply
+         abandons the attempt — partial runs are never recorded. */
       var rushRun = null;
       function recordRushClear(cid, totalTime) {
         if (!progress.rush) progress.rush = {};
@@ -4066,22 +4139,28 @@
             rushRun.recordFired = true;
             rushRun.lastResult = recordRushClear(rushRun.course.id, rushRun.totalTime);
           }
-          renderRushRoom("done");
+          renderRushPanel("done");
+          showScreen("rush");
         } else {
-          renderRushRoom("rest");
+          /* the recovery beat is a playable rest stage now, not
+             a panel room (synced from the main build,
+             2026-11-24): the run walks the rabbit to its
+             carrots and out the door */
+          startRestStage();
         }
-        showScreen("rush");
       }
       function rushOver(s) {
         if (!rushRun) return;
         if (game) { game.destroy(); game = null; }
         rushRun.totalTime += s.timeSec;
-        renderRushRoom("failed");
+        renderRushPanel("failed");
         showScreen("rush");
       }
       function exitRush() {
         rushRun = null;
         rushMode = false;
+        restMode = false;
+        $("screen-game").classList.remove("resting");
         if (game) { game.destroy(); game = null; }
         openBossGallery();
       }
@@ -4089,66 +4168,92 @@
         if (!rushRun) return;
         startRush(rushRun.course.id);
       }
-      /* the recovery room's golden carrot: the gold cut of the
-         sheet carrot with the main build's shine + twinkles; a
-         used-up carrot renders dim and grey — the room shows the
-         course's whole stock, so remaining heals read at a glance */
-      function goldenCarrotHtml(size, dim) {
-        var h = Math.round((size * 61) / 46);
-        var inner = '<img src="' + GOLD_CARROT_IMG + '" alt="" draggable="false" class="' + (dim ? "dim" : "gold-carrot-shine") + '" />';
-        if (!dim) {
-          inner += '<span class="gold-twinkle" style="left:-8%;top:0%;animation-delay:0s">✦</span>' +
-            '<span class="gold-twinkle" style="right:-10%;top:34%;animation-delay:0.55s">✧</span>' +
-            '<span class="gold-twinkle" style="left:10%;bottom:-6%;animation-delay:1.05s">✦</span>';
-        }
-        return '<span class="gold-carrot" style="width:' + size + "px;height:" + h + 'px" aria-hidden="true">' + inner + "</span>";
+      /* The recovery beat between rush fights, as a playable
+         special stage (synced from the main build, 2026-11-24 —
+         it replaces the old panel room): a short, safe meadow
+         in the real engine (Game.startRest) with the course's
+         remaining golden carrots laid out in the world. The
+         player walks the rabbit over to a carrot to eat it —
+         the pickup itself is the meal: hearts refill to full
+         on the spot, reported through the engine's
+         onGoldCarrot — and leaves through the exit door at the
+         right end; carrots left untaken stay in the stock for
+         the next rest. No enemies and no hazards live here, so
+         this visit has no game over and makes no record; time
+         spent here never counts toward the course record
+         either (the run only ever sums fight times). restMode
+         tells the shared game-screen furniture (pause menu,
+         exit) that the canvas is showing the rest stage, not a
+         fight. */
+      var restMode = false;
+      function startRestStage() {
+        if (!rushRun) return;
+        restMode = true;
+        rushMode = false;
+        fromBossGallery = false;
+        ended = false;
+        paused = false;
+        hideDialogue();
+        lastHp = -1;
+        lastHud = null;
+        $("hud-stage").textContent = "休憩ステージ";
+        var chip = $("hud-rush");
+        chip.classList.add("rest");
+        chip.classList.toggle("empty", rushRun.carrots <= 0);
+        chip.innerHTML = '<img src="' + GOLD_CARROT_IMG + '" alt="" draggable="false" />金の人参 あと <span id="hud-rest-left">' + rushRun.carrots + "</span> 個";
+        chip.classList.remove("hidden");
+        $("ov-pause").classList.add("hidden");
+        $("ov-clear").classList.add("hidden");
+        $("ov-over").classList.add("hidden");
+        $("controls").classList.remove("hidden");
+        $("screen-game").classList.add("resting");
+        showScreen("game");
+        enterImmersive();
+        if (game) { game.destroy(); game = null; }
+        game = new RA.Game($("game-canvas"), {
+          onHud: updateHud,
+          /* The rest stage can neither be cleared nor lost in
+             the stage sense — its only ending is the exit door,
+             which arrives through onRestExit. */
+          onClear: function () {},
+          onGameOver: function () {},
+          onPauseRequest: function () {
+            if (ended || dlgActive()) return;
+            setPaused(!paused);
+          },
+          onGoldCarrot: function (left) {
+            /* The room's stock and the course's stock are the
+               same pile: what is left lying here is what the
+               next rest will hold. */
+            if (rushRun) rushRun.carrots = left;
+            var el = $("hud-rest-left");
+            if (el) el.textContent = left;
+            chip.classList.toggle("empty", left <= 0);
+          },
+          onRestExit: function (r) {
+            ended = true;
+            releaseAllPads();
+            if (!rushRun) return;
+            rushRun.hp = r.hp;
+            rushRun.carrots = r.carrotsLeft;
+            rushRun.index += 1;
+            restMode = false;
+            startGame(rushRun.course.stages[rushRun.index], { rush: true });
+          }
+        });
+        game.startRest(rushRun.hp, rushRun.carrots);
       }
-      function rushHeartsHtml(hp) {
-        var html = '<span class="hearts" role="img" aria-label="残り体力 ハート ' + hp + '/3">';
-        for (var i = 0; i < 3; i++) html += heartHtml(i < hp);
-        return html + "</span>";
-      }
-      function renderRushRoom(phase) {
+      /* (The panel recovery room is gone: between fights the
+         run now walks a playable rest stage — see
+         startRestStage. This screen keeps only the course-
+         clear and defeat panels.) */
+      function renderRushPanel(phase) {
         var course = rushRun.course;
         var total = course.stages.length;
         var index = rushRun.index;
         var stageDef = STAGES[course.stages[Math.min(index, total - 1)] - 1];
         var html = "";
-        if (phase === "rest") {
-          var nextDef = STAGES[course.stages[index + 1] - 1];
-          html += '<p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.3em;color:var(--dim)">REST ROOM</p>';
-          html += '<h1 class="screen-title" style="margin-top:0.25rem">回復部屋</h1>';
-          html += '<p style="margin-top:0.25rem;font-size:0.875rem;font-weight:700;color:var(--dim);font-variant-numeric:tabular-nums">' +
-            course.name + " —— " + (index + 1) + "体目「" + (stageDef.boss ? stageDef.boss.name : "") + "」を撃破！ 経過タイム " + fmtTime(rushRun.totalTime) + " ／ 残り " + (total - index - 1) + "体</p>";
-          html += '<div class="rush-panel"><div class="rush-panel-row"><span class="rush-panel-label">いまのハート</span>' + rushHeartsHtml(rushRun.hp) + "</div>";
-          html += '<div class="rush-divider"><div class="rush-panel-row"><span class="rush-panel-label">金の人参</span><span class="rush-panel-label" style="font-variant-numeric:tabular-nums">あと ' + rushRun.carrots + " 個</span></div>";
-          if (course.carrots > 0) {
-            html += '<div class="rush-stock" aria-hidden="true">';
-            for (var ci = 0; ci < course.carrots; ci++) html += goldenCarrotHtml(34, ci >= rushRun.carrots);
-            html += "</div>";
-            html += '<p class="rush-note" style="margin-top:0.375rem">食べるとハートが全回復。個数はコース全体の分だけ——使いどころを考えよう。</p>';
-          } else {
-            html += '<p class="rush-note" style="margin-top:0.375rem">このコースは回復なし——ニンジンは置かれていない。</p>';
-          }
-          html += "</div></div>";
-          if (nextDef && nextDef.boss) {
-            var nIcon = BOSS_ICON[nextDef.boss.kind];
-            html += '<div class="rush-next">' + (nIcon ? '<img src="' + nIcon + '" alt="" draggable="false" />' : "") +
-              '<div style="min-width:0"><p class="rush-next-kicker">次の相手（' + (index + 2) + '体目）</p>' +
-              '<p class="rush-next-name">' + nextDef.boss.name + '<span class="stage">' + (nextDef.id === 121 ? "ステージX" : "ステージ" + stageNumLabel(nextDef.id)) + "</span></p></div></div>";
-          }
-          html += '<div class="rush-btns">';
-          if (rushRun.carrots > 0) {
-            html += '<button type="button" id="rush-eat" class="rush-btn gold"' + (rushRun.hp >= 3 ? " disabled" : "") + ">" +
-              (rushRun.hp >= 3 ? "金の人参を食べる（ハートは満タン）" : "金の人参を食べる（ハート全回復）") + "</button>";
-          }
-          if (rushRun.carrots === 0 && course.carrots > 0) {
-            html += '<p class="rush-none-note">金の人参はもうない</p>';
-          }
-          html += '<button type="button" id="rush-next" class="rush-btn primary">' + (rushRun.carrots > 0 && rushRun.hp < 3 ? "食べずに次のボスへ進む" : "次のボスへ進む") + "</button>";
-          html += '<button type="button" id="rush-quit" class="rush-btn">ラッシュをやめて図鑑へもどる</button>';
-          html += "</div>";
-        } else if (phase === "done") {
+        if (phase === "done") {
           var res = rushRun.lastResult;
           html += '<p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.3em;color:var(--dim)">BOSS RUSH CLEAR</p>';
           html += '<h1 class="screen-title" style="margin-top:0.25rem">' + course.name + " 制覇！</h1>";
@@ -4176,22 +4281,6 @@
             '<button type="button" id="rush-quit" class="rush-btn">ボス図鑑へもどる</button></div>';
         }
         $("rush-room").innerHTML = html;
-        var eatBtn = $("rush-eat");
-        if (eatBtn) eatBtn.addEventListener("click", function () {
-          if (!rushRun || rushRun.carrots <= 0 || rushRun.hp >= 3) return;
-          RA.unlockAudio();
-          if (RA.sfx.carrot) RA.sfx.carrot();
-          rushRun.carrots -= 1;
-          rushRun.hp = 3;
-          renderRushRoom("rest");
-        });
-        var nextBtn = $("rush-next");
-        if (nextBtn) nextBtn.addEventListener("click", function () {
-          if (!rushRun) return;
-          RA.unlockAudio(); RA.sfx.click();
-          rushRun.index += 1;
-          startGame(rushRun.course.stages[rushRun.index], { rush: true });
-        });
         var retryBtn = $("rush-retry");
         if (retryBtn) retryBtn.addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); retryRush(); });
         var quitBtn = $("rush-quit");
@@ -4200,7 +4289,7 @@
         if (saveRetryBtn) saveRetryBtn.addEventListener("click", function () {
           if (rushRun && rushRun.lastResult && saveProgress()) {
             rushRun.lastResult.saved = true;
-            renderRushRoom("done");
+            renderRushPanel("done");
           }
         });
       }
@@ -4556,14 +4645,10 @@
         el.textContent = msg || "";
         el.className = "transfer-status" + (kind ? " " + kind : "");
       }
-      function openTransfer() {
-        openSlots();
-        setTimeout(function () {
-          var panel = $("transfer-panel");
-          if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 60);
-      }
-      $("btn-transfer").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openTransfer(); });
+      /* (There is no separate transfer entrance any more: the
+         title's single データ chip opens the データ screen,
+         whose second section IS the transfer code — see
+         openSlots and the #transfer-panel markup.) */
       $("btn-transfer-export").addEventListener("click", function () {
         RA.unlockAudio(); RA.sfx.click();
         var status = $("transfer-export-status");
@@ -4681,7 +4766,7 @@
       $("btn-bosses-back").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); renderTitle(); showScreen("title"); });
       $("btn-back-title").addEventListener("click", function () { renderTitle(); showScreen("title"); });
       $("btn-ending").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openEnding(isCleared(121) ? "true" : "fake"); });
-      $("btn-opening").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openOpening(); });
+      $("btn-story").addEventListener("click", function () { RA.unlockAudio(); RA.sfx.click(); openOpening(); });
       $("opening-next").addEventListener("click", function () {
         RA.sfx.click();
         if (openingIndex >= OPENING_PANELS.length - 1) closeOpening();
@@ -4736,10 +4821,17 @@
         if (game) game.paused = v;
         $("ov-pause").classList.toggle("hidden", !v);
         if (v) {
-          $("btn-exit-p").textContent = rushMode ? "ボスラッシュをやめる" : fromBossGallery ? "ボス図鑑へもどる" : "マップへもどる";
-          $("btn-restart-p").classList.toggle("hidden", rushMode);
+          $("btn-exit-p").textContent = (rushMode || restMode) ? "ボスラッシュをやめる" : fromBossGallery ? "ボス図鑑へもどる" : "マップへもどる";
+          $("btn-restart-p").classList.toggle("hidden", rushMode || restMode);
         }
-        if (v && lastHud) {
+        if (v && restMode && rushRun) {
+          /* the rest stage's pause line (mirrors the main
+             build): hearts, the stock left in the room, and who
+             waits through the door */
+          var nd = STAGES[rushRun.course.stages[rushRun.index + 1] - 1];
+          $("pause-sub").textContent = "休憩ステージ ／ ハート " + (lastHud ? lastHud.hp : rushRun.hp) + "/3 ／ 金の人参 あと" + rushRun.carrots + "個" +
+            (nd && nd.boss ? " ／ つぎの相手：" + nd.boss.name : "");
+        } else if (v && lastHud) {
           var def = STAGES[curStage - 1];
           $("pause-sub").textContent = "ステージ" + stageNumLabel(curStage) + " " + (def ? def.name : "") + " ／ " + fmtTime(lastHud.timeSec) + " ／ コイン " + lastHud.coins + " ／ 討伐 " + lastHud.kills + " ／ スコア " + lastHud.score.toLocaleString();
         }
@@ -4926,12 +5018,14 @@
         var def = STAGES[stage - 1];
         $("hud-stage").textContent = "STAGE " + stageNumLabel(stage) + " " + (def ? def.name : "");
         var rushChip = $("hud-rush");
+        rushChip.classList.remove("rest", "empty");
         if (rushMode && rushRun) {
           rushChip.textContent = "ボスラッシュ " + (rushRun.index + 1) + "/" + rushRun.course.stages.length + "体目";
           rushChip.classList.remove("hidden");
         } else {
           rushChip.classList.add("hidden");
         }
+        $("screen-game").classList.remove("resting");
         $("ov-pause").classList.add("hidden");
         $("ov-clear").classList.add("hidden");
         $("ov-over").classList.add("hidden");
@@ -5083,7 +5177,7 @@
         /* a rush run's pause exit abandons the whole attempt
            (partial runs are never recorded) and lands back on
            the gallery the run started from */
-        if (rushMode) { exitRush(); return; }
+        if (rushMode || restMode) { exitRush(); return; }
         if (fromBossGallery) { exitToBossGallery(); return; }
         var def = STAGES[curStage - 1];
         applyReturn({ view: "map", world: def ? def.world : currentWorld, standingStage: curStage });
