@@ -69,6 +69,11 @@
       }
       button { font-family: inherit; cursor: pointer; min-height: 2rem; }
       .hidden { display: none !important; }
+      /* 文節折り返し (synced from the main build's JpText): prose
+         rendered through jpChunks may only break between 文節
+         chunks (joined with zero-width spaces); anywhere-wrap
+         stays as the safety valve for an over-long chunk. */
+      .jp-wrap { line-break: strict; overflow-wrap: anywhere; word-break: keep-all; }
 
       /* ---------- title / select shared ---------- */
       .page { min-height: 100dvh; }
@@ -1397,7 +1402,7 @@
             <div>
               <p class="kicker light">RABBIT ARCHER — 横スクロールアクション</p>
               <h1 class="game-title light">ラビットアーチャー</h1>
-              <p class="cover-story-line">砕かれたにんじんクリスタルのかけらを集めるため、弓の得意なこうさぎ「K」が世界へ旅に出る。</p>
+              <p class="cover-story-line jp">砕かれたにんじんクリスタルのかけらを集めるため、弓の得意なこうさぎ「K」が世界へ旅に出る。</p>
             </div>
           <div class="hero-rabbit">
             <div class="rabbit-stand">
@@ -1415,7 +1420,7 @@
             <p id="title-totals" class="totals light">クリア 0 ／ 星 0 ／ 通算 0 回クリア</p>
           </div>
           <section class="cover-actions" aria-label="はじめる">
-            <p id="all-clear" class="all-clear-banner hidden">全ステージ制覇！ おつかれさま——タイムとコインの記録更新に挑もう。</p>
+            <p id="all-clear" class="all-clear-banner hidden jp">全ステージ制覇！ おつかれさま——タイムとコインの記録更新に挑もう。</p>
             <div class="cover-main-btns">
               <button type="button" id="btn-continue" class="big-btn primary slim"><span class="btn-label" id="btn-continue-label">つづきから —— ステージ1 もりのはじまり</span></button>
               <button type="button" id="btn-select" class="big-btn slim">ステージ選択</button>
@@ -1426,7 +1431,7 @@
               <button type="button" id="btn-slots" class="cover-chip" aria-label="データ —— セーブデータ1 で あそんでいます（切替・引き継ぎ）"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.4" rx="7" ry="2.7"/><path d="M5 5.4v13.2c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7V5.4"/><path d="M5 12c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7"/></svg>データ</button>
             </div>
             <p id="story-extra-note" class="cover-extra-note hidden"></p>
-            <p id="tab-hint" class="totals light tab-hint hidden">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。※iPhoneではブラウザとホーム画面アプリで記録の保存場所が別になることがあります。追加する前に「データ」の「引き継ぎコード」でコードを作っておくと、ホーム画面版へそのまま移せます。</p>
+            <p id="tab-hint" class="totals light tab-hint hidden jp">ブラウザで開くと上下にバーが出ます。全画面で遊ぶには、共有ボタンから「ホーム画面に追加」して、ホーム画面のアイコンから開いてね。追加済みでもバーが出るときは、アイコンを消してもう一度追加し直してみてください。※iPhoneではブラウザとホーム画面アプリで記録の保存場所が別になることがあります。追加する前に「データ」の「引き継ぎコード」でコードを作っておくと、ホーム画面版へそのまま移せます。</p>
           </section>
         </div>
       </header>
@@ -1445,7 +1450,7 @@
              main build's home screen, synced 2026-11-25) — only
              the share note remains below the hero now. -->
 
-        <p class="share-note">このページは友達に配るための配布版です。記録（クリア状況・ベストスコア）はこの端末のブラウザに、セーブデータ1・2・3として保存されます。iPhoneでは開き方（Safari／ホーム画面）ごとに保存場所が分かれることがあるため、ホーム画面へ移すときや機種変更のときは「データ」画面の「引き継ぎコード」でコードを作って移してください。</p>
+        <p class="share-note jp">このページは友達に配るための配布版です。記録（クリア状況・ベストスコア）はこの端末のブラウザに、セーブデータ1・2・3として保存されます。iPhoneでは開き方（Safari／ホーム画面）ごとに保存場所が分かれることがあるため、ホーム画面へ移すときや機種変更のときは「データ」画面の「引き継ぎコード」でコードを作って移してください。</p>
       </main>
     </div>
 
@@ -1465,17 +1470,17 @@
         <h2 class="data-sec-title">あそぶデータの切替</h2>
         <p style="margin:0.35rem 0 0;font-size:0.75rem;font-weight:700;color:var(--dim)">あそぶデータを えらんでね（3つまで それぞれ独立）</p>
         <div id="slot-list" class="slot-list"></div>
-        <p style="margin-top:1.25rem;font-size:0.75rem;line-height:1.7;color:var(--dim)">データごとに、クリアしたステージ・星・かけらの進み具合が別々に残ります。スロットを切り替えても、ほかのデータの記録は消えません。</p>
+        <p class="jp" style="margin-top:1.25rem;font-size:0.75rem;line-height:1.7;color:var(--dim)">データごとに、クリアしたステージ・星・かけらの進み具合が別々に残ります。スロットを切り替えても、ほかのデータの記録は消えません。</p>
 
         <section id="transfer-panel" class="transfer-panel" aria-label="引き継ぎコード">
           <h2>引き継ぎコード</h2>
-          <p class="t-lead">iPhoneでは、<strong>Safariで開いたときと、ホーム画面のアイコンから開いたときで、記録の保存場所が別</strong>になることがあります。そのためホーム画面に追加しただけでは記録は自動で移りません。下の「引き継ぎコード」を使うと、セーブデータ1・2・3をまとめて移せます。機種変更のときも同じ手順です。</p>
+          <p class="t-lead jp">iPhoneでは、<strong>Safariで開いたときと、ホーム画面のアイコンから開いたときで、記録の保存場所が別</strong>になることがあります。そのためホーム画面に追加しただけでは記録は自動で移りません。下の「引き継ぎコード」を使うと、セーブデータ1・2・3をまとめて移せます。機種変更のときも同じ手順です。</p>
           <ol class="transfer-steps">
             <li>記録が残っている方（例：Safari）で、この画面の「コードを作る」を押してコピーする（LINEやメモに送っておいてもOK）</li>
             <li>移したい方（例：ホーム画面のアイコン）でこの画面を開き、コードを貼り付ける</li>
             <li>「このコードで引き継ぐ」を押して確認すると、そのまま続きから遊べる</li>
           </ol>
-          <p class="t-lead" style="margin-top:0.6rem">※コードを作る前に、移したい方のアイコンやブラウザのデータを消さないでください。元の記録は元の開き方で開けば残っています。</p>
+          <p class="t-lead jp" style="margin-top:0.6rem">※コードを作る前に、移したい方のアイコンやブラウザのデータを消さないでください。元の記録は元の開き方で開けば残っています。</p>
 
           <div class="transfer-sec">
             <h3>1. コードを作る（記録がある方で）</h3>
@@ -1486,14 +1491,14 @@
                 <button type="button" id="btn-transfer-copy" class="transfer-btn sub">コードをコピー</button>
                 <button type="button" id="btn-transfer-download" class="transfer-btn sub">ファイルに保存</button>
               </div>
-              <p style="margin-top:0.5rem">コードは長めです。全部をコピーしてください。自分宛てのLINEやメモに貼って送ると、ホーム画面版で貼り付けやすくなります。</p>
+              <p class="jp" style="margin-top:0.5rem">コードは長めです。全部をコピーしてください。自分宛てのLINEやメモに貼って送ると、ホーム画面版で貼り付けやすくなります。</p>
             </div>
             <p id="transfer-export-status" class="transfer-status" role="status"></p>
           </div>
 
           <div class="transfer-sec">
             <h3>2. コードで引き継ぐ（移したい方で）</h3>
-            <p>作ったコードを下に貼り付けてください。ファイルに保存した場合は「ファイルから読み込む」でもOKです。</p>
+            <p class="jp">作ったコードを下に貼り付けてください。ファイルに保存した場合は「ファイルから読み込む」でもOKです。</p>
             <textarea id="transfer-import-text" class="transfer-code" placeholder="ここに引き継ぎコードを貼り付け（RA1. ではじまる長い文字列）" aria-label="貼り付ける引き継ぎコード"></textarea>
             <div class="transfer-btn-row">
               <button type="button" id="btn-transfer-import" class="transfer-btn primary">このコードで引き継ぐ</button>
@@ -1501,7 +1506,7 @@
             </div>
             <input type="file" id="transfer-file" accept=".txt,text/plain" class="hidden" />
             <div id="transfer-confirm" class="transfer-confirm hidden">
-              <p>読み込んだ記録で、<strong>今この開き方に残っている記録を上書き</strong>します。よろしいですか？</p>
+              <p class="jp">読み込んだ記録で、<strong>今この開き方に残っている記録を上書き</strong>します。よろしいですか？</p>
               <p id="transfer-confirm-sum" class="sum"></p>
               <div class="confirm-btns" style="margin-top:0.75rem">
                 <button type="button" id="btn-transfer-yes" class="btn primary" style="display:flex;min-height:52px;align-items:center;justify-content:center;border-radius:12px;font-size:1rem;border:1px solid var(--accent);background:var(--accent);color:#fbf8ef;font-weight:900">上書きして引き継ぐ</button>
@@ -1574,7 +1579,7 @@
           <div id="world-panel-ls" class="world-panel"></div>
           <div id="map-infobar"></div>
           <div id="map-unlock-slot"></div>
-          <p class="map-note">拠点をタップでKが移動。Kのいる拠点をタップで入室確認。カード派は右上「いちらん」から。</p>
+          <p class="map-note jp">拠点をタップでKが移動。Kのいる拠点をタップで入室確認。カード派は右上「いちらん」から。</p>
           <p id="map-hint" class="map-hint hidden" role="status"></p>
           </div>
           </div>
@@ -1689,7 +1694,7 @@
           <div id="clear-shard"></div>
           <div id="clear-savefail" class="save-fail hidden" role="alert">
             <p class="t">記録を保存できませんでした</p>
-            <p class="d">保存先（この端末のブラウザ）に書き込めなかったため、このクリアはまだ記録されていません。</p>
+            <p class="d jp">保存先（この端末のブラウザ）に書き込めなかったため、このクリアはまだ記録されていません。</p>
             <button type="button" id="btn-save-retry" class="btn-retry">保存をやり直す</button>
           </div>
           <div class="score-box">
@@ -1914,6 +1919,123 @@
       function __raInit() {
       var RA = window.RabbitArcher;
       var STAGES = RA.STAGES;
+
+      /* ---------- Japanese phrase wrapping （文節折り返し) ----------
+         Synced from the main build's JpText (2026-11-25). The
+         shell's own prose — story / ending / world intros / boss
+         gallery and the like — used to wrap wherever a line
+         happened to fill, splitting words mid-way (「握ってい／
+         る」「待っ／ている」「復／活！」). jpChunks splits a
+         string into 文節-sized chunks from Intl.Segmenter (word
+         granularity) plus the glue rules below: particles,
+         auxiliaries, okurigana and punctuation are glued onto
+         the chunk before them, prefix morphemes （各〜, こ〜)
+         onto the chunk after them, and a one-character chunk
+         never stands alone. Renderers join the chunks with
+         zero-width spaces inside a .jp-wrap (keep-all) element,
+         so a line may only break BETWEEN chunks; where
+         Segmenter is unavailable the text renders as before. */
+      var JP_SEGMENTER = (function () {
+        try {
+          return typeof Intl !== "undefined" && "Segmenter" in Intl
+            ? new Intl.Segmenter("ja", { granularity: "word" })
+            : null;
+        } catch (e) { return null; }
+      })();
+      // auxiliaries / endings that complete the word before them
+      var JP_AUX = new Set([
+        "いる", "いた", "いて", "ある", "あり", "する", "した", "して", "なる", "なっ",
+        "れる", "られ", "せる", "させ", "たい", "ます", "です", "だっ", "たち", "ども",
+        "きた", "きて", "くる", "いく", "みる", "おく", "しまう", "から", "まで", "より",
+        "ほど", "だけ", "しか", "など", "なり", "たり", "では", "には", "ても", "でも",
+        "ない", "なく", "まった", "けた",
+      ]);
+      // verb tails that complete a hiragana stem before them
+      // （でき＋ていた, はじ＋まり, 散ら＋ばった, し＋まった)
+      var JP_HIRA_TAIL = new Set(["ていた", "てきた", "てい", "てき", "まり", "ばった", "まっ"]);
+      var JP_OPEN = new Set(["「", "『", "（", "【", "〈", "《", "〔"]);
+      var JP_FORWARD = new Set(["各"]); // prefix: belongs to the word after it
+      var JP_CLOSE_PUNCT = /^[、。！？・：；」』）】〉》…‥％%]$/;
+      var JP_HIRAGANA = /^[\p{Script=Hiragana}ー]+$/u;
+      var JP_HAN1 = /^\p{Script=Han}$/u;
+      var jpChunkCache = new Map();
+      function jpChunks(text) {
+        var hit = jpChunkCache.get(text);
+        if (hit) return hit;
+        var out;
+        if (!JP_SEGMENTER || text.length < 4) {
+          out = [text];
+        } else {
+          var segs = Array.from(JP_SEGMENTER.segment(text), function (s) { return s.segment; });
+          var chunks = [];
+          var pendingOpen = ""; // opening brackets / prefix morphemes waiting for their word
+          var prevSeg = "";
+          for (var si = 0; si < segs.length; si++) {
+            var seg = segs[si] || "";
+            if (JP_OPEN.has(seg) || JP_FORWARD.has(seg) || (seg === "こ" && JP_HIRAGANA.test(segs[si + 1] || ""))) {
+              pendingOpen += seg;
+              prevSeg = seg;
+              continue;
+            }
+            var cur = chunks[chunks.length - 1];
+            var sentenceEnd = cur !== undefined && /[。！？]$/.test(cur);
+            var glue = false;
+            if (cur !== undefined && !sentenceEnd) {
+              if (JP_CLOSE_PUNCT.test(seg)) glue = true;
+              else if (seg.length === 1) {
+                // a lone kanji glues back only when it continues
+                // the word before it （城の主, 番人, 取り戻) — not
+                // after a て-form auxiliary （込んで／眠る) and
+                // not right after a comma, where it starts fresh
+                glue = !JP_HAN1.test(seg) || (!JP_AUX.has(prevSeg) && !/[てで、・]$/.test(prevSeg));
+              }
+              else if (/^[っゃゅょぁぃぅぇぉゎ]/.test(seg)) glue = true;
+              else if (JP_AUX.has(seg)) glue = true;
+              else if (JP_HIRA_TAIL.has(seg) && JP_HIRAGANA.test(prevSeg)) glue = true;
+              else if (JP_HIRAGANA.test(seg) && JP_HAN1.test(prevSeg)) glue = true;
+              else if (/^\s+$/.test(seg)) glue = true;
+            }
+            if (glue && cur !== undefined) chunks[chunks.length - 1] = cur + pendingOpen + seg;
+            else chunks.push(pendingOpen + seg);
+            pendingOpen = "";
+            prevSeg = seg;
+          }
+          if (pendingOpen && chunks.length) chunks[chunks.length - 1] += pendingOpen;
+          // a one-character chunk never stands alone: fold it
+          // into the next chunk (or the previous one, at the end)
+          out = [];
+          for (var i = 0; i < chunks.length; i++) {
+            var c = chunks[i] || "";
+            if (c.length === 1 && i + 1 < chunks.length) chunks[i + 1] = c + (chunks[i + 1] || "");
+            else if (c.length === 1 && out.length) out[out.length - 1] += c;
+            else out.push(c);
+          }
+          if (out.length <= 1) out = [text];
+        }
+        jpChunkCache.set(text, out);
+        return out;
+      }
+      /* The chunked form of a string: chunks joined by zero-width
+         spaces — set as text (or interpolated into innerHTML
+         templates) inside a .jp-wrap element. */
+      function jpStr(text) {
+        var chunks = jpChunks(text);
+        return chunks.length <= 1 ? text : chunks.join("\u200B");
+      }
+      function setJpText(el, text) {
+        el.textContent = jpStr(text);
+        el.classList.add("jp-wrap");
+      }
+      /* Static prose written directly in the markup carries
+         class "jp": chunk each of its text nodes in place. */
+      function jpChunkElement(el) {
+        el.classList.add("jp-wrap");
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (n) { if (n.nodeValue) n.nodeValue = jpStr(n.nodeValue); });
+      }
+      document.querySelectorAll(".jp").forEach(function (el) { jpChunkElement(el); });
 
       /* ---------- per-device progress (this distribution build only) ---------- */
       var PKEY = "rabbit-archer-share-progress-v1";
@@ -2252,9 +2374,9 @@
         $("story-crystal").innerHTML = carrotCrystalHtml(cleared, { heart: trueCleared, height: 84 });
         $("story-shard-count").textContent = "かけら " + n + "/10";
         var note = $("story-shard-note");
-        note.textContent = n === 10
+        setJpText(note, n === 10
           ? (trueCleared ? "クリスタルは元通り！" : "あとは「心」だけ…！")
-          : "ワールドボスを倒して集めよう";
+          : "ワールドボスを倒して集めよう");
         note.classList.toggle("done", n === 10 && trueCleared);
         note.classList.toggle("missing", n === 10 && !trueCleared);
         /* Dark K himself is NOT on the title screen (mirrors the
@@ -2265,12 +2387,12 @@
            says where he waits, in the note line here. */
         var extraNote = $("story-extra-note");
         if (extrasOpen()) {
-          extraNote.textContent = "エクストラワールド（ステージ101〜120）も解放されているよ——ステージ選択からどうぞ。";
+          setJpText(extraNote, "エクストラワールド（ステージ101〜120）も解放されているよ——ステージ選択からどうぞ。");
           extraNote.classList.remove("hidden");
         } else if (isCleared(100)) {
-          extraNote.textContent = trueCleared
+          setJpText(extraNote, trueCleared
             ? "ダークKを倒すと、エクストラワールド（ステージ101〜120）が解放されるよ。"
-            : "ワールド10のマップに、ステージX「真・最終決戦」が姿を現したよ。ダークKを倒すと、エクストラワールド（ステージ101〜120）が解放されるよ。";
+            : "ワールド10のマップに、ステージX「真・最終決戦」が姿を現したよ。ダークKを倒すと、エクストラワールド（ステージ101〜120）が解放されるよ。");
           extraNote.classList.remove("hidden");
         } else {
           extraNote.classList.add("hidden");
@@ -2317,7 +2439,7 @@
         var p = endingPanels[Math.min(endingIndex, endingPanels.length - 1)];
         if (!p) return;
         var last = endingIndex >= endingPanels.length - 1;
-        $("ending-heading").textContent = p.heading || "";
+        setJpText($("ending-heading"), p.heading || "");
         $("ending-heading").classList.toggle("hidden", !p.heading);
         /* The assembled crystal: in the fake ending all ten shards
            are in place but the heart is missing, so it stays dark;
@@ -2335,21 +2457,21 @@
           crystal.innerHTML = "";
         }
         var caption = $("ending-caption");
-        caption.textContent = p.caption || "";
+        setJpText(caption, p.caption || "");
         caption.classList.toggle("hidden", !p.caption);
         var darkbox = $("ending-darkbox");
         if (p.dark) {
-          $("ending-darktext").textContent = p.text || "";
+          setJpText($("ending-darktext"), p.text || "");
           darkbox.classList.remove("hidden");
         } else {
           darkbox.classList.add("hidden");
         }
         var plainText = p.text && !p.dark && !p.final ? p.text : "";
         var text = $("ending-text");
-        text.textContent = plainText;
+        setJpText(text, plainText);
         text.classList.toggle("hidden", !plainText);
         var thanksBox = $("ending-thanks-box");
-        thanksBox.textContent = p.final && p.text ? p.text : "";
+        setJpText(thanksBox, p.final && p.text ? p.text : "");
         thanksBox.classList.toggle("hidden", !(p.final && p.text));
         var totals = $("ending-totals");
         if (p.final) {
@@ -2933,7 +3055,7 @@
         else { sp.textContent = "ものがたり"; sp.className = "dlg-speaker"; }
         $("dlg-count").textContent = (dlgIndex + 1) + "/" + dlgLines.length;
         var el = $("dlg-line");
-        el.textContent = line.text;
+        setJpText(el, line.text);
         el.classList.remove("dialogue-line");
         void el.offsetWidth;
         el.classList.add("dialogue-line");
@@ -3014,8 +3136,8 @@
       }
       function renderOpeningPanel() {
         var p = OPENING_PANELS[Math.min(openingIndex, OPENING_PANELS.length - 1)];
-        $("opening-heading").textContent = p.heading;
-        $("opening-text").textContent = p.text;
+        setJpText($("opening-heading"), p.heading);
+        setJpText($("opening-text"), p.text);
         var panel = $("opening-panel");
         panel.classList.remove("opening-panel");
         void panel.offsetWidth;
@@ -3040,22 +3162,22 @@
         var bossNames = [];
         STAGES.forEach(function (s) { if (s.boss && bossNames.indexOf(s.boss.name) < 0) bossNames.push(s.boss.name); });
         var stars = STAGES.reduce(function (sum, s) { var r = recOf(s.id); return sum + (r ? r.bestStars : 0); }, 0);
-        var html = '<p class="c-kicker">TRUE ENDING</p><h2>' + RA.ENDING_TITLE + "</h2>" +
+        var html = '<p class="c-kicker">TRUE ENDING</p><h2 class="jp-wrap">' + jpStr(RA.ENDING_TITLE) + "</h2>" +
           '<div style="margin-top:1rem;display:flex;justify-content:center">' + carrotCrystalHtml(new Set(STAGES.map(function (s) { return s.id; })), { heart: true, height: 118 }) + "</div>" +
-          '<div class="c-lines">' + RA.ENDING_LINES.map(function (l) { return "<p>" + l + "</p>"; }).join("") + "</div>" +
+          '<div class="c-lines">' + RA.ENDING_LINES.map(function (l) { return '<p class="jp-wrap">' + jpStr(l) + "</p>"; }).join("") + "</div>" +
           "<h3>— 旅の記録 —</h3>" +
           RA.WORLD_DEFS.map(function (w) {
-            return '<div class="c-world"><p class="t">ワールド' + w.world + "　" + w.name + "<span>" + w.sub + '</span></p><p class="d">' + (RA.WORLD_STORY[w.world] || "") + "</p></div>";
+            return '<div class="c-world"><p class="t jp-wrap">' + jpStr("ワールド" + w.world + "　" + w.name) + '<span class="jp-wrap">' + jpStr(w.sub) + '</span></p><p class="d jp-wrap">' + jpStr(RA.WORLD_STORY[w.world] || "") + "</p></div>";
           }).join("") +
           "<h3>— たたかったボスたち —</h3>" +
           bossNames.map(function (n) { return '<p class="c-boss">' + n + "</p>"; }).join("") +
           '<h3>— スタッフ —</h3><div class="c-staff">' +
-          "<p>ものがたり ―― 砕かれたにんじんクリスタルの伝説</p>" +
-          "<p>キャラクター原案・イラスト ―― プレイヤーの描いたキャラクターシート／採用した生成シート</p>" +
-          "<p>おんがく ―― プロシージャルBGM（WebAudio）</p>" +
-          "<p>スペシャルサンクス ―― あそんでくれた あなた</p></div>" +
+          '<p class="jp-wrap">' + jpStr("ものがたり ―― 砕かれたにんじんクリスタルの伝説") + "</p>" +
+          '<p class="jp-wrap">' + jpStr("キャラクター原案・イラスト ―― プレイヤーの描いたキャラクターシート／採用した生成シート") + "</p>" +
+          '<p class="jp-wrap">' + jpStr("おんがく ―― プロシージャルBGM（WebAudio）") + "</p>" +
+          '<p class="jp-wrap">' + jpStr("スペシャルサンクス ―― あそんでくれた あなた") + "</p></div>" +
           '<p class="c-totals">通算 ' + progress.totalClears + " 回クリア ／ 星 " + stars + "</p>" +
-          '<p class="c-thanks">' + RA.ENDING_THANKS + "</p>" +
+          '<p class="c-thanks jp-wrap">' + jpStr(RA.ENDING_THANKS) + "</p>" +
           '<p class="c-end">— おわり —</p>' +
           '<button type="button" id="credits-close2" class="credits-close2">とじる</button>';
         var sc = $("credits-scroll");
@@ -3329,8 +3451,8 @@
         $("cw-img").src = MAP_BG[id] || MAP_BG[1];
         $("cw-kicker").textContent = w.name;
         $("cw-name").textContent = w.sub;
-        $("cw-desc").textContent = wd ? wd.desc : "";
-        $("cw-story").textContent = wd ? (RA.WORLD_STORY[wd.world] || "") : "";
+        setJpText($("cw-desc"), wd ? wd.desc : "");
+        setJpText($("cw-story"), wd ? (RA.WORLD_STORY[wd.world] || "") : "");
         $("cw-faces").textContent = wd ? "とうじょう：" + wd.faces : "";
         var html = "<span>クリア " + worldClearedCount(id) + "/10 ／ 星 " + worldStars(id) + "/30</span>";
         if (id <= 10) {
@@ -3369,7 +3491,7 @@
         }
         $("cs-boss").innerHTML = bossHtml;
         $("cs-boss").style.display = s.boss ? "" : "none";
-        $("cs-desc").textContent = s.desc;
+        setJpText($("cs-desc"), s.desc);
         var rec = recOf(s.id);
         var recEl = $("cs-rec");
         if (rec && rec.clears > 0) {
@@ -3396,7 +3518,7 @@
           RA.sfx.click();
           var hint = $("world-hint");
           if (hint) {
-            hint.textContent = w.name + "「" + w.sub + "」はまだ開いていません。前のワールドを進めると開きます。";
+            setJpText(hint, w.name + "「" + w.sub + "」はまだ開いていません。前のワールドを進めると開きます。");
             hint.classList.remove("hidden");
           }
           return;
@@ -3547,9 +3669,9 @@
         html += '<div class="shard-line">' + shardSlotsHtml(cleared, 13) +
           '<span class="count">かけら ' + RA.shardCount(cleared) + "/10</span></div>";
         html += '<div id="world-unlock-slot"></div>';
-        html += '<p class="map-note">ワールドをタップでKが移動。Kのいるワールドをタップで入室確認。</p>';
+        html += '<p class="map-note jp-wrap">' + jpStr("ワールドをタップでKが移動。Kのいるワールドをタップで入室確認。") + "</p>";
         if (!extrasOpen()) {
-          html += '<p class="map-note">ダークKを倒すと、まだ見ぬ世界がこのマップに現れるらしい…。</p>';
+          html += '<p class="map-note jp-wrap">' + jpStr("ダークKを倒すと、まだ見ぬ世界がこのマップに現れるらしい…。") + "</p>";
         }
         html += '<p id="world-hint" class="map-hint hidden" role="status"></p>';
         html += "</div></div>";
@@ -3571,7 +3693,7 @@
         if (!isUnlocked(s.id)) {
           RA.sfx.click();
           var hint = $("map-hint");
-          hint.textContent = "ステージ" + stageNoLabel(s) + "「" + s.name + "」はまだ開いていません。前のステージをクリアすると開きます。";
+          setJpText(hint, "ステージ" + stageNoLabel(s) + "「" + s.name + "」はまだ開いていません。前のステージをクリアすると開きます。");
           hint.classList.remove("hidden");
           return;
         }
@@ -3763,7 +3885,7 @@
             html += '<span class="stage-rec">' + starsSvg(rec.bestStars, 12) + "<br>" +
               (rec.bestTimeSec !== null ? fmtTime(rec.bestTimeSec) : "—") + " ／ " + rec.bestScore.toLocaleString() + "点 ／ " + rec.clears + "回</span>";
           } else {
-            html += '<span class="stage-desc">' + (unlocked ? s.desc : "前のステージをクリアすると開きます。") + "</span>";
+            html += '<span class="stage-desc jp-wrap">' + jpStr(unlocked ? s.desc : "前のステージをクリアすると開きます。") + "</span>";
           }
           card.innerHTML = html;
           if (unlocked) card.addEventListener("click", function () { startGame(s.id); });
@@ -3802,11 +3924,11 @@
             }
             panel.innerHTML =
               '<p class="wp-name" style="margin:0;color:var(--text)">' + wd.name + ' <span class="wp-sub">— ' + wd.sub + "</span></p>" +
-              "<p>" + wd.desc + "</p>" +
-              '<p class="wp-story">' + RA.WORLD_STORY[wd.world] + "</p>" +
+              '<p class="jp-wrap">' + jpStr(wd.desc) + "</p>" +
+              '<p class="wp-story jp-wrap">' + jpStr(RA.WORLD_STORY[wd.world]) + "</p>" +
               '<p class="wp-faces">とうじょう：' + wd.faces + "</p>" + shardHtml +
               (wd.world === 10 && isCleared(100) && !isCleared(121)
-                ? '<p style="margin-top:0.4rem;font-size:0.75rem;font-weight:900;line-height:1.6;color:var(--danger)">ステージX「真・最終決戦」が姿を現した——ダークKが待っている！</p>'
+                ? '<p class="jp-wrap" style="margin-top:0.4rem;font-size:0.75rem;font-weight:900;line-height:1.6;color:var(--danger)">' + jpStr("ステージX「真・最終決戦」が姿を現した——ダークKが待っている！") + "</p>"
                 : "");
             panel.classList.remove("hidden");
             /* the landscape map screen shows this same card in
@@ -3996,11 +4118,11 @@
         var bosses = STAGES.filter(function (s) { return s.boss && (s.boss.plus === true || s.id === 121); });
         var beaten = 0;
         bosses.forEach(function (s) { if (isCleared(s.id)) beaten++; });
-        $("boss-gallery-sub").textContent = "撃破 " + beaten + "/" + bosses.length + " —— 皇帝ボスとダークKだけの一覧。初戦か皇帝戦で出会うと姿を現し、倒したボスはタップで確認してから再戦できる";
+        setJpText($("boss-gallery-sub"), "撃破 " + beaten + "/" + bosses.length + " —— 皇帝ボスとダークKだけの一覧。初戦か皇帝戦で出会うと姿を現し、倒したボスはタップで確認してから再戦できる");
         var html = rushSectionHtml() + '<div class="boss-grid">';
         bosses.forEach(function (s) { html += bossTileHtml(s); });
         html += "</div>";
-        html += '<p class="boss-gallery-note">皇帝ボスは、各ワールドの10番目で帰ってくる強化再戦。初戦で逃げたボスが、フェーズ2の技を最初から使ってくる。弱点ゲージはボスのHPバーの下——攻撃を当てるほどたまり、満タンで弱点が開いてダメージ2倍になる。</p>';
+        html += '<p class="boss-gallery-note jp-wrap">' + jpStr("皇帝ボスは、各ワールドの10番目で帰ってくる強化再戦。初戦で逃げたボスが、フェーズ2の技を最初から使ってくる。弱点ゲージはボスのHPバーの下——攻撃を当てるほどたまり、満タンで弱点が開いてダメージ2倍になる。") + "</p>";
         $("boss-gallery").innerHTML = html;
         $("boss-gallery").querySelectorAll("[data-boss-info]").forEach(function (el) {
           el.addEventListener("click", function () {
@@ -4054,7 +4176,7 @@
         }
         $("cb-name").textContent = b.name;
         $("cb-sub").textContent = s.name + "（" + s.sub + "）";
-        $("cb-desc").textContent = BOSS_PROFILE[b.kind] || s.desc;
+        setJpText($("cb-desc"), BOSS_PROFILE[b.kind] || s.desc);
         var recEl = $("cb-rec");
         var statusEl = $("cb-status");
         if (isBeaten && rec) {
@@ -4070,13 +4192,13 @@
           recEl.innerHTML = "";
           recEl.classList.add("hidden");
           if (bossStageMet(s.id)) {
-            statusEl.textContent = "まだ倒せていない。再戦は撃破後にここからできる——いまはステージ" + stageNumLabel(s.id) + "のマップから挑戦できる。";
+            setJpText(statusEl, "まだ倒せていない。再戦は撃破後にここからできる——いまはステージ" + stageNumLabel(s.id) + "のマップから挑戦できる。");
           } else {
             var f = bossFirstFightId(s);
             var fd = f !== null ? STAGES[f - 1] : null;
-            statusEl.textContent = fd
+            setJpText(statusEl, fd
               ? "初戦のステージ" + f + "「" + fd.name + "」で出会ったボス。皇帝はステージ" + stageNumLabel(s.id) + "で帰ってくる——倒すとここから再戦できる。"
-              : "まだ倒せていない。";
+              : "まだ倒せていない。");
           }
           statusEl.classList.remove("hidden");
           $("cb-q").classList.add("hidden");
@@ -4166,7 +4288,7 @@
       }
       function rushSectionHtml() {
         var html = '<section aria-label="ボスラッシュ"><h2 style="margin:1rem 0 0;font-size:1.125rem;font-weight:900">ボスラッシュ</h2>' +
-          '<p class="rush-note">皇帝ボスを続けて倒す連戦。ハートは次の戦いへ持ち越し——戦いの合間は休憩ステージへ。コース全体で個数が決まった「金の人参」が置かれていて、実際に歩いて拾うとハート全回復。拾わずに出口の扉へ進んでもよく、残した人参は次の休憩でも使える。コースのボスを全員倒したデータで解放される。</p>' +
+          '<p class="rush-note jp-wrap">' + jpStr("皇帝ボスを続けて倒す連戦。ハートは次の戦いへ持ち越し——戦いの合間は休憩ステージへ。コース全体で個数が決まった「金の人参」が置かれていて、実際に歩いて拾うとハート全回復。拾わずに出口の扉へ進んでもよく、残した人参は次の休憩でも使える。コースのボスを全員倒したデータで解放される。") + "</p>" +
           '<div class="rush-grid">';
         RUSH_COURSES.forEach(function (c) { html += rushCardHtml(c); });
         html += "</div></section>";
@@ -4499,7 +4621,7 @@
               "</div>";
           }
           if (confirming) {
-            html += '<div class="slot-erase"><p>データ' + n + "を 消しますか？ このデータの記録は 全部消えて、もとには戻りません。</p>" +
+            html += '<div class="slot-erase"><p class="jp-wrap">' + jpStr("データ" + n + "を 消しますか？ このデータの記録は 全部消えて、もとには戻りません。") + "</p>" +
               '<div class="confirm-btns" style="margin-top:0.75rem"><button type="button" class="btn danger" data-act="erase-yes" style="background:var(--danger);border-color:var(--danger);color:#fbf8ef;font-weight:900">はい、消す</button>' +
               '<button type="button" class="btn" data-act="erase-no">いいえ</button></div></div>';
           } else {
@@ -5005,12 +5127,12 @@
             shardHtml = '<div class="shard-panel shard-get-panel" role="status">' + sparkHtml +
               '<div class="shard-get-flex">' + carrotCrystalHtml(clearedSet(), { highlight: def.world, height: 108 }) +
               '<div class="shard-get-text"><p class="t">にんじんクリスタルの<br>かけら ゲット！</p>' +
-              '<p class="d">' + def.boss.name + "は正気を取り戻した！<br>かけら " + res.shardTotal + "/10" +
-              (res.shardTotal >= 10 ? " ——全部集まった！" : " ——あと " + (10 - res.shardTotal) + " 個でクリスタルが完成するよ") + "</p></div></div></div>";
+              '<p class="d jp-wrap">' + jpStr(def.boss.name + "は正気を取り戻した！") + "<br>" + jpStr("かけら " + res.shardTotal + "/10" +
+              (res.shardTotal >= 10 ? " ——全部集まった！" : " ——あと " + (10 - res.shardTotal) + " 個でクリスタルが完成するよ")) + "</p></div></div></div>";
           } else if (!res.shardHeldAfter) {
-            shardHtml = '<p class="shard-note" role="status">ボスは かけらを持ったまま逃げていった…（かけら ' + res.shardTotal + "/10）——決着はステージ" + def.world * 10 + "で！</p>";
+            shardHtml = '<p class="shard-note jp-wrap" role="status">' + jpStr("ボスは かけらを持ったまま逃げていった…（かけら " + res.shardTotal + "/10）——決着はステージ" + def.world * 10 + "で！") + "</p>";
           } else {
-            shardHtml = '<p class="shard-note" role="status">このワールドのかけらは入手済み（かけら ' + res.shardTotal + "/10）</p>";
+            shardHtml = '<p class="shard-note jp-wrap" role="status">' + jpStr("このワールドのかけらは入手済み（かけら " + res.shardTotal + "/10）") + "</p>";
           }
         }
         $("clear-shard").innerHTML = shardHtml;
