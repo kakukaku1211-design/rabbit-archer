@@ -266,6 +266,38 @@
       .btn-cluster { display: flex; align-items: flex-end; gap: 0.75rem; pointer-events: none; }
       .pad-label { display: flex; flex-direction: column; align-items: center; line-height: 1; }
       .pad-label small { margin-top: 2px; font-size: 10px; font-weight: 700; }
+      /* ---------- custom button layout (per-device setting,
+         synced from the main build) ----------
+         When a saved layout exists the controls layer fills the
+         whole game screen, the two clusters dissolve
+         (display: contents) and each pad button is placed by the
+         centre ratios (0–1) the player saved, so the layout
+         survives any screen size. Button sizes and hit areas are
+         untouched — only where the buttons stand changes. */
+      .controls.custom { inset: 0; padding: 0; }
+      .controls.custom .move-keys, .controls.custom .btn-cluster { display: contents; }
+      .controls.custom .pad-btn { position: absolute; transform: translate(-50%, -50%); }
+      .controls.custom .pad-btn:active, .controls.custom .pad-btn.pressed { transform: translate(-50%, -50%) scale(0.95); }
+      /* layout edit mode: the pads wear a dashed ring so it is
+         clear they can be grabbed, and the edit bar floats over
+         the top centre with the mode's only two exits */
+      #screen-game.editing .pad-btn { outline: 2px dashed rgba(251, 248, 239, 0.9); outline-offset: 3px; cursor: grab; }
+      #screen-game.editing .pad-btn:active { cursor: grabbing; }
+      .layout-bar {
+        position: absolute; left: 50%; top: max(0.75rem, env(safe-area-inset-top)); transform: translateX(-50%);
+        z-index: 45; width: min(26rem, calc(100% - 1.5rem)); border-radius: var(--radius);
+        border: 1px solid var(--border); background: var(--bg); color: var(--text);
+        padding: 0.75rem 1rem; text-align: center; box-shadow: 0 24px 60px rgba(20, 16, 10, 0.35);
+      }
+      .layout-bar .lb-title { margin: 0; font-size: 1rem; font-weight: 900; }
+      .layout-bar .lb-hint { margin: 0.25rem 0 0; font-size: 0.75rem; font-weight: 700; color: var(--dim); }
+      .layout-bar .lb-btns { margin-top: 0.6rem; display: flex; gap: 0.5rem; }
+      .layout-bar .lb-btns .btn {
+        display: flex; min-height: 44px; flex: 1 1 0; align-items: center; justify-content: center;
+        border-radius: 12px; font-size: 0.875rem; border: 1px solid var(--border);
+        background: var(--surface); color: var(--text); font-weight: 700; padding: 0 0.3rem;
+      }
+      .layout-bar .lb-btns .btn.primary { background: var(--accent); border-color: var(--accent); color: #fbf8ef; font-weight: 900; }
 
       /* ---------- overlays ---------- */
       .overlay {
@@ -1663,6 +1695,18 @@
         </div>
       </div>
 
+      <!-- button layout editor: opened from the pause menu while
+           the game stays paused; the four pad buttons are dragged
+           directly, and the bar holds the mode's only two exits -->
+      <div id="ov-btnlayout" class="layout-bar hidden" role="dialog" aria-label="ボタン配置の編集">
+        <p class="lb-title">ボタン配置</p>
+        <p class="lb-hint">ボタンをドラッグで好きな場所へ動かせます</p>
+        <div class="lb-btns">
+          <button type="button" id="btn-layout-reset" class="btn">初期配置に戻す</button>
+          <button type="button" id="btn-layout-done" class="btn primary">おわる（保存）</button>
+        </div>
+      </div>
+
       <!-- pause -->
       <div id="ov-pause" class="overlay hidden">
         <div class="dialog">
@@ -1675,6 +1719,7 @@
           <div class="stack">
             <button type="button" id="btn-resume" class="btn primary">つづける</button>
             <button type="button" id="btn-restart-p" class="btn">はじめから</button>
+            <button type="button" id="btn-layout-p" class="btn">ボタン配置</button>
             <button type="button" id="btn-exit-p" class="btn">マップへもどる</button>
           </div>
         </div>
@@ -5240,6 +5285,7 @@
         $("ov-over").classList.add("hidden");
         $("controls").classList.remove("hidden");
         showScreen("game");
+        applySavedBtnLayout();
         enterImmersive();
         if (game) { game.destroy(); game = null; }
         shardSnap = clearedSet();
@@ -5523,10 +5569,184 @@
       window.addEventListener("blur", releaseAllPads);
 
       $("btn-pause").addEventListener("click", function () {
-        if (!ended && !dlgActive()) setPaused(true);
+        if (!ended && !dlgActive() && !layoutEditing) setPaused(true);
       });
       $("dlg-advance").addEventListener("click", advanceDialogue);
       $("dlg-skip").addEventListener("click", function () { RA.sfx.click(); finishDialogue(); });
+      /* ---------- custom button layout (per-device setting) ----------
+         The four pad buttons' centre positions, stored as ratios
+         (0–1) of the game screen under their OWN localStorage key —
+         a device setting, deliberately apart from the save slots
+         and the transfer code, whose formats do not change. With
+         no saved layout the buttons keep their original CSS flow
+         positions exactly; a saved layout switches the controls
+         layer to ratio positioning (see .controls.custom). */
+      var BTN_LAYOUT_KEY = "rabbit-archer-button-layout-v1";
+      var BTN_NAMES = ["left", "right", "shoot", "jump"];
+      var padEls = {};
+      document.querySelectorAll(".pad-btn").forEach(function (el) {
+        padEls[el.getAttribute("data-btn")] = el;
+      });
+      function validBtnLayout(v) {
+        if (!v || typeof v !== "object") return false;
+        for (var i = 0; i < BTN_NAMES.length; i++) {
+          var p = v[BTN_NAMES[i]];
+          if (!Array.isArray(p) || p.length !== 2) return false;
+          for (var j = 0; j < 2; j++) {
+            if (typeof p[j] !== "number" || !isFinite(p[j]) || p[j] < 0 || p[j] > 1) return false;
+          }
+        }
+        return true;
+      }
+      function cloneBtnLayout(v) {
+        var out = {};
+        BTN_NAMES.forEach(function (n) { out[n] = [v[n][0], v[n][1]]; });
+        return out;
+      }
+      var savedBtnLayout = (function () {
+        try {
+          var raw = localStorage.getItem(BTN_LAYOUT_KEY);
+          if (!raw) return null;
+          var v = JSON.parse(raw);
+          return validBtnLayout(v) ? cloneBtnLayout(v) : null;
+        } catch (e) { return null; }
+      })();
+      function applyBtnPositions(layout) {
+        var controls = $("controls");
+        controls.classList.add("custom");
+        BTN_NAMES.forEach(function (n) {
+          var el = padEls[n];
+          if (!el) return;
+          el.style.left = layout[n][0] * 100 + "%";
+          el.style.top = layout[n][1] * 100 + "%";
+        });
+      }
+      function clearBtnPositions() {
+        var controls = $("controls");
+        controls.classList.remove("custom");
+        BTN_NAMES.forEach(function (n) {
+          var el = padEls[n];
+          if (!el) return;
+          el.style.left = "";
+          el.style.top = "";
+        });
+      }
+      function applySavedBtnLayout() {
+        if (savedBtnLayout) applyBtnPositions(savedBtnLayout);
+        else clearBtnPositions();
+      }
+      /* The untouched CSS layout, measured live: custom
+         positioning is dropped for one synchronous reflow (never
+         painted — the game is paused behind the editor), the four
+         centres are read as screen ratios, and the caller puts a
+         layout back. This is what 初期配置 means, pixel-exact on
+         whatever device and orientation is in hand. */
+      function measureDefaultBtnRatios() {
+        var controls = $("controls");
+        var wasHidden = controls.classList.contains("hidden");
+        clearBtnPositions();
+        if (wasHidden) controls.classList.remove("hidden");
+        void controls.offsetWidth;
+        var sr = $("screen-game").getBoundingClientRect();
+        var out = {};
+        BTN_NAMES.forEach(function (n) {
+          var el = padEls[n];
+          var r = el.getBoundingClientRect();
+          out[n] = [
+            Math.min(1, Math.max(0, (r.left + r.width / 2 - sr.left) / Math.max(1, sr.width))),
+            Math.min(1, Math.max(0, (r.top + r.height / 2 - sr.top) / Math.max(1, sr.height)))
+          ];
+        });
+        if (wasHidden) controls.classList.add("hidden");
+        return out;
+      }
+      var layoutEditing = false;
+      var workBtnLayout = null;
+      var dragBtn = null;
+      var dragPointerId = null;
+      var dragOffX = 0;
+      var dragOffY = 0;
+      function enterBtnLayoutEdit() {
+        if (layoutEditing) return;
+        releaseAllPads();
+        workBtnLayout = savedBtnLayout ? cloneBtnLayout(savedBtnLayout) : measureDefaultBtnRatios();
+        applyBtnPositions(workBtnLayout);
+        layoutEditing = true;
+        $("ov-pause").classList.add("hidden");
+        $("screen-game").classList.add("editing");
+        $("ov-btnlayout").classList.remove("hidden");
+      }
+      function exitBtnLayoutEdit() {
+        if (!layoutEditing) return;
+        layoutEditing = false;
+        dragBtn = null;
+        dragPointerId = null;
+        savedBtnLayout = workBtnLayout ? cloneBtnLayout(workBtnLayout) : null;
+        workBtnLayout = null;
+        try {
+          if (savedBtnLayout) localStorage.setItem(BTN_LAYOUT_KEY, JSON.stringify(savedBtnLayout));
+          else localStorage.removeItem(BTN_LAYOUT_KEY);
+        } catch (e) { /* storage unavailable: the layout still applies for this session */ }
+        applySavedBtnLayout();
+        $("screen-game").classList.remove("editing");
+        $("ov-btnlayout").classList.add("hidden");
+        /* back to the pause menu — the game never unpaused */
+        $("ov-pause").classList.remove("hidden");
+      }
+      /* Dragging is intercepted on the controls layer in the
+         CAPTURE phase, before the pads' own press handlers (which
+         live on the buttons themselves): in edit mode a touch on a
+         pad moves it instead of pressing it, and the game stays
+         paused throughout, so no input can latch. Centres are
+         clamped so a button never leaves the screen; buttons may
+         overlap freely. */
+      $("controls").addEventListener("pointerdown", function (e) {
+        if (!layoutEditing) return;
+        var btn = e.target && e.target.closest ? e.target.closest(".pad-btn") : null;
+        if (!btn || dragBtn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var sr = $("screen-game").getBoundingClientRect();
+        var r = btn.getBoundingClientRect();
+        dragBtn = btn;
+        dragPointerId = e.pointerId;
+        dragOffX = e.clientX - (r.left + r.width / 2);
+        dragOffY = e.clientY - (r.top + r.height / 2);
+        btn.classList.add("pressed");
+      }, true);
+      window.addEventListener("pointermove", function (e) {
+        if (!layoutEditing || !dragBtn || e.pointerId !== dragPointerId) return;
+        e.preventDefault();
+        var sr = $("screen-game").getBoundingClientRect();
+        var hw = dragBtn.offsetWidth / 2;
+        var hh = dragBtn.offsetHeight / 2;
+        var cx = Math.min(sr.width - hw, Math.max(hw, e.clientX - sr.left - dragOffX));
+        var cy = Math.min(sr.height - hh, Math.max(hh, e.clientY - sr.top - dragOffY));
+        dragBtn.style.left = cx + "px";
+        dragBtn.style.top = cy + "px";
+        if (workBtnLayout) {
+          workBtnLayout[dragBtn.getAttribute("data-btn")] = [cx / Math.max(1, sr.width), cy / Math.max(1, sr.height)];
+        }
+      }, { passive: false });
+      function endBtnDrag(e) {
+        if (!dragBtn || (e && e.pointerId !== undefined && e.pointerId !== dragPointerId)) return;
+        dragBtn.classList.remove("pressed");
+        dragBtn = null;
+        dragPointerId = null;
+        /* settle the dragged button back onto ratio positioning */
+        if (layoutEditing && workBtnLayout) applyBtnPositions(workBtnLayout);
+      }
+      window.addEventListener("pointerup", endBtnDrag, true);
+      window.addEventListener("pointercancel", endBtnDrag, true);
+      $("btn-layout-p").addEventListener("click", function () { RA.sfx.click(); enterBtnLayoutEdit(); });
+      $("btn-layout-reset").addEventListener("click", function () {
+        RA.sfx.click();
+        if (!layoutEditing) return;
+        workBtnLayout = measureDefaultBtnRatios();
+        applyBtnPositions(workBtnLayout);
+      });
+      $("btn-layout-done").addEventListener("click", function () { RA.sfx.click(); exitBtnLayoutEdit(); });
+
       $("btn-resume").addEventListener("click", function () { setPaused(false); });
       $("btn-restart-p").addEventListener("click", restartStage);
       $("btn-exit-p").addEventListener("click", exitToMap);
