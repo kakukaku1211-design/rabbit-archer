@@ -222,8 +222,12 @@
       .progress-fill { height: 100%; border-radius: 999px; background: #f2c14e; width: 0%; }
       .boss-block { margin-top: 0.5rem; width: 100%; max-width: 280px; }
       .boss-head { display: flex; align-items: baseline; justify-content: space-between; font-size: 11px; font-weight: 900; color: #fbf8ef; }
-      .boss-track { margin-top: 0.25rem; height: 10px; width: 100%; overflow: hidden; border-radius: 999px; background: rgba(251, 248, 239, 0.15); }
-      .boss-fill { height: 100%; border-radius: 999px; background: #e0685e; width: 100%; transition: width 0.2s; }
+      .boss-track { position: relative; margin-top: 0.25rem; height: 10px; width: 100%; overflow: hidden; border-radius: 999px; background: rgba(251, 248, 239, 0.15); }
+      /* the white ghost gauge （残ゲージ）: the HP just lost lingers
+         behind the red bar for a beat, then drains away (see the
+         bossGhost logic in updateHud; mirrors the main build) */
+      .boss-ghost { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.85); width: 100%; transition: width 0.5s ease-out; }
+      .boss-fill { position: relative; height: 100%; border-radius: 999px; background: #e0685e; width: 100%; transition: width 0.2s; }
       .boss-note { margin: 0.25rem 0 0; font-size: 11px; font-weight: 900; }
       /* landscape-only HUD pieces (switched on in the landscape block
          below): a 3px progress line across the very top of the screen,
@@ -1657,7 +1661,7 @@
               </div>
               <div id="hud-boss" class="boss-block hidden">
                 <div class="boss-head"><span>BOSS　<span id="hud-boss-name"></span></span><span id="hud-boss-hp"></span></div>
-                <div class="boss-track" role="progressbar" aria-label="ボスのHP"><div id="hud-boss-fill" class="boss-fill"></div></div>
+                <div class="boss-track" role="progressbar" aria-label="ボスのHP"><div id="hud-boss-ghost" class="boss-ghost"></div><div id="hud-boss-fill" class="boss-fill"></div></div>
                 <p id="hud-boss-note" class="boss-note"></p>
                 <p id="hud-boss-chips" class="boss-chips"><span id="hud-chip-weak" class="boss-chip weak pulsing hidden">弱点！ ダメージ2倍</span><span id="hud-chip-atk" class="boss-chip atk pulsing hidden">攻撃中！</span><span id="hud-chip-enr" class="boss-chip enr hidden">怒り状態！</span></p>
               </div>
@@ -5055,6 +5059,10 @@
       var ended = false;
       var lastHud = null;
       var lastHp = -1;
+      /* Boss HP ghost gauge （残ゲージ） state — display only, see
+         updateHud. Mirrors the main build's App.tsx bossGhostHp. */
+      var bossGhost = { hp: 0, max: 0 };
+      var bossGhostTimer = null;
       /* True while the current run was launched from the boss
          gallery （ボス図鑑）: every way out of that run — clear,
          game over, pause exit, the ending's forward button —
@@ -5128,6 +5136,28 @@
         if (hasBoss) {
           $("hud-boss-name").textContent = h.bossName;
           $("hud-boss-hp").textContent = h.bossHp + "/" + h.bossMax;
+          /* Ghost gauge: the red bar drops at once; the white ghost
+             of the HP just lost holds for 0.45s, then drains to the
+             real value (the .boss-ghost width transition does the
+             draining). A new boss — or HP back at/above the ghost —
+             snaps the ghost to the real value at once. Display only:
+             it only ever trails h.bossHp. (Ported from the main
+             build's App.tsx, 2026-11-28 hit-feedback sync.) */
+          if (h.bossMax !== bossGhost.max || h.bossHp >= bossGhost.hp) {
+            bossGhost.hp = h.bossHp;
+            bossGhost.max = h.bossMax;
+            if (bossGhostTimer) { clearTimeout(bossGhostTimer); bossGhostTimer = null; }
+          } else {
+            if (bossGhostTimer) clearTimeout(bossGhostTimer);
+            var drainTo = h.bossHp;
+            bossGhostTimer = setTimeout(function () {
+              bossGhostTimer = null;
+              bossGhost.hp = drainTo;
+              var gel = $("hud-boss-ghost");
+              if (gel) gel.style.width = (bossGhost.hp / Math.max(1, bossGhost.max)) * 100 + "%";
+            }, 450);
+          }
+          $("hud-boss-ghost").style.width = (bossGhost.hp / Math.max(1, h.bossMax)) * 100 + "%";
           $("hud-boss-fill").style.width = (h.bossHp / Math.max(1, h.bossMax)) * 100 + "%";
           var note = $("hud-boss-note");
           if (h.bossWeak) { note.textContent = "弱点！ いま攻撃するとダメージ2倍"; note.style.color = "#f2c14e"; }
@@ -5140,6 +5170,9 @@
           $("hud-chip-atk").classList.toggle("hidden", !h.bossAttacking);
           $("hud-chip-enr").classList.toggle("hidden", !h.bossEnraged);
         } else {
+          bossGhost.hp = 0;
+          bossGhost.max = 0;
+          if (bossGhostTimer) { clearTimeout(bossGhostTimer); bossGhostTimer = null; }
           $("hud-progress").style.width = h.progress * 100 + "%";
           $("hud-progress-wrap").setAttribute("aria-valuenow", Math.round(h.progress * 100));
           $("hud-topline-fill").style.width = h.progress * 100 + "%";
